@@ -7,8 +7,32 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
+  <section id="container" >
+    
+    <%= render 'layouts/header' %>
+    <%= render 'layouts/menu' %>
 
-<%= yield %>
+    <section id="main-content">
+      <section class="wrapper">
+        <div class="row">
+          <div class="col-lg-9 main-chart">
+            <%= yield %>
+          </div>
+          
+          <div class="col-lg-3"></div>
+        </div>
+      </section>
+    </section>
 
+    <footer class="site-footer">
+      <div class="text-center">
+        2014 - Alvarez.is
+        <a href="index.html#" class="go-top">
+          <i class="fa fa-angle-up"></i>
+        </a>
+      </div>
+    </footer>
+
+  </section>
 </body>
 </html>
