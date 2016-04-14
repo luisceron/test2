@@ -16,6 +16,10 @@
 
   <div id="login-page">
     <div class="container">
+      <div class="text-center language-login">
+        <%= link_to image_tag('language/icon-pt-BR.png', size: "33x33"), locale: 'pt-BR' %>
+        <%= link_to image_tag('language/icon-en-usa.png', size: "30x30"), locale: 'en' %>
+      </div>
       <%= yield %>
     </div>
   </div>

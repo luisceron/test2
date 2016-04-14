@@ -1,38 +1,19 @@
-<!-- <h2><%= t('.sign_up', :default => "Sign up") %></h2> -->
-<!-- 
-<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
-  <%= devise_error_messages! %> -->
-<!--
-  <div><%= f.label :email %><br />
-  <%= f.email_field :email %></div>
-
-  <div><%= f.label :password %><br />
-  <%= f.password_field :password %></div>
-
-  <div><%= f.label :password_confirmation %><br />
-  <%= f.password_field :password_confirmation %></div>
-
-  <div><%= f.submit t('.sign_up', :default => "Sign up") %></div>
- <% end %>
-
-<%= render "devise/shared/links" %> -->
-
-
-
 <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: {class: "form-login"}) do |f| %>
-   <h2 class="form-login-heading"><%= t('.sign_up', :default => "Sign up") %></h2>
-   <div class="login-wrap">
-    <%= f.input :email, autofocus: true, class:"form-control", placeholder:"Email" %>
-    <%= f.input :password, autocomplete: "off", class:"form-control", placeholder: "Password" %>
-    <%= f.input :password_confirmation, autocomplete: "off", class:"form-control", placeholder: "Password" %>
+  <h2 class="form-login-heading"><%= t('.sign_up') %></h2>
+  <div class="login-wrap">
+    <%= f.input :email, label: false, autofocus: true, class:"form-control", placeholder: User.human_attribute_name(:email) %>
+    <%= f.input :password, label: false, autocomplete: "off", class:"form-control", placeholder: User.human_attribute_name(:password) %>
+    <%= f.input :password_confirmation, label: false, autocomplete: "off", class:"form-control", placeholder: User.human_attribute_name(:password_confirmation) %>
+ 
     <br>
+
     <%= button_tag(type: "submit", class: "btn btn-theme btn-block") do %>
-      <i class="fa fa-lock"></i> <%= t('.sign_up', :default => "Sign up") %>
+      <i class="fa fa-user-plus"></i> <%= t('.sign_up') %>
     <% end %>
+
     <hr>
 
     <div class="registration">
-      Don't have an account yet?<br/>
       <%= render "devise/shared/links" %>
     </div>
   </div>
