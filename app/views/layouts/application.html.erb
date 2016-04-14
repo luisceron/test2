@@ -15,8 +15,12 @@
     <section id="main-content">
       <section class="wrapper">
         <div class="row">
-          <p class="notice"><%= notice %></p>
-          <p class="alert"><%= alert %></p>
+          <% if notice.present? %>
+            <p class="alert alert-success"><%= notice %></p>
+          <% end %>
+          <% if alert.present? %>
+            <p class="alert alert-danger"><%= alert %></p>
+          <% end %>
           <div class="col-lg-9 main-chart">
             <%= yield %>
           </div>
