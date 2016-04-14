@@ -1,22 +1,43 @@
-<%= simple_form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: "form-login"}) do |f| %>
-  <h2 class="form-login-heading"><%= t'sign_in' %></h2>
-  <div class="login-wrap">
-    <%= f.input :email, label: false, autofocus: true, class:"form-control", placeholder: User.human_attribute_name(:email) %>
-    <%= f.input :password, label: false, autocomplete: "off", class:"form-control", placeholder: User.human_attribute_name(:password) %>
+<!-- <h2><%= t('.sign_in', :default => "Sign in") %></h2> -->
+<!-- 
+<%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %> -->
+ <!-- <div><%= f.label :email %><br />
+  <%= f.email_field :email %></div>
 
-    <% if devise_mapping.rememberable? -%>
-      <%= f.input :remember_me, label: User.human_attribute_name(:remember_me), as: :boolean %>
-    <% end -%>
+  <div><%= f.label :password %><br />
+  <%= f.password_field :password %></div>
 
-    <%= button_tag(type: "submit", class: "btn btn-theme btn-block") do %>
-      <i class="fa fa-lock"></i> <%= t'button.login' %>
-    <% end %>
+  <% if devise_mapping.rememberable? -%>
+    <div><%= f.check_box :remember_me %> <%= f.label :remember_me %></div>
+  <% end -%>
 
-    <hr>
+   <div><%= f.submit t('.sign_in', :default => "Sign in") %></div>
 
-    <div class="registration">
-      <%= t'still_not_registered' %><br/>
-      <%= render "devise/shared/links" %>
-    </div>
-  </div>
 <% end %>
+
+<%= render "devise/shared/links" %> -->
+
+
+
+  <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: "form-login"}) do |f| %>
+    <h2 class="form-login-heading"><%= t('.sign_in', :default => "Sign in") %></h2>
+    <div class="login-wrap">
+      <%= f.input :email, autofocus: true, class:"form-control", placeholder:"User ID" %>
+      <%= f.input :password, autocomplete: "off", class:"form-control", placeholder: "Password" %>
+
+      <% if devise_mapping.rememberable? -%>
+        <%= f.input :remember_me, as: :boolean %>
+      <% end -%>
+
+      <%= button_tag(type: "submit", class: "btn btn-theme btn-block") do %>
+        <i class="fa fa-lock"></i> <%= t('.sign_in', :default => "Sign in") %>
+      <% end %>
+
+      <hr>
+
+      <div class="registration">
+        Don't have an account yet?<br/>
+        <%= render "devise/shared/links" %>
+      </div>
+    </div>
+  <% end %>
