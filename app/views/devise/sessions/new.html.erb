@@ -25,7 +25,7 @@
 <!-- 
 <s%= render "devise/shared/links" %> -->
 
-<div id="login-page">
+<!-- <div id="login-page">
   <div class="container">
     <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: "form-login"}) do |f| %>
       <h2 class="form-login-heading">sign in now</h2>
@@ -66,10 +66,10 @@
           Don't have an account yet?<br/>
           <%= render "devise/shared/links" %>
         </div>
-      </div>
+      </div>-->
       
       <!-- Modal -->
-      <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
+    <!--  <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -87,9 +87,35 @@
             </div>
           </div>
         </div>
-      </div>
+      </div>-->
       <!-- modal -->
-  
+  <!-- 
     <% end %>
   </div>
+</div>
+ -->
+
+<div>
+  <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: "form-login"}) do |f| %>
+    <h2 class="form-login-heading">Sign In</h2>
+    <div class="login-wrap">
+      <%= f.input :email, autofocus: true, class:"form-control", placeholder:"User ID" %>
+      <%= f.input :password, autocomplete: "off", class:"form-control", placeholder: "Password" %>
+
+      <% if devise_mapping.rememberable? -%>
+        <%= f.input :remember_me, as: :boolean %>
+      <% end -%>
+
+      <%= button_tag(type: "submit", class: "btn btn-theme btn-block") do %>
+        <i class="fa fa-lock"></i> Sign in
+      <% end %>
+
+      <hr>
+
+      <div class="registration">
+        Don't have an account yet?<br/>
+        <%= render "devise/shared/links" %>
+      </div>
+    </div>
+  <% end %>
 </div>
