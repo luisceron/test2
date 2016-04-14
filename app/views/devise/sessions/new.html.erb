@@ -1,121 +1,22 @@
-<!-- <h2>Log in</h2> -->
-<!-- 
-<s%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %> -->
-<!--   <div class="field">
-    <s%= f.label :email %><br />
-    <s%= f.email_field :email, autofocus: true %>
-  </div> -->
+<%= simple_form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: "form-login"}) do |f| %>
+  <h2 class="form-login-heading"><%= t'sign_in' %></h2>
+  <div class="login-wrap">
+    <%= f.input :email, label: false, autofocus: true, class:"form-control", placeholder: User.human_attribute_name(:email) %>
+    <%= f.input :password, label: false, autocomplete: "off", class:"form-control", placeholder: User.human_attribute_name(:password) %>
 
-<!--   <div class="field">
-    <s%= f.label :password %><br />
-    <s%= f.password_field :password, autocomplete: "off" %>
-  </div> -->
+    <% if devise_mapping.rememberable? -%>
+      <%= f.input :remember_me, label: User.human_attribute_name(:remember_me), as: :boolean %>
+    <% end -%>
 
-<!--   <s% if devise_mapping.rememberable? -%>
-    <div class="field">
-      <s%= f.check_box :remember_me %>
-      <s%= f.label :remember_me %>
-    </div>
-  <s% end -%> -->
-
-<!--   <div class="actions">
-    <s%= f.submit "Log in" %>
-  </div>
-<s% end %> -->
-<!-- 
-<s%= render "devise/shared/links" %> -->
-
-<!-- <div id="login-page">
-  <div class="container">
-    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: "form-login"}) do |f| %>
-      <h2 class="form-login-heading">sign in now</h2>
-      <div class="login-wrap">
-        <div class="field">
-          <%= f.email_field :email, autofocus: true, class:"form-control", placeholder:"User ID" %>
-        </div>
-
-        <br>
-
-        <div class="field">
-          <%= f.password_field :password, autocomplete: "off", class:"form-control", placeholder: "Password" %>
-        </div>
-
-        <br>
-
-        <% if devise_mapping.rememberable? -%>
-          <div class="field">
-            <%= f.check_box :remember_me %>
-            <%= f.label :remember_me %>
-          </div>
-        <% end -%>
-
-        <label class="checkbox">
-          <span class="pull-right">
-            <a data-toggle="modal" href="login.html#myModal"> Forgot Password?</a>
-          </span>
-        </label>
-        <div class="actions">
-          <%= button_tag(type: "submit", class: "btn btn-theme btn-block") do %>
-          <i class="fa fa-lock"></i> Sign in
-          <% end %>
-        </div>
-
-        <hr>
-
-        <div class="registration">
-          Don't have an account yet?<br/>
-          <%= render "devise/shared/links" %>
-        </div>
-      </div>-->
-      
-      <!-- Modal -->
-    <!--  <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h4 class="modal-title">Forgot Password ?</h4>
-            </div>
-            <div class="modal-body">
-              <p>Enter your e-mail address below to reset your password.</p>
-              <input type="text" name="email" placeholder="Email" autocomplete="off" class="form-control placeholder-no-fix">
-
-            </div>
-            <div class="modal-footer">
-              <button data-dismiss="modal" class="btn btn-default" type="button">Cancel</button>
-              <button class="btn btn-theme" type="button">Submit</button>
-            </div>
-          </div>
-        </div>
-      </div>-->
-      <!-- modal -->
-  <!-- 
+    <%= button_tag(type: "submit", class: "btn btn-theme btn-block") do %>
+      <i class="fa fa-lock"></i> <%= t'button.login' %>
     <% end %>
-  </div>
-</div>
- -->
 
-<div>
-  <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: "form-login"}) do |f| %>
-    <h2 class="form-login-heading">Sign In</h2>
-    <div class="login-wrap">
-      <%= f.input :email, autofocus: true, class:"form-control", placeholder:"User ID" %>
-      <%= f.input :password, autocomplete: "off", class:"form-control", placeholder: "Password" %>
+    <hr>
 
-      <% if devise_mapping.rememberable? -%>
-        <%= f.input :remember_me, as: :boolean %>
-      <% end -%>
-
-      <%= button_tag(type: "submit", class: "btn btn-theme btn-block") do %>
-        <i class="fa fa-lock"></i> Sign in
-      <% end %>
-
-      <hr>
-
-      <div class="registration">
-        Don't have an account yet?<br/>
-        <%= render "devise/shared/links" %>
-      </div>
+    <div class="registration">
+      <%= t'still_not_registered' %><br/>
+      <%= render "devise/shared/links" %>
     </div>
-  <% end %>
-</div>
+  </div>
+<% end %>

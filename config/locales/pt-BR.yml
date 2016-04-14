@@ -4,7 +4,17 @@ pt-BR:
       user:
         email: E-mail
         password: Senha
-        password_confirmation: Confirmação da senha
+        password_confirmation: Confirmação de Senha
+        remember_me: Continuar Conectado
+
+  sign_in: Login
+  sign_up: registro
+  sign_out: Logout
+  still_not_registered: Ainda não é cadastrado? Cadastre-se agora
+
+  button:
+    login: Login
+    back: Voltar
 
   error_explanation:
     count_message:
