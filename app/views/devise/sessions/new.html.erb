@@ -1,8 +1,8 @@
 <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: "form-login"}) do |f| %>
   <h2 class="form-login-heading"><%= t('.sign_in') %></h2>
   <div class="login-wrap">
-    <%= f.input :email, label: false, autofocus: true, class:"form-control", placeholder: User.human_attribute_name(:email) %>
-    <%= f.input :password, label: false, autocomplete: "off", class:"form-control", placeholder: User.human_attribute_name(:password) %>
+    <%= f.input :email, label: false, autofocus: true, placeholder: User.human_attribute_name(:email) %>
+    <%= f.input :password, label: false, autocomplete: "off", placeholder: User.human_attribute_name(:password) %>
 
     <% if devise_mapping.rememberable? -%>
       <%= f.input :remember_me, as: :boolean %>

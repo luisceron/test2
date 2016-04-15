@@ -1,7 +1,13 @@
+
 .form-login {
   margin: 10px auto 0;
 }
 
 .language-login {
   margin: 100px 0 auto;
+}
+@media screen and (max-width: 768px) {
+  .language-login {
+    margin: 10px 0 auto;
+  }
 }
