@@ -1,0 +1,20 @@
+<%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: {class: "form-login"}) do |f| %>
+  <h2 class="form-login-heading"><%= t('.sign_up') %></h2>
+  <div class="login-wrap">
+    <%= f.input :email, label: false, autofocus: true, placeholder: User.human_attribute_name(:email) %>
+    <%= f.input :password, label: false, autocomplete: "off", placeholder: User.human_attribute_name(:password) %>
+    <%= f.input :password_confirmation, label: false, autocomplete: "off", placeholder: User.human_attribute_name(:password_confirmation) %>
+ 
+    <br>
+
+    <%= button_tag(type: "submit", class: "btn btn-theme btn-block") do %>
+      <i class="fa fa-user-plus"></i> <%= t('.sign_up') %>
+    <% end %>
+
+    <hr>
+
+    <div class="registration">
+      <%= render "devise/shared/links" %>
+    </div>
+  </div>
+<% end %>

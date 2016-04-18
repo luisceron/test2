@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vagrant</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
@@ -15,6 +17,12 @@
     <section id="main-content">
       <section class="wrapper">
         <div class="row">
+          <% if notice.present? %>
+            <p class="text-center alert alert-success"><%= notice %></p>
+          <% end %>
+          <% if alert.present? %>
+            <p class="text-center alert alert-danger"><%= alert %></p>
+          <% end %>
           <div class="col-lg-9 main-chart">
             <%= yield %>
           </div>
@@ -26,7 +34,7 @@
 
     <footer class="site-footer">
       <div class="text-center">
-        2014 - Alvarez.is
+        2016 - Simple Finance
         <a href="index.html#" class="go-top">
           <i class="fa fa-angle-up"></i>
         </a>
