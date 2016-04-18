@@ -51,6 +51,8 @@ end
 group :test do
   gem 'simplecov', :require => false
   gem 'rubycritic', :require => false
+  gem 'shoulda-matchers'
+  gem 'capybara'
 end
 
 # Template
