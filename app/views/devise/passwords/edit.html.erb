@@ -1,4 +1,4 @@
-<h2><%= t('.change_your_password', :default => 'Change your password') %></h2>
+<!-- <h2><%= t('.change_your_password', :default => 'Change your password') %></h2>
 
 <%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :put }) do |f| %>
   <%= devise_error_messages! %>
@@ -13,4 +13,27 @@
   <div><%= f.submit t('.change_my_password', :default => 'Change my password') %></div>
 <% end %>
 
-<%= render "devise/shared/links" %>
+<%= render "devise/shared/links" %> -->
+
+
+
+
+<%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: {method: :put, class: "form-login"}) do |f| %>
+  <h2 class="form-login-heading"><%= t('.change_your_password') %></h2>
+  <div class="login-wrap">
+    <%= f.hidden_field :reset_password_token %>
+
+    <%= f.input :password, label: false, autofocus: true, placeholder: t('.new_password') %>
+    <%= f.input :password_confirmation, label: false, placeholder: t('.confirm_new_password') %>
+
+    <%= button_tag(type: "submit", class: "btn btn-theme btn-block") do %>
+      <i class="fa fa-sign-in"></i> <%= t('.change_my_password') %>
+    <% end %>
+
+    <hr>
+
+    <div class="registration">
+      <%= render "devise/shared/links" %>
+    </div>
+  </div>
+<% end %>

@@ -1,12 +1,16 @@
-<h2><%= t('.resend_unlock_instructions', :default => "Resend unlock instructions") %></h2>
+<%= simple_form_for(resource, as: resource_name, url: unlock_path(resource_name), html: {method: :post, class: "form-login"}) do |f| %>
+  <h2 class="form-login-heading"><%= t('.resend_unlock_instructions') %></h2>
+  <div class="login-wrap">
+    <%= f.input :email, label: false, autofocus: true, placeholder: User.human_attribute_name(:email) %>
 
-<%= form_for(resource, :as => resource_name, :url => unlock_path(resource_name), :html => { :method => :post }) do |f| %>
-  <%= devise_error_messages! %>
+    <%= button_tag(type: "submit", class: "btn btn-theme btn-block") do %>
+      <i class="fa fa-sign-in"></i> <%= t('.resend_unlock_instructions') %>
+    <% end %>
 
-  <div><%= f.label :email %><br />
-  <%= f.email_field :email %></div>
+    <hr>
 
-  <div><%= f.submit t('.resend_unlock_instructions', :default => "Resend unlock instructions") %></div>
+    <div class="registration">
+      <%= render "devise/shared/links" %>
+    </div>
+  </div>
 <% end %>
-
-<%= render "devise/shared/links" %>
