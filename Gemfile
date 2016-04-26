@@ -52,7 +52,10 @@ group :test do
   gem 'simplecov', :require => false
   gem 'rubycritic', :require => false
   gem 'shoulda-matchers'
-  gem 'capybara'
+  gem 'launchy'
+  gem 'capybara', '~> 2.6.2'
+  gem 'capybara-screenshot', '~> 1.0.11'
+  gem 'poltergeist'
 end
 
 # Template

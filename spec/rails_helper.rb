@@ -5,7 +5,7 @@ require File.expand_path('../../config/environment', __FILE__)
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'spec_helper'
 require 'rspec/rails'
-
+require 'capybara-screenshot/rspec'
 
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|
@@ -13,7 +13,6 @@ Shoulda::Matchers.configure do |config|
     with.library :rails
   end
 end
-
 
 # Add additional requires below this line. Rails is not loaded until this point!
 
@@ -44,7 +43,6 @@ RSpec.configure do |config|
   # examples within a transaction, remove the following line or assign false
   # instead of true.
   config.use_transactional_fixtures = true
-
   # RSpec Rails can automatically mix in different behaviours to your tests
   # based on their file location, for example enabling you to call `get` and
   # `post` in specs under `spec/controllers`.
@@ -61,10 +59,11 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
 
   # Filter lines from Rails gems in backtraces.
-  config.filter_rails_from_backtrace!
+  # config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
 
+  config.include FeatureHelpers, type: :feature
   config.include Devise::TestHelpers, type: :controller
   config.extend ControllerMacros, type: :controller
 end
