@@ -51,6 +51,7 @@ end
 group :test do
   gem 'simplecov', :require => false
   gem 'rubycritic', :require => false
+  gem "codeclimate-test-reporter", require: nil
   gem 'shoulda-matchers'
   gem 'launchy'
   gem 'capybara', '~> 2.6.2'

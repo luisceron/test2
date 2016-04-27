@@ -1,6 +1,9 @@
 require 'devise'
 require 'capybara/rspec'
-require "shoulda/matchers"
+require 'shoulda/matchers'
+
+require "codeclimate-test-reporter"
+CodeClimate::TestReporter.start
 
 require 'simplecov'
 SimpleCov.start 'rails'
