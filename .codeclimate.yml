@@ -1,0 +1,39 @@
+---
+engines:
+  bundler-audit:
+    enabled: false
+  csslint:
+    enabled: true
+  duplication:
+    enabled: false
+    config:
+      languages:
+      - ruby
+      - javascript
+  eslint:
+    enabled: true
+  fixme:
+    enabled: false
+  rubocop:
+    enabled: true
+ratings:
+  paths:
+  - Gemfile.lock
+  - "**.erb"
+  - "**.haml"
+  - "**.rb"
+  - "**.rhtml"
+  - "**.slim"
+  - "**.css"
+  - "**.inc"
+  - "**.js"
+  - "**.jsx"
+  - "**.module"
+  - "**.php"
+  - "**.py"
+exclude_paths:
+- config/
+- db/
+- vendor/
+- lib/templates
+- coverage/
