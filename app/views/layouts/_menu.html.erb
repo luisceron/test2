@@ -1,0 +1,14 @@
+<aside>
+  <div id="sidebar"  class="nav-collapse ">
+    <ul class="sidebar-menu" id="nav-accordion">
+      <p class="centered"><%= link_to image_tag('template/ui-sam.jpg', class: "img-circle", width: "60"), root_path %></p>
+      <h5 class="centered"><%= current_user.email %></h5>
+      
+      <li class="mt">
+        <%= link_to users_path, class: "active" do %>
+          <i class="fa fa-dashboard"></i> Usuários
+        <% end %>
+      </li>
+    </ul>
+  </div>
+</aside>

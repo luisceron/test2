@@ -36,6 +36,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
+  gem 'rspec-rails', '~> 3.4.2'
+  gem 'factory_girl_rails'
 end
 
 group :development do
@@ -46,3 +48,23 @@ group :development do
   gem 'spring'
 end
 
+group :test do
+  gem 'simplecov', :require => false
+  gem 'rubycritic', :require => false
+  gem "codeclimate-test-reporter", require: nil
+  gem 'shoulda-matchers'
+  gem 'launchy'
+  gem 'capybara', '~> 2.6.2'
+  gem 'capybara-screenshot', '~> 1.0.11'
+  gem 'poltergeist'
+  gem 'database_cleaner'
+end
+
+# Template
+gem 'bootstrap-sass', '~> 3.3.6'
+gem "font-awesome-rails", '4.3.0.0'
+
+gem 'devise'
+gem 'devise-i18n'
+gem 'rails-i18n'
+gem 'simple_form'

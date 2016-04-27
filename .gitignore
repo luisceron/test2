@@ -22,5 +22,5 @@
 .env
 
 /config/database.yml
-/config/secrets.yml
+#/config/secrets.yml
 /.ssh
