@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vagrant</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+  <% if notice.present? %>
+    <p class="text-center alert alert-success"><%= notice %></p>
+  <% end %>
+  <% if alert.present? %>
+    <p class="text-center alert alert-danger"><%= alert %></p>
+  <% end %>
+
+  <div id="login-page">
+    <div class="container">
+      <div class="text-center language-login">
+        <%= link_to image_tag('language/icon-pt-BR.png', size: "33x33"), locale: 'pt-BR' %>
+        <%= link_to image_tag('language/icon-en-usa.png', size: "30x30"), locale: 'en' %>
+      </div>
+      <%= yield %>
+    </div>
+  </div>
+
+</body>
+</html>

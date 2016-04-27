@@ -1,0 +1,22 @@
+<%= simple_form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: "form-login"}) do |f| %>
+  <h2 class="form-login-heading"><%= t('.sign_in') %></h2>
+  <div class="login-wrap">
+    <%= f.input :email, label: false, autofocus: true, placeholder: User.human_attribute_name(:email) %>
+    <%= f.input :password, label: false, autocomplete: "off", placeholder: User.human_attribute_name(:password) %>
+
+    <% if devise_mapping.rememberable? -%>
+      <%= f.input :remember_me, as: :boolean %>
+    <% end -%>
+
+    <%= button_tag(type: "submit", class: "btn btn-theme btn-block") do %>
+      <i class="fa fa-sign-in"></i> <%= t('.sign_in') %>
+    <% end %>
+
+    <hr>
+
+    <div class="registration">
+      <%= t('devise.sessions.not_yet') %><br/>
+      <%= render "devise/shared/links" %>
+    </div>
+  </div>
+<% end %>
