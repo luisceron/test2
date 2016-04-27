@@ -56,6 +56,7 @@ group :test do
   gem 'capybara', '~> 2.6.2'
   gem 'capybara-screenshot', '~> 1.0.11'
   gem 'poltergeist'
+  gem 'database_cleaner'
 end
 
 # Template
