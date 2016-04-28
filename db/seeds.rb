@@ -5,3 +5,11 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+if !Rails.env.test?
+  unless User.any?
+    User.transaction do
+      Usuario.create!(email: 'admin@simplefinances.com', name: 'Admin', password: '12341234', password_confirmation: '12341234', admin: true, confirmation_at: DateTime.now)
+    end
+  end
+end
