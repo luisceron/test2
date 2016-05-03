@@ -9,7 +9,7 @@
 if !Rails.env.test?
   unless User.any?
     User.transaction do
-      User.create!(email: 'admin@simplefinances.com', name: 'Admin', password: '12341234', password_confirmation: '12341234', admin: true, confirmation_at: DateTime.now)
+      User.create!(email: 'admin@simplefinances.com', name: 'Admin', password: '12341234', password_confirmation: '12341234', admin: true, confirmed_at: DateTime.now)
     end
   end
 end
