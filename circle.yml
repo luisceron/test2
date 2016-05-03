@@ -1,7 +1,7 @@
-deployment:
-  staging:
-    branch: master
-    commands:
-      - git fetch --all --unshallow
-      - git push -u -f git@heroku.com:simple-finances.git HEAD:master
-      - heroku run rake db:migrate db:seed --app simple-finances
+# deployment:
+#   staging:
+#     branch: master
+#     commands:
+#       - git fetch --all --unshallow
+#       - git push -u -f git@heroku.com:simple-finances.git HEAD:master
+#       - heroku run rake db:migrate db:seed --app simple-finances
