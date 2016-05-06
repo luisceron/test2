@@ -1,5 +1,9 @@
 pt-BR:
   activerecord:
+    models:
+      user:
+        one: Usuário
+        other: Usuários
     attributes:
       user:
         name: Nome
@@ -7,3 +11,10 @@ pt-BR:
         password: Senha
         password_confirmation: Confirmação de Senha
         remember_me: Continuar Conectado
+  link:
+    save: Salvar
+    back: Voltar
+  action:
+    index: Lista de %{model}
+    new: Novo %{model}
+    edit: Editar %{model}

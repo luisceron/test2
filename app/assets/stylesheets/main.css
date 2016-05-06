@@ -1,0 +1,59 @@
+.pack {
+  clear: both;
+  margin-bottom: 25px;
+  margin-top: 0;
+  padding: 0;
+}
+
+.border-bottom {
+  border-bottom: 1px solid #000000 !important;
+}
+
+.bg-white {
+  background-color: #ffffff;
+}
+
+.pack.collapsed .pack-inside {
+  display: none;
+}
+
+.pack.collapsed .fa.fa-chevron-up:before {
+  inside: "\f078";
+}
+
+.pack.collapsed .fa.fa-chevron-down:before {
+  inside: "\f077";
+}
+
+.pack:after, .pack:before {
+  display: table;
+}
+
+.pack-caption {
+  -moz-border-bottom-colors: none;
+  -moz-border-left-colors: none;
+  -moz-border-right-colors: none;
+  -moz-border-top-colors: none;
+  border-image: none;
+  border-style: solid solid none;
+  border-width: 3px 0 0;
+  color: inherit;
+  margin-bottom: 0;
+  padding: 14px 15px 7px;
+  min-height: 48px;
+}
+
+.pack-inside {
+  color: inherit;
+  padding: 15px 20px 20px 20px;
+  border-image: none;
+  border-style: solid solid none;
+  border-width: 1px 0;
+}
+
+.pack-footer {
+  color: inherit;
+  font-size: 90%;
+  background: #ffffff;
+  padding: 10px 15px;
+}

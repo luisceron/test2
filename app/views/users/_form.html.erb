@@ -1,14 +1,16 @@
-<%= simple_form_for(@user) do |f| %>
-  <%= f.error_notification %>
+<%= simple_form_for @user do |f| %>
+  <%= f.input :name %>
+  <%= f.input :email %>
+  <%= f.input :password %>
+  <%= f.input :password_confirmation %>
 
-  <div class="form-inputs">
-  	<%= f.input :name %>
-  	<%= f.input :email %>
-  	<%= f.input :password %>
-  	<%= f.input :password_confirmation %>
-  </div>
-
-  <div class="form-actions">
-    <%= f.button :submit %>
+  <div class="text-center">
+    <% if @user.persisted? %>
+      <%= link_to_back user_path(@user) %>
+    <% else %>
+      <%= link_to_back users_path %>
+    <% end %>
+    
+    <%= save_button %>
   </div>
 <% end %>

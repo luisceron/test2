@@ -1,8 +1,20 @@
 en:
   activerecord:
+    models:
+      user:
+        one: User
+        other: Users
     attributes:
       user:
+        name: Name
         email: Email
         password: Password
         password_confirmation: Password Confirmation
         remember_me: Remember me
+  link:
+    save: Save
+    back: Back
+  action:
+    index: List of %{model}
+    new: New %{model}
+    edit: Edit %{model}

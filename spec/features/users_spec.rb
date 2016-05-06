@@ -9,7 +9,7 @@ feature "users" do
   end
 
   scenario "listing users" do
-    expect(page).to have_content("Usuários")
+    expect(page).to have_content("Lista de Usuários")
     expect(page).to have_content("Novo Usuário")
   end
 
@@ -20,7 +20,7 @@ feature "users" do
     fill_in "Nome", with: "Luis"
     fill_in "Senha", with: "12345678"
     fill_in "Confirmação de Senha", with: "12345678"
-    click_on "Criar Usuário"
+    click_on "Salvar"
 
     expect(page).to have_content("Usuário criado com sucesso")
     expect(page).to have_content("Luis")
@@ -39,7 +39,7 @@ feature "users" do
     fill_in "Nome", with: "Marco"
     fill_in "Senha", with: "12345678"
     fill_in "Confirmação de Senha", with: "12345678"
-    click_on "Atualizar Usuário"
+    click_on "Salvar"
 
     expect(page).to have_content("Usuário atualizado com sucesso")
     expect(page).to have_content("Marco")

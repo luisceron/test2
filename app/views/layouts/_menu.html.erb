@@ -5,8 +5,19 @@
       <h5 class="centered"><%= current_user.email %></h5>
       
       <li class="mt">
-        <%= link_to users_path, class: "active" do %>
-          <i class="fa fa-dashboard"></i> Usuários
+        <%= link_to users_path, class: "menu" do %>
+          <i class="fa fa-user"></i>
+          <strong>Users</strong>
+        <% end %>
+
+        <%= link_to users_path, class: "menu" do %>
+          <i class="fa fa-bank fa-3x"></i>
+          <strong>Accounts</strong>
+        <% end %>
+
+        <%= link_to users_path, class: "menu" do %>
+          <i class="fa fa-dollar fa-3x"></i>
+          <strong>Transactions</strong>
         <% end %>
       </li>
     </ul>

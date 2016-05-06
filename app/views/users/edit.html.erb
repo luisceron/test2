@@ -1,6 +1,12 @@
-<h1>Editing User</h1>
+<div class="wrapper border-bottom bg-white">
+  <h3><%= User.model_name.human.pluralize %></h3>
+</div>
 
-<%= render 'form' %>
-
-<%= link_to 'Show', @user %> |
-<%= link_to 'Back', users_path %>
+<div class="row">
+  <div class="pack form-panel">
+    <div class="pack-caption"><strong><%= action_edit User %></strong></div>
+    <div class="pack-inside">
+      <%= render 'form' %>
+    </div>
+  </div>
+</div>

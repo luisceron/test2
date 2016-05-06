@@ -1,0 +1,13 @@
+.wrapper {
+  margin-top: 30px;
+}
+
+.site-footer {
+  bottom: 0;
+  left: 0;
+  padding: 10px 20px;
+  position: absolute;
+  right: 0;
+  position: fixed;
+  z-index: 1000;
+}
