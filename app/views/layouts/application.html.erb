@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vagrant</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+<!--   <s%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %> -->
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
@@ -17,12 +17,12 @@
 
     <section id="main-content">
       <section class="wrapper">
-        <div class="row">
+        <div class="row wrapper-top">
           <% if notice.present? %>
-            <p class="text-center alert alert-success"><%= notice %></p>
+            <div class="text-center alert alert-success"><%= notice %></div>
           <% end %>
           <% if alert.present? %>
-            <p class="text-center alert alert-danger"><%= alert %></p>
+            <div class="text-center alert alert-danger"><%= alert %></div>
           <% end %>
           <div class="col-lg-9 main-chart">
             <%= yield %>

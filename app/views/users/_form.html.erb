@@ -1,6 +1,7 @@
 <%= simple_form_for @user do |f| %>
+  <%= not_editable_for @user, :email, f %>
   <%= f.input :name %>
-  <%= f.input :email %>
+  <%= f.input :admin, as: :boolean %>
   <%= f.input :password %>
   <%= f.input :password_confirmation %>
 

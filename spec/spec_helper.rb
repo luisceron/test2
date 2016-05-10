@@ -56,15 +56,28 @@ RSpec.configure do |config|
   end
 
   config.before(:suite) do
-    DatabaseCleaner.strategy = :transaction
-    DatabaseCleaner.clean_with(:truncation)
-  end
+    unless running_partial_tests
+      DatabaseCleaner.clean_with(:deletion)
+      begin
+        DatabaseCleaner.start
 
-  config.around(:each) do |example|
-    DatabaseCleaner.cleaning do
-      example.run
+        FactoryGirl.lint
+      ensure
+        DatabaseCleaner.clean
+      end
     end
   end
+
+  config.before(:each) do |example|
+    if example.metadata[:js]
+      DatabaseCleaner.strategy = :truncation
+    else
+      DatabaseCleaner.strategy = :transaction
+    end
+
+    DatabaseCleaner.start
+  end
+
 
 # The settings below are suggested to provide a good initial experience
 # with RSpec, but feel free to customize to your heart's content.

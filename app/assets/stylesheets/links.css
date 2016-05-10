@@ -5,3 +5,7 @@
 .space-after-icon{
   margin-right: 5px;
 }
+
+[data-href] {
+  cursor: pointer;
+}

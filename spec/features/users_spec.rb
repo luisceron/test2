@@ -4,13 +4,12 @@ feature "users" do
   given!(:user){ create(:user) }
 
   background :each do
-    login create(:user)
+    login create(:user, admin: true)
     visit users_path
   end
 
   scenario "listing users" do
     expect(page).to have_content("Lista de Usuários")
-    expect(page).to have_content("Novo Usuário")
   end
 
   scenario "creating a new user" do
@@ -46,7 +45,7 @@ feature "users" do
   end
 
   scenario "removing user" do
-    first(:link, "Excluir").click
+    first('.btn-danger').click
     expect(page).to have_content("Usuário removido com sucesso")
   end
 

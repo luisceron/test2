@@ -11,10 +11,26 @@ en:
         password: Password
         password_confirmation: Password Confirmation
         remember_me: Remember me
-  link:
-    save: Save
-    back: Back
+        created_at: Created at
+        updated_at: Updated at
   action:
     index: List of %{model}
     new: New %{model}
     edit: Edit %{model}
+    sure: Are you sure?
+  controller:
+    created: '%{model} created successfully'
+    updated: '%{model} updated successfully'
+    destroyed: '%{model} destroyed successfully'
+  link:
+    save: Save
+    back: Back
+    edit: Edit
+    text-yes: Yes
+    text-no: No
+  time:
+    formats: 
+      default: '%A, %d. %B %Y, %H:%M Uhr'
+      long: '%A, %d. %B %Y, %H:%M Uhr'
+      short: '%d. %B, %H:%M Uhr'
+      very_short: '%d.%m.%Y, %H:%M Uhr'

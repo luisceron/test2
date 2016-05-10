@@ -1,0 +1,10 @@
+<% if object.persisted?  %>
+  <div class="form-group">
+    <%= f.label attribute %> <br>
+    <div class="form-control" disabled>
+      <%= object.try attribute %>
+    </div>
+  </div>
+<%  else  %>
+  <%= f.input attribute %>
+<% end %>

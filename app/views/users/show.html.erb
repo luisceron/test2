@@ -1,6 +1,28 @@
-<p id="notice"><%= notice %></p>
+<div class="wrapper border-bottom bg-white">
+  <h3><%= User.model_name.human.pluralize %></h3>
+</div>
 
-<%= @user.name %>
+<div class="row">
+  <div class="pack form-panel">
+    <div class="pack-caption"><strong><%= @user.name %></strong></div>
+    <div class="pack-inside">
+      <dl class="dl-horizontal">
+        <dt><%= User.human_attribute_name(:name) %></dt>
+        <dd><%= @user.name %></dd>
+        <dt><%= User.human_attribute_name(:email) %></dt>
+        <dd><%= @user.email %></dd>
+        <dt><%= User.human_attribute_name(:admin) %></dt>
+        <dd><%= badge_for_boolean @user.admin %></dd>
+        <dt><%= User.human_attribute_name(:created_at) %></dt>
+        <dd><%= date_for @user.created_at, :long %></dd>
+        <dt><%= User.human_attribute_name(:updated_at) %></dt>
+        <dd><%= date_for @user.updated_at, :long %></dd>
+      </dl>
 
-<%= link_to 'Editar', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
+      <div class="text-center">
+        <%= link_to_back users_path %>
+        <%= link_to_edit edit_user_path(@user) %>
+      </div>
+    </div>
+  </div>
+</div>
