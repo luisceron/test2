@@ -5,6 +5,11 @@ class User < ActiveRecord::Base
          :rememberable, :trackable, :validatable, :confirmable,
          :lockable, :timeoutable
 
+  before_create :set_name, on: :create
   validates :name, presence: true
 
+  private
+    def set_name
+      self.name = self.email.split("@").first
+    end
 end

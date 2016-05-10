@@ -22,7 +22,7 @@ feature "users" do
     click_on "Salvar"
 
     expect(page).to have_content("Usuário criado com sucesso")
-    expect(page).to have_content("Luis")
+    expect(page).to have_content("luis")
   end
   
   scenario "showing user" do
