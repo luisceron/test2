@@ -1,9 +1,7 @@
 <%= simple_form_for @user do |f| %>
   <%= not_editable_for @user, :email, f %>
   <%= f.input :name %>
-  <%= f.input :admin, as: :boolean %>
-  <%= f.input :password %>
-  <%= f.input :password_confirmation %>
+  <%= f.input :admin, as: :boolean if current_user.admin %>
 
   <div class="text-center">
     <% if @user.persisted? %>

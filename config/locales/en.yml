@@ -13,6 +13,10 @@ en:
         remember_me: Remember me
         created_at: Created at
         updated_at: Updated at
+        typed_email: For destroy your account type your registered email
+        destroy_message: Remember that all of your informations will be removed from our database
+        invalid_email: Invalid Email
+        destroyed_successfully: Your account was destroyed successfully
   action:
     index: List of %{model}
     new: New %{model}
@@ -22,12 +26,17 @@ en:
     created: '%{model} created successfully'
     updated: '%{model} updated successfully'
     destroyed: '%{model} destroyed successfully'
+    access_denied: 'Access Denied'
+    password_changed: 'Password changed successfully'
   link:
     save: Save
     back: Back
     edit: Edit
+    cancel: Cancel
     text-yes: Yes
     text-no: No
+    change_password: Edit Password
+    remove_account: Remove Account
   time:
     formats: 
       default: '%A, %d. %B %Y, %H:%M Uhr'

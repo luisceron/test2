@@ -1,4 +1,4 @@
-<h2><%= t('.title', :resource => resource_class.model_name.human , :default => "Edit #{resource_name.to_s.humanize}") %></h2>
+<!-- <h2><%= t('.title', :resource => resource_class.model_name.human , :default => "Edit #{resource_name.to_s.humanize}") %></h2>
 
 <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f| %>
   <%= devise_error_messages! %>
@@ -28,4 +28,28 @@
 
 <p><%= t('.unhappy', :default => 'Unhappy') %>? <%= link_to t('.cancel_my_account', :default => "Cancel my account"), registration_path(resource_name), :data => { :confirm => t('.are_you_sure', :default => "Are you sure?") }, :method => :delete %>.</p>
 
-<%= link_to t('devise.shared.links.back', :default => "Back"), :back %>
+<%= link_to t('devise.shared.links.back', :default => "Back"), :back %> -->
+
+
+
+<!-- 
+<%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: "form-login"}) do |f| %>
+  <h2 class="form-login-heading"><%= t('link.change_password') %></h2>
+  <div class="login-wrap">
+    <%= f.input :current_password, label: false, autocomplete: "off", placeholder: User.human_attribute_name(:current_password) %>
+    <%= f.input :password, label: false, autocomplete: "off", placeholder: User.human_attribute_name(:password) %>
+    <%= f.input :password_confirmation, label: false, autocomplete: "off", placeholder: User.human_attribute_name(:password_confirmation) %>
+ 
+    <br>
+
+    <%= button_tag(type: "submit", class: "btn btn-theme btn-block") do %>
+      <i class="fa fa-key"></i> <%= t('link.change_password') %>
+    <% end %>
+    
+    <%= link_to t('devise.shared.links.back', :default => "Back"), :back, class: "btn btn-default btn-block" %> 
+  </div>
+<% end %>
+
+
+
+ -->

@@ -11,8 +11,10 @@
         <dd><%= @user.name %></dd>
         <dt><%= User.human_attribute_name(:email) %></dt>
         <dd><%= @user.email %></dd>
-        <dt><%= User.human_attribute_name(:admin) %></dt>
-        <dd><%= badge_for_boolean @user.admin %></dd>
+        <% if current_user.admin %>
+          <dt><%= User.human_attribute_name(:admin) %></dt>
+          <dd><%= badge_for_boolean @user.admin %></dd>
+        <% end %>
         <dt><%= User.human_attribute_name(:created_at) %></dt>
         <dd><%= date_for @user.created_at, :long %></dd>
         <dt><%= User.human_attribute_name(:updated_at) %></dt>
@@ -20,9 +22,15 @@
       </dl>
 
       <div class="text-center">
-        <%= link_to_back users_path %>
+        <%= link_to_back users_path if current_user.admin %>
         <%= link_to_edit edit_user_path(@user) %>
+        <%= link_icon_to user_edit_password_path(@user), t('link.change_password'), {class: 'warning', icon: 'key'} %>
+        <%= link_to("#", data: {toggle: "modal", target: "#modal"}, class: "btn btn-danger space-links") do %>
+          <i class="fa fa-trash"></i> <%= t('link.remove_account') %>
+        <% end %>
       </div>
     </div>
   </div>
 </div>
+
+<%= render 'destroy_account' %>

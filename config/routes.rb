@@ -3,7 +3,12 @@ Rails.application.routes.draw do
   LOCALES = /en|pt\-BR/
   scope "(:locale)", locale: LOCALES do
     devise_for :users, :path => 'auth'
-    resources :users
+    resources :users do
+      get :edit_password
+      patch :update_password
+      # get :remove_account
+      patch :remove_account
+    end
   end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

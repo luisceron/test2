@@ -19,7 +19,19 @@ class ApplicationController < ActionController::Base
 
   private
     # Overwriting the sign_out redirect path method
-  def after_sign_out_path_for(resource_or_scope)
-    new_user_session_path
-  end
+    def after_sign_out_path_for(resource_or_scope)
+      new_user_session_path
+    end
+
+    def only_admin
+      unless current_user.admin?
+        redirect_to root_path, alert: t('controller.access_denied')
+      end
+    end
+
+    def only_current_user
+      unless current_user.admin? || current_user == @user
+        redirect_to root_path, alert: t('controller.access_denied')
+      end
+    end
 end

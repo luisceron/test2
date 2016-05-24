@@ -13,6 +13,10 @@ pt-BR:
         remember_me: Continuar Conectado
         created_at: Criado em
         updated_at: Atualizado em
+        typed_email: Para excluir sua conta digite seu e-mail cadastrado
+        destroy_message: Lembre-se que todos seus dados serão excluídos de nosso banco de dados
+        invalid_email: E-mail Inválido
+        destroyed_successfully: Sua conta foi excluída com sucesso
   action:
     index: Lista de %{model}
     new: Novo %{model}
@@ -22,12 +26,17 @@ pt-BR:
     created: '%{model} criado com sucesso'
     updated: '%{model} atualizado com sucesso'
     destroyed: '%{model} removido com sucesso'
+    access_denied: 'Acesso Negado'
+    password_changed: 'Senha alterada com sucesso'
   link:
     save: Salvar
     back: Voltar
     edit: Editar
+    cancel: Cancelar
     text-yes: Sim
     text-no: Não
+    change_password: Editar Senha
+    remove_account: Excluir Conta
   time:
     formats: 
       default: '%A, %d. %B %Y, %H:%M Uhr'
