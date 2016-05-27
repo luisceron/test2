@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe UsersController, type: :controller do
 
-  sign_in_normal_user
+  # sign_in_admin_user
 
   let(:valid_attributes){ attributes_for(:user) }
 
@@ -11,18 +11,50 @@ RSpec.describe UsersController, type: :controller do
   let(:valid_session){ {} }
 
   describe "GET #index" do
-    it "assigns all users as @users" do
-      User.create! valid_attributes
-      get :index, {}, valid_session
-      expect(assigns(:users)).to match_array(User.all)
+    context "admin user" do
+      sign_in_admin_user
+      it "assigns all users as @users" do
+        User.create! valid_attributes
+        get :index, {}, valid_session
+        expect(assigns(:users)).to match_array(User.all)
+      end
+    end
+
+    context "normal user" do
+      sign_in_normal_user
+      it "try to assigns all users as normal user" do
+        get :index, {}, valid_session
+        expect(response).to redirect_to(root_path)
+      end
     end
   end
 
   describe "GET #show" do
-    it "assigns the requested user as @user" do
-      user = User.create! valid_attributes
-      get :show, {:id => user.to_param}, valid_session
-      expect(assigns(:user)).to eq(user)
+    context "admin user" do
+      sign_in_admin_user
+      it "assigns the requested user as @user" do
+        user = User.create! valid_attributes
+        get :show, {:id => user.to_param}, valid_session
+        expect(assigns(:user)).to eq(user)
+      end
+    end
+
+    context "current normal user" do
+      sign_in_normal_user
+      it "assigns the requested user as @user" do
+        get :show, {:id => controller.current_user.id}, valid_session
+        expect(assigns(:user)).to eq(controller.current_user)
+      end
+    end
+
+    context "another normal user" do
+      sign_in_normal_user
+      it "assigns the requested user as @user" do
+        user = User.create! valid_attributes
+        get :show, {:id => user.to_param}, valid_session
+        expect(assigns(:user)).to_not eq(user)
+        expect(response).to redirect_to(root_path)
+      end
     end
   end
 
