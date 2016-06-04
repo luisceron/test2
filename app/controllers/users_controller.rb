@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :only_admin, only: [:index, :new, :create, :destroy]
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_action :only_current_user, only: [:show, :edit, :update, :edit_password, :update_password, :remove_account]
+  before_action :set_user, only: [:destroy, :show, :edit, :update]
   before_action :set_user_id, only: [:edit_password, :update_password, :remove_account]
 
   def index
@@ -19,7 +19,6 @@ class UsersController < ApplicationController
   end
 
   def create
-    # @user = User.new(user_params_create)
     @user = User.new(user_params)
     save_object @user
   end
@@ -37,15 +36,23 @@ class UsersController < ApplicationController
   end
 
   def update_password
-    if @user.update_with_password(user_params)
-      if current_user.admin
-        sign_in current_user, :bypass => true
+    if current_user.admin
+      if user_params[:password] == user_params[:password_confirmation]
+        if @user.update_without_password(user_params)
+          sign_in current_user, bypass: true
+          redirect_to @user, notice: t('controller.password_changed')
+        end
       else
-        sign_in @user, :bypass => true
+        @user.errors.add(:password_confirmation, User.human_attribute_name(:admin_update_password_error))
+        render 'edit_password'
       end
-      redirect_to @user, notice: t('controller.password_changed')
     else
-      render 'edit_password'
+      if @user.update_with_password(user_params)
+        sign_in @user, bypass: true
+        redirect_to @user, notice: t('controller.password_changed')
+      else
+        render 'edit_password'
+      end
     end
   end
 
@@ -54,7 +61,11 @@ class UsersController < ApplicationController
 
     if @user.email == @user.typed_email
       @user.destroy
-      redirect_to new_user_session_path, notice: User.human_attribute_name(:destroyed_successfully)
+      if current_user.admin && current_user != @user
+        redirect_to users_path, notice: User.human_attribute_name(:destroyed_successfully)
+      else
+        redirect_to new_user_session_path, notice: User.human_attribute_name(:destroyed_successfully)
+      end
     else
       redirect_to @user, alert: User.human_attribute_name(:invalid_email)
     end
@@ -76,8 +87,4 @@ class UsersController < ApplicationController
     def user_params_destroy
       params.require(:user).permit(:typed_email)
     end
-
-    # def user_params_create
-    #   params.require(:user).permit(:email, :name, :admin)
-    # end
 end

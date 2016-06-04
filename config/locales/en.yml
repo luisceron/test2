@@ -16,7 +16,8 @@ en:
         typed_email: For destroy your account type your registered email
         destroy_message: Remember that all of your informations will be removed from our database
         invalid_email: Invalid Email
-        destroyed_successfully: Your account was destroyed successfully
+        destroyed_successfully: Account destroyed successfully
+        admin_update_password_error: Password doesn't match
   action:
     index: List of %{model}
     new: New %{model}

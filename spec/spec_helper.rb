@@ -55,6 +55,10 @@ RSpec.configure do |config|
     mocks.verify_partial_doubles = true
   end
 
+  config.expect_with :rspec do |c|
+    c.syntax = [:should, :expect]
+  end
+
   config.before(:suite) do
     unless running_partial_tests
       DatabaseCleaner.clean_with(:deletion)

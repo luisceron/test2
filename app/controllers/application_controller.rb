@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
     end
 
     def only_current_user
-      unless current_user.admin? || current_user == @user
+      unless current_user.admin? || current_user.id == params[:id].to_i || current_user.id == params[:user_id].to_i
         redirect_to root_path, alert: t('controller.access_denied')
       end
     end
