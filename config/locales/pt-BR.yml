@@ -23,6 +23,8 @@ pt-BR:
     new: Novo %{model}
     edit: Editar %{model}
     sure: Você tem certeza?
+    per_page: '%{model} por página'
+    click_to_edit: Para editar clique em Editar
   controller:
     created: '%{model} criado com sucesso'
     updated: '%{model} atualizado com sucesso'
@@ -34,13 +36,23 @@ pt-BR:
     back: Voltar
     edit: Editar
     cancel: Cancelar
-    text-yes: Sim
-    text-no: Não
     change_password: Editar Senha
     remove_account: Excluir Conta
+    logout: Sair
   time:
     formats: 
       default: '%A, %d. %B %Y, %H:%M Uhr'
       long: '%A, %d. %B %Y, %H:%M Uhr'
       short: '%d. %B, %H:%M Uhr'
       very_short: '%d.%m.%Y, %H:%M Uhr'
+  will_paginate:
+    previous_label: "&#8592; Anterior"
+    next_label: "Pr&oacute;ximo &#8594;"
+    page_gap: "&hellip;"
+    page_entries_info:
+      single_page_html:
+        zero:  "Nenhum registro encontrado"
+        one:   "Apenas 1 registro encontrado"
+        other: "Mostrando todos os %{count} registros encontrados"
+      multi_page: "Mostrando registros %{from} até %{to} de %{count} no total"
+      multi_page_html: "Mostrando registros %{from} até %{to} de %{count} no total"

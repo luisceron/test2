@@ -23,6 +23,8 @@ en:
     new: New %{model}
     edit: Edit %{model}
     sure: Are you sure?
+    per_page: '%{model} per page'
+    click_to_edit: To edit click on Edit
   controller:
     created: '%{model} created successfully'
     updated: '%{model} updated successfully'
@@ -34,13 +36,23 @@ en:
     back: Back
     edit: Edit
     cancel: Cancel
-    text-yes: Yes
-    text-no: No
     change_password: Edit Password
     remove_account: Remove Account
+    logout: Logout
   time:
     formats: 
       default: '%A, %d. %B %Y, %H:%M Uhr'
       long: '%A, %d. %B %Y, %H:%M Uhr'
       short: '%d. %B, %H:%M Uhr'
       very_short: '%d.%m.%Y, %H:%M Uhr'
+  will_paginate:
+    previous_label: "&#8592; Previous"
+    next_label: "Next &#8594;"
+    page_gap: "&hellip;"
+    page_entries_info:
+      single_page_html:
+        zero:  "No records found"
+        one:   "Ony 1 record found"
+        other: "Showing all of %{count} records found"
+      multi_page: "Showing records %{from} to %{to} of %{count} total"
+      multi_page_html: "Showing records %{from} to %{to} of %{count} total"

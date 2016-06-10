@@ -144,6 +144,8 @@ GEM
       cliver (~> 0.3.1)
       multi_json (~> 1.0)
       websocket-driver (>= 0.2.0)
+    polyamorous (1.3.0)
+      activerecord (>= 3.0)
     rack (1.6.4)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -176,6 +178,12 @@ GEM
       thor (>= 0.18.1, < 2.0)
     rainbow (2.1.0)
     rake (11.1.2)
+    ransack (1.7.0)
+      actionpack (>= 3.0)
+      activerecord (>= 3.0)
+      activesupport (>= 3.0)
+      i18n
+      polyamorous (~> 1.2)
     rdoc (4.2.2)
       json (~> 1.4)
     reek (4.0.1)
@@ -265,6 +273,9 @@ GEM
     websocket-driver (0.6.3)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
+    will_paginate (3.1.0)
+    will_paginate-bootstrap (1.0.1)
+      will_paginate (>= 3.0.3)
     xpath (2.0.0)
       nokogiri (~> 1.3)
 
@@ -290,6 +301,7 @@ DEPENDENCIES
   poltergeist
   rails (= 4.2.4)
   rails-i18n
+  ransack
   rspec-rails (~> 3.4.2)
   rubycritic
   sass-rails (~> 5.0)
@@ -301,6 +313,8 @@ DEPENDENCIES
   turbolinks
   uglifier (>= 1.3.0)
   web-console (~> 2.0)
+  will_paginate
+  will_paginate-bootstrap
 
 BUNDLED WITH
    1.11.2

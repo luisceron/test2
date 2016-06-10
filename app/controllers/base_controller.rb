@@ -1,6 +1,7 @@
 module BaseController
-  def index_object classe
-    classe.all
+  def index_object classe, params
+    @query = classe.search(params[:q])
+    @query.result.paginate(page: params[:page], per_page: params[:per_page] || 25)
   end
 
   def save_object object

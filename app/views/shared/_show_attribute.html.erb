@@ -1,0 +1,36 @@
+<div class="form-group">
+  <label><%= object.class.human_attribute_name(attribute) %></label> <br>
+  <% if options[:disabled] %>
+    <div class="form-control" disabled>
+      <% if options[:text] %>
+        <%= options[:text] %>
+      <% else %>
+        <%= object.try attribute %>
+      <% end %>
+    </div>
+  <% elsif options[:tool_tip] %>
+    <div class="form-control" data-toggle="tooltip" data-placement="<%= options[:tool_tip][:place] %>" title="<%= options[:tool_tip][:title] %>" >
+      <% if options[:text] %>
+        <%= options[:text] %>
+      <% else %>
+        <%= object.try attribute %>
+      <% end %>
+    </div>
+  <% elsif options[:disabled] && options[:tool_tip] %>
+    <div class="form-control" data-toggle="tooltip" data-placement="<%= options[:tool_tip][:place] %>" title="<%= options[:tool_tip][:title] %>" disabled>
+      <% if options[:text] %>
+        <%= options[:text] %>
+      <% else %>
+        <%= object.try attribute %>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="form-control">
+      <% if options[:text] %>
+        <%= options[:text] %>
+      <% else %>
+        <%= object.try attribute %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

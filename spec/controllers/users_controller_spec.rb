@@ -15,8 +15,18 @@ RSpec.describe UsersController, type: :controller do
       it "assigns all users as @users" do
         expect(controller.current_user.admin).to be(true)
         User.create! valid_attributes
-        get :index, {}, valid_session
+        get :index, {}
         expect(assigns(:users)).to match_array(User.all)
+        expect(response).to render_template(:index)
+      end
+
+      it "search must return only matched records" do
+        expect(controller.current_user.admin).to be(true)
+        user1 = create(:user, email: "user_test1@test.com")
+        user2 = create(:user, email: "user_test2@test.com")
+        user3 = create(:user, email: "user_test3@test.com")
+        get :index, { q: {email_or_name_cont: user1.email} }
+        expect(assigns(:users)).to eq([user1])
         expect(response).to render_template(:index)
       end
     end
@@ -25,7 +35,7 @@ RSpec.describe UsersController, type: :controller do
       sign_in_normal_user
       it "try to assigns all users as normal user" do
         expect(controller.current_user.admin).to be(false)
-        get :index, {}, valid_session
+        get :index, {}
         expect(assigns(:users)).to be_nil
         expect(response).to redirect_to(root_path)
       end

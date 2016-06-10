@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   before_action :set_user_id, only: [:edit_password, :update_password, :remove_account]
 
   def index
-    @users = index_object User
+    @users = index_object User, params
   end
 
   def show

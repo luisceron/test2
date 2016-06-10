@@ -5,9 +5,9 @@
 
   <div class="text-center">
     <% if @user.persisted? %>
-      <%= link_to_back user_path(@user) %>
+      <%= link_with_icon_to_back user_path(@user) %>
     <% else %>
-      <%= link_to_back users_path %>
+      <%= link_with_icon_to_back users_path %>
     <% end %>
     
     <%= save_button %>

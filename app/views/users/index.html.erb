@@ -6,13 +6,27 @@
   <div class="pack form-panel">
     <div class="pack-caption"><strong><%= action_index User %></strong></div>
     <div class="pack-inside">
+      <div class="row">
+        <div class="col-md-12">
+          <%= search_form_for(@query) do |f|  %>
+            <div class="input-group btn-group" role="group">
+              <%= f.text_field :email_or_name_cont, class: "input-sm form-control" %>
+              <span class="input-group-btn">
+                <%= button_tag(type: 'submit', class: "btn btn-sm btn-primary", id: "search_button") do %>
+                  <i class="fa fa-search"></i>
+                <% end %>
+              </span>
+            </div>
+          <% end %>
+        </div>
+      </div><br>
+
       <div class="table-responsive">
         <table class="table table-hover table-striped table-condensed">
           <thead>
             <tr>
               <th><%= User.human_attribute_name(:email) %></th>
               <th><%= User.human_attribute_name(:name) %></th>
-              <th class="text-center"><%= User.human_attribute_name(:admin) %></th>
               <th></th>
             </tr>
           </thead>
@@ -20,13 +34,17 @@
           <tbody>
             <% @users.order(email: :asc).each do |user| %>
               <tr data-href="<%= user_path(user) %>">
-                <td><%= user.email %></td>
+                <td>
+                  <%= user.email %>
+                  <% if user.admin %>
+                    <%= badge_for_admin %>
+                  <% end %>
+                </td>
                 <td><%= user.name %></td>
-                <td class="text-center"><%= icon_for_boolean user.admin %></td>
                 <td>
                   <div class="pull-right">
-                    <%= link_icon_to_edit edit_user_path(user) %>
-                    <%= link_icon_to_destroy user %>
+                    <%= link_only_icon_to_edit edit_user_path(user) %>
+                    <%= link_only_icon_to_destroy user %>
                   </div>
                 </td>
               </tr>
@@ -35,11 +53,15 @@
         </table>
       </div>
 
-      <div class="pull-right">
-        <%= link_to new_user_path, class: "btn btn-primary", id: "new_user_button" do %>
-          <i class="fa fa-user-plus"></i>
-        <% end %>
+      <div class="row">
+        <div class="pull-right">
+          <%= link_to new_user_path, class: "btn btn-primary", id: "new_user_button" do %>
+            <i class="fa fa-user-plus"></i>
+          <% end %>
+        </div>
       </div>
+
+      <%= index_footer @users %>
     </div>
   </div>
 </div>
