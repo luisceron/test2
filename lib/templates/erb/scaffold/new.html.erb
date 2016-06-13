@@ -1,0 +1,13 @@
+<div class="wrapper border-bottom bg-white">
+  <h3><%%= <%= singular_table_name.classify %>.model_name.human.pluralize %></h3>
+</div>
+
+<div class="row">
+  <div class="pack form-panel">
+    <div class="pack-caption"><strong><%%= action_new <% singular_table_name.classify %> %></strong></div>
+
+    <div class="pack-inside">
+      <%= render 'form' %>
+    </div>
+  </div>
+</div>

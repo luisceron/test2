@@ -1,0 +1,23 @@
+<div class="wrapper border-bottom bg-white">
+  <h3><%%= <%= singular_table_name.classify %>.model_name.human.pluralize %></h3>
+</div>
+
+<div class="row">
+  <div class="pack form-panel">
+    <div class="pack-caption">
+      <strong><%%= @<%= singular_table_name%>.name %></strong>
+    </div>
+    <div class="pack-inside">
+      <dl class="dl-horizontal">
+      <%- attributes.each do |attribute| -%>
+        <%%= show_for @<%= singular_table_name %>, :<%= attribute.name %> %>
+      <%- end -%>
+      </dl>
+
+      <div class="text-center">
+        <%%= link_with_icon_to_back <% plural_table_name =%>_path %>
+        <%%= link_with_icon_to_edit edit_<%= singular_table_name%>_path(@<%= singular_table_name %>) %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :only_admin, only: [:index, :new, :create, :destroy]
   before_action :only_current_user, only: [:show, :edit, :update, :edit_password, :update_password, :remove_account]
-  before_action :set_user, only: [:destroy, :show, :edit, :update]
+  before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_action :set_user_id, only: [:edit_password, :update_password, :remove_account]
 
   def index

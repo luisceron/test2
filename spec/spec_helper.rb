@@ -6,7 +6,9 @@ require "codeclimate-test-reporter"
 CodeClimate::TestReporter.start
 
 require 'simplecov'
-SimpleCov.start 'rails'
+SimpleCov.start 'rails' do
+  add_filter "lib/templates"
+end
 running_partial_tests = ENV['PARTIAL_TESTS'] || ARGV.join("") =~ /:\d+$/ #ignore when calling only a specific test
 SimpleCov.minimum_coverage 100 unless running_partial_tests
 

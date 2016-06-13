@@ -35,6 +35,8 @@ en:
     save: Save
     back: Back
     edit: Edit
+    new: New
+    new_fem: New
     cancel: Cancel
     change_password: Edit Password
     remove_account: Remove Account

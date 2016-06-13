@@ -35,6 +35,8 @@ pt-BR:
     save: Salvar
     back: Voltar
     edit: Editar
+    new: Novo
+    new_fem: Nova
     cancel: Cancelar
     change_password: Editar Senha
     remove_account: Excluir Conta

@@ -1,13 +1,22 @@
-<%%= simple_form_for(@<%= singular_table_name %>) do |f| %>
-  <%%= f.error_notification %>
-
-  <div class="form-inputs">
-  <%- attributes.each do |attribute| -%>
-    <%%= f.<%= attribute.reference? ? :association : :input %> :<%= attribute.name %> %>
+<%%= simple_form_for @<%= singular_table_name %> do |f| %>
+<%- attributes.each do |attribute| -%>
+  <%- if attribute.reference? -%>
+  <%%= f.association :<%= attribute.name %> %>
+  <%- else -%>
+  <%- if attribute.type.to_s == 'boolean' -%>
+  <%%= f.input :<%= attribute.name %>, as: :boolean %>
+  <%- else %>
+  <%%= f.input :<%= attribute.name %>
   <%- end -%>
-  </div>
+<%- end -%>
 
-  <div class="form-actions">
-    <%%= f.button :submit %>
+  <div class="text-center">
+    <%% if @<%= singular_table_name %>.persisted? -%>
+      <%%= link_with_icon_to_back <%= singular_table_name %>_path(@<%= singular_table_name %>) %>
+    <%% else %>
+      <%%= link_with_icon_to_back <%= plural_table_name %>_path %>
+    <%% end %>
+
+    <%%= save_button %>
   </div>
 <%% end %>
