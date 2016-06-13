@@ -25,16 +25,16 @@
         <table class="table table-hover table-striped table-condensed">
           <thead>
             <tr>
-              <%- attributes.each do |attribute| -%>
-              <th><%%= <%= singular_table_name %>.human_attribute_name(:<%= attribute.name %>) %></th>
-              <%- end -%>
+            <%- attributes.each do |attribute| -%>
+              <th><%%= <%= singular_table_name.classify %>.human_attribute_name(:<%= attribute.name %>) %></th>
+            <%- end -%>
               <th></th>
             </tr>
           </thead>
 
           <tbody>
             <%% @<%= plural_table_name %>.each do |<%= singular_table_name %>| %>
-              <tr data-href="<%%= <% singular_table_name %>_path(<%= singular_table_name %>) %>">
+              <tr data-href="<%%= <%= singular_table_name %>_path(<%= singular_table_name %>) %>">
               <%- attributes.each do |attribute| -%>
                 <td><%%= <%= singular_table_name %>.<%= attribute.name %> %></td>
               <%- end -%>

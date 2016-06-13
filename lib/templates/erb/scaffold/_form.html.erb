@@ -5,13 +5,14 @@
   <%- else -%>
   <%- if attribute.type.to_s == 'boolean' -%>
   <%%= f.input :<%= attribute.name %>, as: :boolean %>
-  <%- else %>
-  <%%= f.input :<%= attribute.name %>
+  <%- else -%>
+  <%%= f.input :<%= attribute.name %> %>
+  <%- end -%>
   <%- end -%>
 <%- end -%>
 
   <div class="text-center">
-    <%% if @<%= singular_table_name %>.persisted? -%>
+    <%% if @<%= singular_table_name %>.persisted? %>
       <%%= link_with_icon_to_back <%= singular_table_name %>_path(@<%= singular_table_name %>) %>
     <%% else %>
       <%%= link_with_icon_to_back <%= plural_table_name %>_path %>

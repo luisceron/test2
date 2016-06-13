@@ -1,4 +1,4 @@
-class <%= controller.class_name %>Controller < ApplicationController
+class <%= controller_class_name %>Controller < ApplicationController
   before_action :set_<%= singular_table_name %>, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -34,11 +34,7 @@ class <%= controller.class_name %>Controller < ApplicationController
       @<%= singular_table_name %> = <%= class_name %>.find(params[:id])
     end
 
-    def <%= singular_table_name %>_params
-      <%- if attributes_names.empty? -%>
-      params[:<%= singular_table_name %>]
-      <%- else -%>
-      params.require(:<%= singular_table_name %>).permit(<%= attributes_names.map { |name| :<%= name %> }.join(', ') %>)
-      <%- end -%>
+    def <%= "#{singular_table_name}_params" %>
+      params.require(:<%= singular_table_name %>).permit(<%= attributes_names.map { |name| ":#{ name }" }.join(', ') %>)
     end
 end
