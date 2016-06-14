@@ -1,23 +1,23 @@
 <aside>
-  <div id="sidebar"  class="nav-collapse ">
+  <div id="sidebar" class="nav-collapse">
     <ul class="sidebar-menu" id="nav-accordion">
-      <p class="centered"><%= link_to image_tag('template/ui-sam.jpg', class: "img-circle", width: "60"), user_path(current_user) %></p>
-      <h5 class="centered"><%= current_user.name %></h5>
+<!--       <p class="centered"><%= link_to image_tag('template/ui-sam.jpg', class: "img-circle", width: "60"), user_path(current_user) %></p>
+      <h5 class="centered"><%= current_user.name %></h5> -->
       
       <li class="mt">
         <% if current_user.admin %>
-          <%= link_to users_path, class: "menu" do %>
+          <%= link_to users_path, class: "menu menu-link" do %>
             <i class="fa fa-user"></i>
             <strong><%= User.model_name.human.pluralize %></strong>
           <% end %>
         <% end %>
 
-        <%= link_to root_path, class: "menu" do %>
+        <%= link_to root_path, class: "menu menu-link" do %>
           <i class="fa fa-bank fa-3x"></i>
           <strong>Accounts</strong>
         <% end %>
 
-        <%= link_to root_path, class: "menu" do %>
+        <%= link_to root_path, class: "menu menu-link" do %>
           <i class="fa fa-dollar fa-3x"></i>
           <strong>Transactions</strong>
         <% end %>
@@ -25,25 +25,20 @@
     </ul>
   </div>
 </aside>
-<!-- 
+
 <script type="text/javascript">
-  var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
-
-  if(width < 480){
-
-    $(document).click(function (event) {
-      var clickover = $(event.target);
-      $("#nav-accordion").hide();
-
-
-      var _opened = $(".navbar-collapse").hasClass("navbar-collapse in");
-      if (_opened === true && !clickover.hasClass("navbar-toggle")) {
-        $(".navbar-toggle").click();
-      }
-    });
-    
-  }
-
-  $(document).ready(function () {
-  });  
-</script> -->
+  $(document).on('ready page:load', function(){
+    var wSize = $(window).width();
+     
+    if (wSize <= 768) {
+      $('#main-content').css({
+        'margin-left': '0px'
+      });
+      $('#sidebar').css({
+        'margin-left': '-210px'
+      });
+      $('#sidebar > ul').hide();
+      $("#container").addClass("sidebar-closed");
+    }
+  });
+</script>
