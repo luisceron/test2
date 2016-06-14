@@ -38,8 +38,12 @@ class UsersController < ApplicationController
   def update_password
     if current_user.admin
       if user_params[:password] == user_params[:password_confirmation]
-        if @user.update_without_password(user_params)
-          sign_in current_user, bypass: true
+        if @user.update(user_params)
+          if @user == current_user
+            sign_in @user, bypass: true
+          else
+            sign_in current_user, bypass: true
+          end
           redirect_to @user, notice: t('controller.password_changed')
         end
       else

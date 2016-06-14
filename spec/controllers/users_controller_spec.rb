@@ -385,6 +385,11 @@ RSpec.describe UsersController, type: :controller do
         put :update_password, {user_id: user.id, user: invalid_new_password}
         expect(response).to render_template(:edit_password)
       end
+
+      it "must update admin password" do
+        put :update_password, {user_id: controller.current_user.id, user: new_password}
+        expect(response).to redirect_to(controller.current_user)
+      end
     end
 
     context "normal user" do

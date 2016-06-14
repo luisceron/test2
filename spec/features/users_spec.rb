@@ -120,9 +120,10 @@ def expect_login
   expect(page).to have_selector(:link_or_button, I18n.t('devise.shared.links.didn_t_receive_unlock_instructions') )
 end
 
-def expect_edit_password current_user
+def expect_edit_password current_user, user
   expect(page).to have_content( User.model_name.human.pluralize )
   expect(page).to have_content( I18n.t('link.change_password') )
+  expect(page).to have_content( user.name )
   if current_user.admin
     expect(page).to_not have_css("input#user_current_password")
   else
@@ -248,7 +249,7 @@ feature "users views for admin user" do
 
       expect_show current_user, user
       click_on I18n.t('link.change_password')
-      expect_edit_password current_user
+      expect_edit_password current_user, user
 
       fill_in :user_password, with: "12341234"
       fill_in :user_password_confirmation, with: "12341234"
@@ -256,6 +257,21 @@ feature "users views for admin user" do
 
       expect(page).to have_content( I18n.t('controller.password_changed') )
       expect_show current_user, user
+    end
+
+    scenario "admin update his own password with valid params" do
+      visit "/users/#{current_user.id}"
+
+      expect_show current_user, current_user
+      click_on I18n.t('link.change_password')
+      expect_edit_password current_user, current_user
+
+      fill_in :user_password, with: "12341234"
+      fill_in :user_password_confirmation, with: "12341234"
+      click_on I18n.t('link.save')
+
+      expect(page).to have_content( I18n.t('controller.password_changed') )
+      expect_show current_user, current_user
     end
 
     scenario "with invalid params" do
@@ -267,7 +283,7 @@ feature "users views for admin user" do
       click_on I18n.t('link.save')
 
       expect(page).to have_content( User.human_attribute_name(:admin_update_password_error) )
-      expect_edit_password current_user
+      expect_edit_password current_user, user
     end
   end
 
@@ -438,7 +454,7 @@ feature "users views for current user" do
 
       expect_show user, user
       click_on I18n.t('link.change_password')
-      expect_edit_password user
+      expect_edit_password user, user
 
       fill_in :user_current_password, with: "12341234"
       fill_in :user_password, with: "22223333"
@@ -460,7 +476,7 @@ feature "users views for current user" do
 
       expect(page).to have_content(I18n.t('errors.messages.invalid'))
       expect(page).to have_content(I18n.t('errors.messages.confirmation', attribute: User.human_attribute_name(:password)))
-      expect_edit_password user
+      expect_edit_password user, user
     end
   end
 
