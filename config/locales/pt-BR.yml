@@ -1,10 +1,20 @@
 pt-BR:
   activerecord:
     models:
+      account:
+        one: Conta
+        other: Contas
       user:
         one: Usuário
         other: Usuários
     attributes:
+      account:
+        account_type: Tipo
+        name: Nome
+        description: Descrição
+        current_account: Conta Corrente
+        saving_account: Conta Poupança
+        cash_account: Dinheiro
       user:
         name: Nome
         email: E-mail
@@ -21,6 +31,7 @@ pt-BR:
   action:
     index: Lista de %{model}
     new: Novo %{model}
+    new_fem: Nova %{model}
     edit: Editar %{model}
     sure: Você tem certeza?
     per_page: '%{model} por página'

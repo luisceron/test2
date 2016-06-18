@@ -1,0 +1,16 @@
+<%= simple_form_for @account do |f| %>
+  <%= f.input :type %>
+  <%= f.input :name %>
+  <%= f.input :balance %>
+  <%= f.input :description %>
+
+  <div class="text-center">
+    <% if @account.persisted? %>
+      <%= link_with_icon_to_back account_path(@account) %>
+    <% else %>
+      <%= link_with_icon_to_back accounts_path %>
+    <% end %>
+
+    <%= save_button %>
+  </div>
+<% end %>

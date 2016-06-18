@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  skip_before_action :check_if_user_is_owner
   before_action :only_admin, only: [:index, :new, :create, :destroy]
   before_action :only_current_user, only: [:show, :edit, :update, :edit_password, :update_password, :remove_account]
   before_action :set_user, only: [:show, :edit, :update, :destroy]

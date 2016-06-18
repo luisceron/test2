@@ -7,6 +7,10 @@ module ActionsHelper
     t('action.new', model: model.model_name.human)
   end
 
+  def action_new_fem model
+    t('action.new_fem', model: model.model_name.human)
+  end
+
   def action_edit model
     t('action.edit', model: model.model_name.human)
   end

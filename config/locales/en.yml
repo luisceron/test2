@@ -1,10 +1,20 @@
 en:
   activerecord:
     models:
+      account:
+        one: Account
+        other: Accounts
       user:
         one: User
         other: Users
     attributes:
+      account:
+        account_type: Type
+        name: Name
+        description: Description
+        current_account: Current Account
+        saving_account: Saving Account
+        cash_account: Cash
       user:
         name: Name
         email: Email
@@ -21,6 +31,7 @@ en:
   action:
     index: List of %{model}
     new: New %{model}
+    new_fem: New %{model}
     edit: Edit %{model}
     sure: Are you sure?
     per_page: '%{model} per page'
