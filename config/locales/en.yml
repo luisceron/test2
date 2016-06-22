@@ -12,9 +12,10 @@ en:
         account_type: Type
         name: Name
         description: Description
-        current_account: Current Account
-        saving_account: Saving Account
-        cash_account: Cash
+        account_types:
+          current_account: Current Account
+          saving_account: Saving Account
+          cash_account: Cash
       user:
         name: Name
         email: Email
@@ -37,9 +38,14 @@ en:
     per_page: '%{model} per page'
     click_to_edit: To edit click on Edit
   controller:
+    added: '%{model} added successfully'
+    added_fem: '%{model} added successfully'
     created: '%{model} created successfully'
+    created_fem: '%{model} created successfully'
     updated: '%{model} updated successfully'
+    updated_fem: '%{model} updated successfully'
     destroyed: '%{model} destroyed successfully'
+    destroyed_fem: '%{model} destroyed successfully'
     access_denied: 'Access Denied'
     password_changed: 'Password changed successfully'
   link:

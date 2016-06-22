@@ -5,14 +5,13 @@ def expect_index current_user
   expect(page).to have_content( I18n.t('action.index', model: Account.model_name.human.pluralize) )
 
   expect(page).to have_selector('input#q_name_cont')
-  # expect page to have check box All Accounts to search for
-  # expect page to have check box Current Accounts to search for
-  # expect page to have check box Saving Accounts to search for
-  # expect page to have check box Cash Accounts to search for
+  # expect page to have checkbox with All Accounts to search for
+  # expect page to have checkbox with Current Accounts to search for
+  # expect page to have checkbox with Saving Accounts to search for
+  # expect page to have checkbox with Cash Accounts to search for
   expect(page).to have_css('button.btn.btn-sm.btn-primary .fa.fa-search')
 
   expect(page).to have_content( Account.human_attribute_name(:name) )
-  expect(page).to have_content( Account.human_attribute_name(:account_type) )
   expect(page).to have_content( Account.human_attribute_name(:balance) )
 
   if current_user.accounts.size > 0
@@ -30,19 +29,20 @@ def expect_index current_user
     expect(page).to have_content( current_user.accounts.first.balance )
     expect(page).to have_css("a.btn.btn-xs.btn-primary .fa.fa-pencil-square-o")
     expect(page).to have_css("a.btn.btn-xs.btn-danger .fa.fa-trash")
+
+    expect(page).to have_content( I18n.t('action.per_page', model: Account.model_name.human.pluralize) )
+    expect(page).to have_selector('select#per_page')
+  
+    if current_user.accounts.count == 1
+      expect(page).to have_content( I18n.t('will_paginate.page_entries_info.single_page_html.one') )
+    elsif current_user.accounts.count > 25
+      expect(page).to have_content( I18n.t('will_paginate.page_entries_info.multi_page', from: "1", to: "25", count: current_user.accounts.count) )
+    else    
+      expect(page).to have_content( I18n.t('will_paginate.page_entries_info.single_page_html.other', count: current_user.accounts.count) )
+    end
   end
+
   expect(page).to have_selector(:link_or_button, I18n.t('action.new_fem', model: Account.model_name.human) )
-
-  expect(page).to have_content( I18n.t('action.per_page', model: Account.model_name.human.pluralize) )
-  expect(page).to have_selector('select#per_page')
-
-  if current_user.account.count == 1
-    expect(page).to have_content( I18n.t('will_paginate.page_entries_info.single_page_html.one') )
-  elsif current_user.accounts.count > 25
-    expect(page).to have_content( I18n.t('will_paginate.page_entries_info.multi_page', from: "1", to: "25", count: current_user.accounts.count) )
-  else    
-    expect(page).to have_content( I18n.t('will_paginate.page_entries_info.single_page_html.other', count: current_user.accounts.count) )
-  end
 end
 
 def expect_new
@@ -54,7 +54,7 @@ def expect_new
   expect(page).to have_content( Account.human_attribute_name(:balance) )
   expect(page).to have_selector("input#account_balance")
   expect(page).to have_content( Account.human_attribute_name(:description) )
-  expect(page).to have_selector("input#account_description")
+  expect(page).to have_selector("textarea#account_description")
 
   expect(page).to have_selector(:link_or_button, I18n.t('link.back') )
   expect(page).to have_selector(:link_or_button, I18n.t('link.save') )
@@ -85,7 +85,7 @@ def expect_show account
   expect(page).to have_content(account.name)
   expect(page).to have_content( Account.human_attribute_name(:balance) )
   expect(page).to have_content(account.balance)
-  expect(page).to have_content( Account.human_attribute_name(:Description) )
+  expect(page).to have_content( Account.human_attribute_name(:description) )
   expect(page).to have_content(account.description)
   expect(page).to have_selector(:link_or_button, I18n.t('link.back') )
   expect(page).to have_selector(:link_or_button, I18n.t('link.edit') )
@@ -95,10 +95,11 @@ end
 
 # => O W N E R    U S E R
 feature "accounts views for owner user", type: :feature do
-  given!(:account){ create(:account) }
+  given!(:current_user){ create(:user) }
+  given!(:account){ create(:account, user: current_user) }
 
   background :each do
-    current_user = login create(:user)
+    login current_user
   end
 
   # => I N D E X
@@ -110,21 +111,21 @@ feature "accounts views for owner user", type: :feature do
   # => N E W    A N D    C R E A T E
   context "creating a new account" do
     scenario "with valid params" do
-      visit new_user_account_path
+      visit new_user_account_path(current_user)
 
       expect_new
-      select( Account.human_attribute_name(:cash_account), from: Account.human_attribute_name(:account_type) )
-      fill_in :account_name, with: "Current Account 1"
-      fill_in :account_balance, with: 2500,00
-      fill_in :account_description, with: "National Bank Current Account 1"
+      select( I18n.t(:cash_account, scope: "activerecord.attributes.account.account_types"), from: Account.human_attribute_name(:account_type) )
+      fill_in :account_name, with: "Cash"
+      fill_in :account_balance, with: 2500.00
+      fill_in :account_description, with: "Cash Account"
       click_on I18n.t('link.save')
 
-      expect(page).to have_content( I18n.t('controller.created', model: Account.model_name.human) )
-      expect_show Account.find_by(name: "Current Account 1")
+      expect(page).to have_content( I18n.t('controller.created_fem', model: Account.model_name.human) )
+      expect_show Account.find_by(name: "Cash")
     end
 
     scenario "with invalid params" do
-      visit new_user_path
+      visit new_user_account_path(current_user)
 
       fill_in :account_name, with: ""
       click_on I18n.t('link.save')
@@ -136,28 +137,27 @@ feature "accounts views for owner user", type: :feature do
   
   # => S H O W
   scenario "showing account" do
-    # visit "/accounts/#{account.id}"
     visit account_path(account)
     expect_show account
   end
 
-  # => U P D A T E
+  # => E D I T    A N D   U P D A T E
   context "updating user" do
     scenario "with valid params" do
-      # visit "/accounts/#{account.id}/edit"
-      visit account_path(account)
+      visit edit_account_path(account)
 
       expect_edit account
       fill_in :account_name, with: "Cash"
       click_on I18n.t('link.save')
 
-      expect(page).to have_content( I18n.t('controller.updated', model: Account.model_name.human) )
+      expect(page).to have_content( I18n.t('controller.updated_fem', model: Account.model_name.human) )
+      account.name = "Cash"
+      account.save
       expect_show account
     end
 
     scenario "with invalid params" do
-      # visit "/accounts/#{account.id}/edit"
-      visit account_path(account)
+      visit edit_account_path(account)
 
       fill_in :account_name, with: ""
       click_on I18n.t('link.save')
@@ -176,35 +176,42 @@ feature "accounts views for owner user", type: :feature do
     expect_index current_user
     first('.btn-danger').click
 
-    expect(page).to have_content( I18n.t('controller.destroyed', model: Account.model_name.human) )
+    expect(page).to have_content( I18n.t('controller.destroyed_fem', model: Account.model_name.human) )
     expect_index current_user
   end
 
   # => S E A R C H  A N D   P A G I N A T I O N 
   context "searching and pagination" do
+    let!(:current_user) { create(:user) }
+
+    def reset_database current_user
+      current_user.accounts.destroy_all
+    end
+
     def create_records
       for var in 0..10
-        create(:account, account_type: 0) # Current Accounts
+        create(:account, account_type: 0, user: current_user) # Current Accounts
       end
 
       for var in 0..10
-        create(:account, account_type: 1) # Saving Accounts
+        create(:account, account_type: 1, user: current_user) # Saving Accounts
       end
 
       for var in 0..10
-        create(:account, account_type: 2) # Cash Accounts
+        create(:account, account_type: 2, user: current_user) # Cash Accounts
       end
     end
 
     background :each do
-      current_user = login create(:user)
+      reset_database current_user
+      login current_user
       visit user_accounts_path(current_user)
     end
 
     scenario "if there is more than 25 records, must have a button to second page" do
       expect_index current_user
       expect(page).to_not have_css('ul.pagination')
-      
+
       create_records
       visit user_accounts_path(current_user)
       expect_index current_user
@@ -224,7 +231,7 @@ feature "accounts views for owner user", type: :feature do
       expect(page).to have_content( I18n.t('will_paginate.page_entries_info.single_page_html.zero') )
 
       create_records
-      visit user_accounts_path
+      visit user_accounts_path( current_user )
       expect_index current_user
       fill_in :q_name_cont, with: "Account28"
       page.find('#search_button').click
@@ -233,7 +240,7 @@ feature "accounts views for owner user", type: :feature do
     end
 
     scenario "searching for current accounts must return only them" do
-      expect_index
+      expect_index current_user
       create_records
 
       # mark current accounts checkboxes
@@ -242,7 +249,7 @@ feature "accounts views for owner user", type: :feature do
     end
 
     scenario "searching for saving accounts must return only them" do
-      expect_index
+      expect_index current_user
       create_records
 
       # mark saving accounts checkboxes
@@ -251,7 +258,7 @@ feature "accounts views for owner user", type: :feature do
     end
 
     scenario "searching for cash accounts must return only them" do
-      expect_index
+      expect_index current_user
       create_records
 
       # mark cash accounts checkboxes
@@ -264,11 +271,81 @@ end
 
 
 # => A D M I N    U S E R
-feature "accounts views for admin user", type: :feature do
+feature "another user accounts views for admin user", type: :feature do
+  given!(:user_owner) { create(:user) }
+  given!(:account){ create(:account, user: user_owner) }
+
+  background :each do
+    current_user = login create(:user, admin: true)
+    visit user_accounts_path(user_owner)
+  end
+
+  # => I N D E X   A N d    D E S T R O Y
+  scenario "can't list accounts" do
+    expect(page).to_not have_content( I18n.t('action.index', model: Account.model_name.human.pluralize) )
+    expect(page).to have_content( I18n.t('controller.access_denied') )
+  end
+
+  # => N E W    AND   C R E A T E
+  scenario "can't create a new account" do
+    visit new_user_account_path(user_owner)
+    expect(page).to_not have_content( I18n.t('action.new', model: Account.model_name.human) )
+    expect(page).to have_content( I18n.t('controller.access_denied') )
+  end
+  
+  # => S H O W
+  scenario "can't show an account" do
+    visit account_path(account)
+    expect(page).to_not have_content(account.name)
+    expect(page).to_not have_content( I18n.t('link.edit') )
+    expect(page).to have_content( I18n.t('controller.access_denied') )
+  end
+
+  # => E D I T    A N D   U P D A T E
+  scenario "can't update an account" do
+    visit edit_account_path(account)
+    expect(page).to have_content( I18n.t('controller.access_denied') )
+    expect(page).to_not have_field( Account.human_attribute_name(:name) )
+  end
 end
 
 
 
 # => A N O T H E R   N O R M A L    U S E R
-feature "accounts views for another normal user", type: :feature do
+feature "a user accounts views for another normal user", type: :feature do
+  given!(:user_owner) { create(:user) }
+  given!(:account){ create(:account, user: user_owner) }
+
+  background :each do
+    current_user = login create(:user)
+    visit user_accounts_path(user_owner)
+  end
+
+  # => I N D E X   A N d    D E S T R O Y
+  scenario "can't list accounts" do
+    expect(page).to_not have_content( I18n.t('action.index', model: Account.model_name.human.pluralize) )
+    expect(page).to have_content( I18n.t('controller.access_denied') )
+  end
+
+  # => N E W    AND   C R E A T E
+  scenario "can't create a new account" do
+    visit new_user_account_path(user_owner)
+    expect(page).to_not have_content( I18n.t('action.new', model: Account.model_name.human) )
+    expect(page).to have_content( I18n.t('controller.access_denied') )
+  end
+  
+  # => S H O W
+  scenario "can't show an account" do
+    visit account_path(account)
+    expect(page).to_not have_content(account.name)
+    expect(page).to_not have_content( I18n.t('link.edit') )
+    expect(page).to have_content( I18n.t('controller.access_denied') )
+  end
+
+  # => E D I T    A N D   U P D A T E
+  scenario "can't update an account" do
+    visit edit_account_path(account)
+    expect(page).to have_content( I18n.t('controller.access_denied') )
+    expect(page).to_not have_field( Account.human_attribute_name(:name) )
+  end
 end

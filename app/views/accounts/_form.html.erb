@@ -1,14 +1,14 @@
-<%= simple_form_for @account do |f| %>
-  <%= f.input :type %>
+<%= simple_form_for @account, url: account_form_path(@account) do |f| %>
+  <%= f.input :account_type, as: :select, collection: Account.account_types.keys.collect{|account_type| [t(account_type, scope: "activerecord.attributes.account.account_types"), account_type] } %>
   <%= f.input :name %>
   <%= f.input :balance %>
-  <%= f.input :description %>
+  <%= f.input :description, as: :text %>
 
   <div class="text-center">
     <% if @account.persisted? %>
       <%= link_with_icon_to_back account_path(@account) %>
     <% else %>
-      <%= link_with_icon_to_back accounts_path %>
+      <%= link_with_icon_to_back user_accounts_path(@user) %>
     <% end %>
 
     <%= save_button %>

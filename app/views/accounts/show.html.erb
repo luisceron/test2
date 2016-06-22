@@ -9,14 +9,14 @@
     </div>
     <div class="pack-inside">
       <dl class="dl-horizontal">
-        <%= show_for @account, :type %>
+        <%= show_for @account, :account_type %>
         <%= show_for @account, :name %>
         <%= show_for @account, :balance %>
         <%= show_for @account, :description %>
       </dl>
 
       <div class="text-center">
-        <%= link_with_icon_to_back accounts_path %>
+        <%= link_with_icon_to_back user_accounts_path(@user) %>
         <%= link_with_icon_to_edit edit_account_path(@account) %>
       </div>
     </div>

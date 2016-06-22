@@ -29,9 +29,9 @@ module LinksHelper
   #   with_icon_base(path, t('action.new', model: model.model_name.human), 'btn-primary space-links', 'plus')
   # end
 
-  # def link_with_icon_to_new_fem path, model
-  #   with_icon_base(path, t('action.new_fem', model: model.model_name.human), 'btn-primary space-links', 'plus')
-  # end
+  def link_with_icon_to_new_fem path, model
+    with_icon_base(path, t('action.new_fem', model: model.model_name.human), 'btn-primary space-links', 'plus')
+  end
 
   private
     def only_icon_base path, icon, classe, options = {}
