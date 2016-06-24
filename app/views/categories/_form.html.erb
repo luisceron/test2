@@ -1,0 +1,15 @@
+<%= simple_form_for @category do |f| %>
+  <%= f.association :user %>
+  <%= f.input :name %>
+  <%= f.input :description %>
+
+  <div class="text-center">
+    <% if @category.persisted? %>
+      <%= link_with_icon_to_back category_path(@category) %>
+    <% else %>
+      <%= link_with_icon_to_back categories_path %>
+    <% end %>
+
+    <%= save_button %>
+  </div>
+<% end %>

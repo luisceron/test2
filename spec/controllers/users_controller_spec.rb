@@ -14,7 +14,6 @@ RSpec.describe UsersController, type: :controller do
       sign_in_admin_user
       it "assigns all users as @users" do
         expect(controller.current_user.admin).to be(true)
-        User.create! valid_attributes
         get :index, {}
         expect(assigns(:users)).to match_array(User.all)
         expect(response).to render_template(:index)

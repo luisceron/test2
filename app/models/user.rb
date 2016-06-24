@@ -7,6 +7,8 @@ class User < ActiveRecord::Base
 
   attr_accessor :typed_email
 
+  has_many :categories, dependent: :destroy
+
   before_validation :set_name_and_password, on: :create
   validates :name, presence: true
 

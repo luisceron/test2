@@ -1,0 +1,27 @@
+<div class="wrapper border-bottom bg-white">
+  <h3><%= Category.model_name.human.pluralize %></h3>
+</div>
+
+<div class="row">
+  <div class="pack form-panel">
+    <div class="pack-caption">
+      <strong><%= @category.name %></strong>
+    </div>
+    <div class="pack-inside">
+      <dl class="dl-horizontal">
+
+        <%= show_for @category, :user %>
+
+        <%= show_for @category, :name %>
+
+        <%= show_for @category, :description %>
+
+      </dl>
+
+      <div class="text-center">
+        <%= link_with_icon_to_back categories_path %>
+        <%= link_with_icon_to_edit edit_category_path(@category) %>
+      </div>
+    </div>
+  </div>
+</div>

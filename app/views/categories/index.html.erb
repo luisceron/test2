@@ -1,0 +1,70 @@
+<div class="wrapper border-bottom bg-white">
+  <h3><%= Category.model_name.human.pluralize %></h3>
+</div>
+
+<div class="row">
+  <div class="pack form-panel">
+    <div class="pack-caption"><strong><%= action_index Category %></strong></div>
+    <div class="pack-inside">
+      <div class="row">
+        <div class="col-md-12">
+          <%= search_form_for(@query) do |f|  %>
+            <div class="input-group btn-group" role="group">
+              <%= f.text_field :user_cont, class: "input-sm form-control" %>
+              <span class="input-group-btn">
+                <%= button_tag(type: 'submit', class: "btn btn-sm btn-primary", id: "search_button") do %>
+                  <i class="fa fa-search"></i>
+                <% end %>
+              </span>
+            </div>
+          <% end %>
+        </div>
+      </div><br>
+
+      <div class="table-responsive">
+        <table class="table table-hover table-striped table-condensed">
+          <thead>
+            <tr>
+
+              <th><%= Category.human_attribute_name(:user) %></th>
+
+              <th><%= Category.human_attribute_name(:name) %></th>
+
+              <th><%= Category.human_attribute_name(:description) %></th>
+
+              <th></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% @categories.each do |category| %>
+              <tr data-href="<%= category_path(category) %>">
+
+                <td><%= category.user %></td>
+
+                <td><%= category.name %></td>
+
+                <td><%= category.description %></td>
+
+                <td>
+                  <div class="pull-right">
+                    <%= link_only_icon_to_edit edit_category_path(category) %>
+                    <%= link_only_icon_to_destroy category %>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="row">
+        <div class="pull-right">
+          <%= link_with_icon_to_new new_category_path %>
+        </div>
+      </div>
+
+      <%= index_footer @categories %>
+    </div>
+  </div>
+</div>

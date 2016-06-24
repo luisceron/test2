@@ -1,5 +1,4 @@
 class ApplicationController < ActionController::Base
-  
   include BaseController
 
   # Prevent CSRF attacks by raising an exception.
@@ -8,6 +7,7 @@ class ApplicationController < ActionController::Base
 
   # Authenticantion
   before_action :authenticate_user!
+  before_action :check_if_user_is_owner
 
   before_action do
     I18n.locale = params[:locale] || I18n.default_locale
@@ -31,6 +31,13 @@ class ApplicationController < ActionController::Base
 
     def only_current_user
       unless current_user.admin? || current_user.id == params[:id].to_i || current_user.id == params[:user_id].to_i
+        redirect_to root_path, alert: t('controller.access_denied')
+      end
+    end
+
+    def check_if_user_is_owner
+      user = controller_name.classify.constantize.find(params[:id].to_i).try(:user) if !params[:user_id]
+      unless current_user == user || current_user.id == params[:user_id].to_i
         redirect_to root_path, alert: t('controller.access_denied')
       end
     end
