@@ -12,10 +12,14 @@ en:
         account_type: Type
         name: Name
         description: Description
+        balance: Balance
         account_types:
           current_account: Current Account
           saving_account: Saving Account
           cash_account: Cash
+        current_letter: C
+        saving_letter: S
+        cash_letter: M
       user:
         name: Name
         email: Email

@@ -1,6 +1,6 @@
 module ActionsHelper
   def action_index model
-    t('action.index', model: model.model_name.human.pluralize)
+    t('action.index', model: model.model_name.human(count: 2))
   end
 
   def action_new model

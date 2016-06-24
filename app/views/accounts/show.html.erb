@@ -1,5 +1,5 @@
 <div class="wrapper border-bottom bg-white">
-  <h3><%= Account.model_name.human.pluralize %></h3>
+  <h3><%= Account.model_name.human(count: 2) %></h3>
 </div>
 
 <div class="row">
@@ -9,7 +9,14 @@
     </div>
     <div class="pack-inside">
       <dl class="dl-horizontal">
-        <%= show_for @account, :account_type %>
+
+        <div class="form-group">
+          <label><%= Account.human_attribute_name(:account_type) %></label> <br>
+          <div class="form-control">
+            <%= enum_translation Account, :account_types, @account.account_type %>
+          </div>
+        </div>
+        
         <%= show_for @account, :name %>
         <%= show_for @account, :balance %>
         <%= show_for @account, :description %>

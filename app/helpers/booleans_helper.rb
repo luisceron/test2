@@ -7,11 +7,11 @@ module BooleansHelper
     content_tag(:div, User.human_attribute_name(:admin), class: "label label-success")
   end
 
-  def account_type_badge_for account_type
-    case account_type
-      when 1 then content_tag(:div, 'C', class: "label label-success")
-      when 2 then content_tag(:div, 'P', class: "label label-primary")
-      when 3 then content_tag(:div, 'M', class: "label label-default")
+  def badge_for_account_type account_type
+    case account_type.to_sym
+      when :current_account then return content_tag(:div, Account.human_attribute_name(:current_letter), class: "label label-success")
+      when :saving_account  then return content_tag(:div, Account.human_attribute_name(:saving_letter),  class: "label label-primary")
+      when :cash_account    then return content_tag(:div, Account.human_attribute_name(:cash_letter),    class: "label label-default")
     end
   end
 end

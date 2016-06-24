@@ -12,10 +12,14 @@ pt-BR:
         account_type: Tipo
         name: Nome
         description: Descrição
+        balance: Saldo
         account_types:
           current_account: Conta Corrente
           saving_account: Conta Poupança
           cash_account: Dinheiro
+        current_letter: C
+        saving_letter: P
+        cash_letter: D
       user:
         name: Nome
         email: E-mail

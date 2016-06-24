@@ -1,26 +1,11 @@
 <div class="wrapper border-bottom bg-white">
-  <h3><%= Account.model_name.human.pluralize %></h3>
+  <h3><%= Account.model_name.human(count: 2) %></h3>
 </div>
 
 <div class="row">
   <div class="pack form-panel">
     <div class="pack-caption"><strong><%= action_index Account %></strong></div>
     <div class="pack-inside">
-      <div class="row">
-        <div class="col-md-12">
-          <%= search_form_for(@query, url: user_accounts_path(@user)) do |f|  %>
-            <div class="input-group btn-group" role="group">
-              <%= f.text_field :name_cont, class: "input-sm form-control" %>
-              <span class="input-group-btn">
-                <%= button_tag(type: 'submit', class: "btn btn-sm btn-primary", id: "search_button") do %>
-                  <i class="fa fa-search"></i>
-                <% end %>
-              </span>
-            </div>
-          <% end %>
-        </div>
-      </div><br>
-
       <div class="table-responsive">
         <table class="table table-hover table-striped table-condensed">
           <thead>
@@ -34,7 +19,7 @@
           <tbody>
             <% @accounts.each do |account| %>
               <tr data-href="<%= account_path(account) %>">
-                <td><%= account.name %> <%= account_type_badge_for account.account_type %></td>
+                <td><%= account.name %> <%= badge_for_account_type account.account_type %></td>
                 <td><%= account.balance %></td>
                 <td>
                   <div class="pull-right">
