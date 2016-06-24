@@ -1,10 +1,16 @@
 pt-BR:
   activerecord:
     models:
+      category:
+        one: Categoria
+        other: Categorias
       user:
         one: Usuário
         other: Usuários
     attributes:
+      category:
+        name: Nome
+        description: Descrição
       user:
         name: Nome
         email: E-mail

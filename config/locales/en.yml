@@ -1,10 +1,16 @@
 en:
   activerecord:
     models:
+      category:
+        one: Category
+        other: Categories
       user:
         one: User
         other: Users
     attributes:
+      category:
+        name: Name
+        description: Description
       user:
         name: Name
         email: Email

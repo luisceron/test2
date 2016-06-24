@@ -1,13 +1,12 @@
 <%= simple_form_for @category do |f| %>
-  <%= f.association :user %>
   <%= f.input :name %>
-  <%= f.input :description %>
+  <%= f.input :description, as: :text %>
 
   <div class="text-center">
     <% if @category.persisted? %>
       <%= link_with_icon_to_back category_path(@category) %>
     <% else %>
-      <%= link_with_icon_to_back categories_path %>
+      <%= link_with_icon_to_back user_categories_path(@user) %>
     <% end %>
 
     <%= save_button %>

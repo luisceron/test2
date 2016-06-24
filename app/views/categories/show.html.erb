@@ -9,17 +9,12 @@
     </div>
     <div class="pack-inside">
       <dl class="dl-horizontal">
-
-        <%= show_for @category, :user %>
-
         <%= show_for @category, :name %>
-
         <%= show_for @category, :description %>
-
       </dl>
 
       <div class="text-center">
-        <%= link_with_icon_to_back categories_path %>
+        <%= link_with_icon_to_back user_categories_path(@user) %>
         <%= link_with_icon_to_edit edit_category_path(@category) %>
       </div>
     </div>
