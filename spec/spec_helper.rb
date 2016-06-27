@@ -61,6 +61,40 @@ RSpec.configure do |config|
     c.syntax = [:should, :expect]
   end
 
+  config.before(:each, type: :feature) do
+    default_url_options[:locale] = I18n.default_locale
+  end
+
+
+
+
+
+  #   O  L  D       S  E  T  U  P   =================================================
+
+  # config.before(:suite) do
+  #   unless running_partial_tests
+  #     DatabaseCleaner.clean_with(:deletion)
+  #     begin
+  #       DatabaseCleaner.start
+
+  #       FactoryGirl.lint
+  #     ensure
+  #       DatabaseCleaner.clean
+  #     end
+  #   end
+  # end
+
+  # config.before(:each) do |example|
+  #   if example.metadata[:js]
+  #     DatabaseCleaner.strategy = :truncation
+  #   else
+  #     DatabaseCleaner.strategy = :transaction
+  #   end
+
+  #   DatabaseCleaner.start
+  # end
+
+  #   N  E  W       S  E  T  U  P   =================================================
   config.before(:suite) do
     unless running_partial_tests
       DatabaseCleaner.clean_with(:deletion)
@@ -75,14 +109,36 @@ RSpec.configure do |config|
   end
 
   config.before(:each) do |example|
+    # Aqui o ideal seria termos dois blocos de config, um passando js: true e outro js: false.
+    # Porém, ao passar js: false, este nunca é executado. Então precisamos acessar diretamente
+    # o metadata do exemplo corrente.
+    # Definimos estratégia :deletion em testes JS pois nestes casos os testes (client) rodam
+    # em uma conexão de banco diferente de onde roda o servidor, sendo necessário acessar dados
+    # commitados.
     if example.metadata[:js]
       DatabaseCleaner.strategy = :truncation
     else
       DatabaseCleaner.strategy = :transaction
     end
 
+    # Aqui criamos o que é definido como SEEDS da aplicação de testes.
+    # Poderia ser feito após o start, mas fizemos isso antes para que estes dados fiquem commitados
+    # no banco, diminuindo o tempo de inicialização dos testes
+    # Não é possível definir isso como before(:suite) pois ao alterar para strategy truncation estes
+    # dados seriam perdidos
     DatabaseCleaner.start
   end
+
+  config.after(:each) do |example|
+    wait_for_ajax if example.metadata[:type] == :feature && example.metadata[:js]
+    DatabaseCleaner.clean
+  end
+
+
+
+
+
+
 
 
 # The settings below are suggested to provide a good initial experience

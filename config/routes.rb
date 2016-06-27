@@ -6,8 +6,9 @@ Rails.application.routes.draw do
     resources :users do
       get :edit_password
       patch :update_password
-      # get :remove_account
       patch :remove_account
+      
+      resources :accounts, shallow: true
     end
   end
   # The priority is based upon order of creation: first created -> highest priority.

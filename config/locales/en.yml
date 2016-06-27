@@ -1,10 +1,25 @@
 en:
   activerecord:
     models:
+      account:
+        one: Account
+        other: Accounts
       user:
         one: User
         other: Users
     attributes:
+      account:
+        account_type: Type
+        name: Name
+        description: Description
+        balance: Balance
+        account_types:
+          current_account: Current Account
+          saving_account: Saving Account
+          cash_account: Cash
+        current_letter: C
+        saving_letter: S
+        cash_letter: M
       user:
         name: Name
         email: Email
@@ -21,14 +36,20 @@ en:
   action:
     index: List of %{model}
     new: New %{model}
+    new_fem: New %{model}
     edit: Edit %{model}
     sure: Are you sure?
     per_page: '%{model} per page'
     click_to_edit: To edit click on Edit
   controller:
+    added: '%{model} added successfully'
+    added_fem: '%{model} added successfully'
     created: '%{model} created successfully'
+    created_fem: '%{model} created successfully'
     updated: '%{model} updated successfully'
+    updated_fem: '%{model} updated successfully'
     destroyed: '%{model} destroyed successfully'
+    destroyed_fem: '%{model} destroyed successfully'
     access_denied: 'Access Denied'
     password_changed: 'Password changed successfully'
   link:

@@ -1,10 +1,25 @@
 pt-BR:
   activerecord:
     models:
+      account:
+        one: Conta
+        other: Contas
       user:
         one: Usuário
         other: Usuários
     attributes:
+      account:
+        account_type: Tipo
+        name: Nome
+        description: Descrição
+        balance: Saldo
+        account_types:
+          current_account: Conta Corrente
+          saving_account: Conta Poupança
+          cash_account: Dinheiro
+        current_letter: C
+        saving_letter: P
+        cash_letter: D
       user:
         name: Nome
         email: E-mail
@@ -21,14 +36,20 @@ pt-BR:
   action:
     index: Lista de %{model}
     new: Novo %{model}
+    new_fem: Nova %{model}
     edit: Editar %{model}
     sure: Você tem certeza?
     per_page: '%{model} por página'
     click_to_edit: Para editar clique em Editar
   controller:
+    added: '%{model} adicionado com sucesso'
+    added_fem: '%{model} adicionada com sucesso'
     created: '%{model} criado com sucesso'
+    created_fem: '%{model} criada com sucesso'
     updated: '%{model} atualizado com sucesso'
+    updated_fem: '%{model} atualizada com sucesso'
     destroyed: '%{model} removido com sucesso'
+    destroyed_fem: '%{model} removida com sucesso'
     access_denied: 'Acesso Negado'
     password_changed: 'Senha alterada com sucesso'
   link:
