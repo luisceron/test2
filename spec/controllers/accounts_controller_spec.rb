@@ -6,8 +6,6 @@ RSpec.describe AccountsController, type: :controller do
 
   let(:invalid_attributes){ {name: ""} }
 
-  let(:valid_session){ {} }
-
   # => I N D E X
   describe "GET #index" do
     context "with user account owner" do
