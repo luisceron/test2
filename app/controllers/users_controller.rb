@@ -37,43 +37,11 @@ class UsersController < ApplicationController
   end
 
   def update_password
-    if current_user.admin
-      if user_params[:password] == user_params[:password_confirmation]
-        if @user.update(user_params)
-          if @user == current_user
-            sign_in @user, bypass: true
-          else
-            sign_in current_user, bypass: true
-          end
-          redirect_to @user, notice: t('controller.password_changed')
-        end
-      else
-        @user.errors.add(:password_confirmation, User.human_attribute_name(:admin_update_password_error))
-        render 'edit_password'
-      end
-    else
-      if @user.update_with_password(user_params)
-        sign_in @user, bypass: true
-        redirect_to @user, notice: t('controller.password_changed')
-      else
-        render 'edit_password'
-      end
-    end
+    update_user_password
   end
 
   def remove_account
-    @user.assign_attributes(user_params_destroy)
-
-    if @user.email == @user.typed_email
-      @user.destroy
-      if current_user.admin && current_user != @user
-        redirect_to users_path, notice: User.human_attribute_name(:destroyed_successfully)
-      else
-        redirect_to new_user_session_path, notice: User.human_attribute_name(:destroyed_successfully)
-      end
-    else
-      redirect_to @user, alert: User.human_attribute_name(:invalid_email)
-    end
+    remove_user_account
   end
 
   private
@@ -91,5 +59,45 @@ class UsersController < ApplicationController
 
     def user_params_destroy
       params.require(:user).permit(:typed_email)
+    end
+
+    def update_user_password
+      if current_user.admin
+        if user_params[:password] == user_params[:password_confirmation]
+          if @user.update(user_params)
+            if @user == current_user
+              sign_in @user, bypass: true
+            else
+              sign_in current_user, bypass: true
+            end
+            redirect_to @user, notice: t('controller.password_changed')
+          end
+        else
+          @user.errors.add(:password_confirmation, User.human_attribute_name(:admin_update_password_error))
+          render :edit_password
+        end
+      else
+        if @user.update_with_password(user_params)
+          sign_in @user, bypass: true
+          redirect_to @user, notice: t('controller.password_changed')
+        else
+          render :edit_password
+        end
+      end
+    end
+
+    def remove_user_account
+      @user.assign_attributes(user_params_destroy)
+
+      if @user.email == @user.typed_email
+        @user.destroy
+        if current_user.admin && current_user != @user
+          redirect_to users_path, notice: User.human_attribute_name(:destroyed_successfully)
+        else
+          redirect_to new_user_session_path, notice: User.human_attribute_name(:destroyed_successfully)
+        end
+      else
+        redirect_to @user, alert: User.human_attribute_name(:invalid_email)
+      end
     end
 end
