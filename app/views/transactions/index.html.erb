@@ -8,18 +8,57 @@
     <div class="pack-inside">
       <div class="row">
         <div class="col-md-12">
-          <%= search_form_for(@query) do |f|  %>
+          <%= search_form_for(@query, url: user_transactions_path(@user)) do |f|  %>
             <div class="input-group btn-group" role="group">
-              <%= f.text_field :user_cont, class: "input-sm form-control" %>
-              <span class="input-group-btn">
-                <%= button_tag(type: 'submit', class: "btn btn-sm btn-primary", id: "search_button") do %>
-                  <i class="fa fa-search"></i>
-                <% end %>
-              </span>
+
+              <div class="row">
+                <div class="col-md-11">
+                  <%= f.text_field :date_or_amount_or_description_cont, class: "input-sm form-control" %>
+                </div>
+
+                <div class="col-md-1">
+                  <span class="input-group-btn">
+                    <%= button_tag(type: 'submit', class: "btn btn-sm btn-primary", id: "search_button") do %>
+                      <i class="fa fa-search"></i>
+                    <% end %>
+                  </span>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-2">
+                  <%= f.select :account_id_eq, @user.accounts %>
+                </div>
+
+                <div class="col-md-2">
+                  <%= f.select :category_id_eq, @user.categories %>
+                </div>
+
+                <div class="col-md-2">
+                  <%= f.select :transaction_type_eq, options_for_enum(Transaction, :transaction_types) %>
+                </div>
+
+                <div class="col-md-2">
+                  <%= f.text_field :date_cont %>
+                </div>
+              </div>
             </div>
           <% end %>
         </div>
       </div><br>
+
+
+
+
+
+
+<!-- input(6) accounts(2) category(2) types(2) date_ini(2) date_end(2) button(1) -->
+
+
+
+
+
+
 
       <div class="table-responsive">
         <table class="table table-hover table-striped table-condensed">
@@ -57,8 +96,10 @@
       </div>
 
       <div class="row">
-        <div class="pull-right">
-          <%= link_with_icon_to_new_fem new_transaction_path %>
+        <div class="col-md-12">
+          <div class="pull-right">
+            <%= link_with_icon_to_new_fem new_user_transaction_path(@user), Transaction %>
+          </div>
         </div>
       </div>
 

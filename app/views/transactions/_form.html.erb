@@ -1,7 +1,7 @@
-<%= simple_form_for @transaction do |f| %>
+<%= simple_form_for @transaction, url: transaction_form_path(@transaction) do |f| %>
   <%= f.association :account %>
   <%= f.association :category %>
-  <%= f.input :transaction_type %>
+  <%= f.input :transaction_type, collection: options_for_enum(Transaction, :transaction_types) %>
   <%= f.input :date %>
   <%= f.input :amount %>
   <%= f.input :description %>
@@ -10,7 +10,7 @@
     <% if @transaction.persisted? %>
       <%= link_with_icon_to_back transaction_path(@transaction) %>
     <% else %>
-      <%= link_with_icon_to_back transactions_path %>
+      <%= link_with_icon_to_back user_transactions_path(@user) %>
     <% end %>
 
     <%= save_button %>

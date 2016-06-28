@@ -7,6 +7,9 @@ pt-BR:
       category:
         one: Categoria
         other: Categorias
+      transaction:
+        one: Transação
+        other: Transações
       user:
         one: Usuário
         other: Usuários
@@ -26,6 +29,16 @@ pt-BR:
       category:
         name: Nome
         description: Descrição
+      transaction:
+        account: Conta
+        category: Categoria
+        transaction_type: Tipo
+        date: Data
+        amount: Valor
+        description: Descrição
+        transaction_types:
+          credit: Crédito
+          debit: Débito
       user:
         name: Nome
         email: E-mail

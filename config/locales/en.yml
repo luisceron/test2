@@ -7,6 +7,9 @@ en:
       category:
         one: Category
         other: Categories
+      transaction:
+        one: Transaction
+        other: Transactions
       user:
         one: User
         other: Users
@@ -26,6 +29,16 @@ en:
       category:
         name: Name
         description: Description
+      transaction:
+        account: Account
+        category: Category
+        transaction_type: Type
+        date: Date
+        amount: Amount
+        description: Description
+        transaction_types:
+          credit: Credit
+          debit: Debit
       user:
         name: Name
         email: Email
