@@ -13,8 +13,13 @@
         <% end %>
 
         <%= link_to user_accounts_path(current_user), class: "menu menu-link" do %>
-          <i class="fa fa-bank fa-3x"></i>
+          <i class="fa fa-bank"></i>
           <strong><%= Account.model_name.human(count: 2) %></strong>
+        <% end %>
+
+        <%= link_to user_categories_path(current_user), class: "menu menu-link" do %>
+          <i class="fa fa-folder-open"></i>
+          <strong><%= Category.model_name.human(count: 2) %></strong>
         <% end %>
 
         <%= link_to root_path, class: "menu menu-link" do %>
