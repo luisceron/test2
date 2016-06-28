@@ -1,0 +1,45 @@
+<div class="wrapper border-bottom bg-white">
+  <h3><%= Category.model_name.human(count: 2) %></h3>
+</div>
+
+<div class="row">
+  <div class="pack form-panel">
+    <div class="pack-caption"><strong><%= action_index Category %></strong></div>
+    <div class="pack-inside">
+      <div class="table-responsive">
+        <table class="table table-hover table-striped table-condensed">
+          <thead>
+            <tr>
+              <th><%= Category.human_attribute_name(:name) %></th>
+              <th><%= Category.human_attribute_name(:description) %></th>
+              <th></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% @categories.each do |category| %>
+              <tr data-href="<%= category_path(category) %>">
+                <td><%= category.name %></td>
+                <td><%= category.description %></td>
+                <td>
+                  <div class="pull-right">
+                    <%= link_only_icon_to_edit edit_category_path(category) %>
+                    <%= link_only_icon_to_destroy category %>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="row">
+        <div class="pull-right">
+          <%= link_with_icon_to_new_fem new_user_category_path(@user), Category %>
+        </div>
+      </div>
+
+      <%= index_footer @categories %>
+    </div>
+  </div>
+</div>

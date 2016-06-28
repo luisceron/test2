@@ -5,24 +5,11 @@ module BaseController
   end
 
   def save_object object, options = {}
-    fem = options[:fem]
     respond_to do |format|
       if object.persisted?
-        if object.save
-          format.html { redirect_to object, notice: t( fem ? 'controller.updated_fem' : 'controller.updated', model: object.class.model_name.human) }
-          format.json { render :show, status: :ok, location: object }
-        else
-          format.html { render :edit }
-          format.json { render json: object.errors, status: :unprocessable_entity }
-        end
+        responder format, object, 'updated', options[:fem]
       else
-        if object.save
-          format.html { redirect_to object, notice: t( fem ? 'controller.created_fem' : 'controller.created', model: object.class.model_name.human) }
-          format.json { render :show, status: :created, location: object }
-        else
-          format.html { render :new }
-          format.json { render json: object.errors, status: :unprocessable_entity }
-        end
+        responder format, object, 'created', options[:fem]
       end
     end
   end
@@ -35,4 +22,19 @@ module BaseController
       format.json { head :no_content }
     end
   end
+
+  private
+    def responder format, object, action, fem = nil
+      created   = action == 'created'
+      status    = created ? :created : :ok
+      render_to = created ? :new : :edit
+
+      if object.save
+        format.html { redirect_to object, notice: t( fem ? 'controller.'+action+'_fem' : 'controller.'+action, model: object.class.model_name.human) }
+        format.json { render :show, status: status, location: object }
+      else
+        format.html { render render_to }
+        format.json { render json: object.errors, status: :unprocessable_entity }
+      end
+    end
 end

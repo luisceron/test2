@@ -4,11 +4,11 @@ Rails.application.routes.draw do
   scope "(:locale)", locale: LOCALES do
     devise_for :users, :path => 'auth'
     resources :users do
-      get :edit_password
-      patch :update_password
-      patch :remove_account
-      
       resources :accounts, shallow: true
+      resources :categories, shallow: true
+      get :edit_password
+      patch :remove_account
+      patch :update_password
     end
   end
   # The priority is based upon order of creation: first created -> highest priority.

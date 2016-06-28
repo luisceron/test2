@@ -284,13 +284,13 @@ feature "a user accounts views for another normal user", type: :feature do
     visit user_accounts_path(user_owner)
   end
 
-  # => I N D E X   A N d    D E S T R O Y
+  # => I N D E X   A N D    D E S T R O Y
   scenario "can't list accounts" do
     expect(page).to_not have_content( I18n.t('action.index', model: Account.model_name.human(count: 2)) )
     expect(page).to have_content( I18n.t('controller.access_denied') )
   end
 
-  # => N E W    AND   C R E A T E
+  # => N E W    A N D   C R E A T E
   scenario "can't create a new account" do
     visit new_user_account_path(user_owner)
     expect(page).to_not have_content( I18n.t('action.new', model: Account.model_name.human) )

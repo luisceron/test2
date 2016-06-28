@@ -4,6 +4,9 @@ pt-BR:
       account:
         one: Conta
         other: Contas
+      category:
+        one: Categoria
+        other: Categorias
       user:
         one: Usuário
         other: Usuários
@@ -20,6 +23,9 @@ pt-BR:
         current_letter: C
         saving_letter: P
         cash_letter: D
+      category:
+        name: Nome
+        description: Descrição
       user:
         name: Nome
         email: E-mail

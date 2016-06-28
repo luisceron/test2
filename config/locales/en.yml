@@ -4,6 +4,9 @@ en:
       account:
         one: Account
         other: Accounts
+      category:
+        one: Category
+        other: Categories
       user:
         one: User
         other: Users
@@ -20,6 +23,9 @@ en:
         current_letter: C
         saving_letter: S
         cash_letter: M
+      category:
+        name: Name
+        description: Description
       user:
         name: Name
         email: Email
