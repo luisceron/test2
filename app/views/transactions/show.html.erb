@@ -1,5 +1,5 @@
 <div class="wrapper border-bottom bg-white">
-  <h3><%= Transaction.model_name.human.pluralize %></h3>
+  <h3><%= Transaction.model_name.human(count: 2) %></h3>
 </div>
 
 <div class="row">
@@ -9,21 +9,12 @@
     </div>
     <div class="pack-inside">
       <dl class="dl-horizontal">
-
-        <%= show_for @transaction, :user %>
-
         <%= show_for @transaction, :account %>
-
         <%= show_for @transaction, :category %>
-
         <%= show_for @transaction, :transaction_type %>
-
         <%= show_for @transaction, :date %>
-
         <%= show_for @transaction, :amount %>
-
         <%= show_for @transaction, :description %>
-
       </dl>
 
       <div class="text-center">

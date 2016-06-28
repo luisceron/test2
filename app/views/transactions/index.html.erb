@@ -1,5 +1,5 @@
 <div class="wrapper border-bottom bg-white">
-  <h3><%= Transaction.model_name.human.pluralize %></h3>
+  <h3><%= Transaction.model_name.human(count: 2) %></h3>
 </div>
 
 <div class="row">
@@ -25,21 +25,12 @@
         <table class="table table-hover table-striped table-condensed">
           <thead>
             <tr>
-
-              <th><%= Transaction.human_attribute_name(:user) %></th>
-
               <th><%= Transaction.human_attribute_name(:account) %></th>
-
               <th><%= Transaction.human_attribute_name(:category) %></th>
-
               <th><%= Transaction.human_attribute_name(:transaction_type) %></th>
-
               <th><%= Transaction.human_attribute_name(:date) %></th>
-
               <th><%= Transaction.human_attribute_name(:amount) %></th>
-
               <th><%= Transaction.human_attribute_name(:description) %></th>
-
               <th></th>
             </tr>
           </thead>
@@ -47,21 +38,12 @@
           <tbody>
             <% @transactions.each do |transaction| %>
               <tr data-href="<%= transaction_path(transaction) %>">
-
-                <td><%= transaction.user %></td>
-
                 <td><%= transaction.account %></td>
-
                 <td><%= transaction.category %></td>
-
                 <td><%= transaction.transaction_type %></td>
-
                 <td><%= transaction.date %></td>
-
                 <td><%= transaction.amount %></td>
-
                 <td><%= transaction.description %></td>
-
                 <td>
                   <div class="pull-right">
                     <%= link_only_icon_to_edit edit_transaction_path(transaction) %>
@@ -76,7 +58,7 @@
 
       <div class="row">
         <div class="pull-right">
-          <%= link_with_icon_to_new new_transaction_path %>
+          <%= link_with_icon_to_new_fem new_transaction_path %>
         </div>
       </div>
 

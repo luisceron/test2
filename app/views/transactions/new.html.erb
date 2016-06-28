@@ -1,10 +1,10 @@
 <div class="wrapper border-bottom bg-white">
-  <h3><%= Transaction.model_name.human.pluralize %></h3>
+  <h3><%= Transaction.model_name.human(count: 2) %></h3>
 </div>
 
 <div class="row">
   <div class="pack form-panel">
-    <div class="pack-caption"><strong><%= action_new Transaction %></strong></div>
+    <div class="pack-caption"><strong><%= action_new_fem Transaction %></strong></div>
 
     <div class="pack-inside">
       <%= render 'form' %>
