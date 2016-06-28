@@ -1,12 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe UsersController, type: :controller do
-
   let(:valid_attributes){ attributes_for(:user) }
-
   let(:invalid_attributes){ {email: ""} }
-
-  let(:valid_session){ {} }
 
   # => I N D E X
   describe "GET #index" do
@@ -48,7 +44,7 @@ RSpec.describe UsersController, type: :controller do
       it "assigns the requested user as @user" do
         expect(controller.current_user.admin).to be(true)
         user = User.create! valid_attributes
-        get :show, {:id => user.to_param}, valid_session
+        get :show, {:id => user.to_param}
         expect(assigns(:user)).to eq(user)
         expect(response).to render_template(:show)
       end
@@ -58,7 +54,7 @@ RSpec.describe UsersController, type: :controller do
       sign_in_normal_user
       it "assigns the requested user as @user" do
         expect(controller.current_user.admin).to be(false)
-        get :show, {:id => controller.current_user.to_param}, valid_session
+        get :show, {:id => controller.current_user.to_param}
         expect(assigns(:user)).to eq(controller.current_user)
         expect(response).to render_template(:show)
       end
@@ -69,7 +65,7 @@ RSpec.describe UsersController, type: :controller do
       it "assigns the requested user as @user" do
         expect(controller.current_user.admin).to be(false)
         user = User.create! valid_attributes
-        get :show, {:id => user.to_param}, valid_session
+        get :show, {:id => user.to_param}
         expect(assigns(:user)).to be_nil
         expect(assigns(:user)).to_not eq(user)
         expect(response).to redirect_to(root_path)
@@ -83,7 +79,7 @@ RSpec.describe UsersController, type: :controller do
       sign_in_admin_user
       it "assigns a new user as @user" do
         expect(controller.current_user.admin).to be(true)
-        get :new, {}, valid_session
+        get :new, {}
         expect(assigns(:user)).to be_a_new(User)
         expect(response).to render_template(:new)
       end
@@ -93,7 +89,7 @@ RSpec.describe UsersController, type: :controller do
       sign_in_normal_user
       it "should not assigns a new user as @user" do
         expect(controller.current_user.admin).to be(false)
-        get :new, {}, valid_session
+        get :new, {}
         expect(assigns(:user)).to be_nil
         expect(response).to redirect_to(root_path)
       end
@@ -107,7 +103,7 @@ RSpec.describe UsersController, type: :controller do
       it "assigns the requested user as @user" do
         expect(controller.current_user.admin).to be(true)
         user = User.create! valid_attributes
-        get :edit, {:id => user.to_param}, valid_session
+        get :edit, {:id => user.to_param}
         expect(assigns(:user)).to eq(user)
         expect(response).to render_template(:edit)
       end
@@ -117,7 +113,7 @@ RSpec.describe UsersController, type: :controller do
       sign_in_normal_user
       it "assigns the current user as @user" do
         expect(controller.current_user.admin).to be(false)
-        get :edit, {:id => controller.current_user.to_param}, valid_session
+        get :edit, {:id => controller.current_user.to_param}
         expect(assigns(:user)).to eq(controller.current_user)
         expect(response).to render_template(:edit)
       end
@@ -128,7 +124,7 @@ RSpec.describe UsersController, type: :controller do
       it "should not assigns the requested user as @user" do
         expect(controller.current_user.admin).to be(false)
         user = User.create! valid_attributes
-        get :edit, {:id => user.to_param}, valid_session
+        get :edit, {:id => user.to_param}
         expect(assigns(:user)).to_not eq(user)
         expect(assigns(:user)).to be_nil
         expect(response).to redirect_to(root_path)
@@ -145,18 +141,18 @@ RSpec.describe UsersController, type: :controller do
       it "creates a new User" do
         expect(controller.current_user.admin).to be(true)
         expect {
-          post :create, {:user => valid_attributes}, valid_session
+          post :create, {:user => valid_attributes}
         }.to change(User, :count).by(1)
       end
 
       it "assigns a newly created user as @user" do
-        post :create, {:user => valid_attributes}, valid_session
+        post :create, {:user => valid_attributes}
         expect(assigns(:user)).to be_a(User)
         expect(assigns(:user)).to be_persisted
       end
 
       it "redirects to the created user" do
-        post :create, {:user => valid_attributes}, valid_session
+        post :create, {:user => valid_attributes}
         expect(response).to redirect_to(User.last)
       end
     end
@@ -165,13 +161,13 @@ RSpec.describe UsersController, type: :controller do
       sign_in_admin_user
       it "assigns a newly created but unsaved user as @user" do
         expect(controller.current_user.admin).to be(true)
-        post :create, {:user => invalid_attributes}, valid_session
+        post :create, {:user => invalid_attributes}
         expect(assigns(:user)).to be_a_new(User)
         expect(assigns(:user)).to_not be_persisted
       end
 
       it "re-renders the 'new' template" do
-        post :create, {:user => invalid_attributes}, valid_session
+        post :create, {:user => invalid_attributes}
         expect(response).to render_template("new")
       end
     end
@@ -205,20 +201,20 @@ RSpec.describe UsersController, type: :controller do
       it "updates the requested user" do
         expect(controller.current_user.admin).to be(true)
         user = User.create! valid_attributes
-        put :update, {:id => user.to_param, :user => new_attributes}, valid_session
+        put :update, {:id => user.to_param, :user => new_attributes}
         user.reload
         expect(user.name).to eq(new_attributes[:name])
       end
 
       it "assigns the requested user as @user" do
         user = User.create! valid_attributes
-        put :update, {:id => user.to_param, :user => valid_attributes}, valid_session
+        put :update, {:id => user.to_param, :user => valid_attributes}
         expect(assigns(:user)).to eq(user)
       end
 
       it "redirects to the user" do
         user = User.create! valid_attributes
-        put :update, {:id => user.to_param, :user => valid_attributes}, valid_session
+        put :update, {:id => user.to_param, :user => valid_attributes}
         expect(response).to redirect_to(user)
       end
     end
@@ -228,13 +224,13 @@ RSpec.describe UsersController, type: :controller do
       it "assigns the user as @user" do
         expect(controller.current_user.admin).to be(true)
         user = User.create! valid_attributes
-        put :update, {:id => user.to_param, :user => invalid_attributes}, valid_session
+        put :update, {:id => user.to_param, :user => invalid_attributes}
         expect(assigns(:user)).to eq(user)
       end
 
       it "re-renders the 'edit' template" do
         user = User.create! valid_attributes
-        put :update, {:id => user.to_param, :user => invalid_attributes}, valid_session
+        put :update, {:id => user.to_param, :user => invalid_attributes}
         expect(response).to render_template(:edit)
       end
     end
@@ -245,18 +241,18 @@ RSpec.describe UsersController, type: :controller do
 
       it "updates current user" do
         expect(controller.current_user.admin).to be(false)
-        put :update, {:id => controller.current_user.to_param, :user => new_attributes}, valid_session
+        put :update, {:id => controller.current_user.to_param, :user => new_attributes}
         controller.current_user.reload
         expect(controller.current_user.name).to eq(new_attributes[:name])
       end
 
       it "assigns the currente user as @user" do
-        put :update, {:id => controller.current_user.to_param, :user => valid_attributes}, valid_session
+        put :update, {:id => controller.current_user.to_param, :user => valid_attributes}
         expect(assigns(:user)).to eq(controller.current_user)
       end
 
       it "redirects to the user" do
-        put :update, {:id => controller.current_user.to_param, :user => valid_attributes}, valid_session
+        put :update, {:id => controller.current_user.to_param, :user => valid_attributes}
         expect(response).to redirect_to(controller.current_user)
       end
     end
@@ -266,12 +262,12 @@ RSpec.describe UsersController, type: :controller do
 
       it "assigns the current user as @user" do
         expect(controller.current_user.admin).to be(false)
-        put :update, {:id => controller.current_user.to_param, :user => invalid_attributes}, valid_session
+        put :update, {:id => controller.current_user.to_param, :user => invalid_attributes}
         expect(assigns(:user)).to eq(controller.current_user)
       end
 
       it "re-renders the 'edit' template" do
-        put :update, {:id => controller.current_user.to_param, :user => invalid_attributes}, valid_session
+        put :update, {:id => controller.current_user.to_param, :user => invalid_attributes}
         expect(response).to render_template(:edit)
       end
     end
@@ -283,7 +279,7 @@ RSpec.describe UsersController, type: :controller do
       it "should not have chagend user and return to root" do
         expect(controller.current_user.admin).to be(false)
         user = User.create! valid_attributes
-        put :update, {:id => user.to_param, :user => new_attributes}, valid_session
+        put :update, {:id => user.to_param, :user => new_attributes}
         expect(assigns(:user)).to be_nil
         expect(response).to redirect_to root_path
       end
@@ -299,13 +295,13 @@ RSpec.describe UsersController, type: :controller do
         expect(controller.current_user.admin).to be(true)
         user = User.create! valid_attributes
         expect {
-          delete :destroy, {:id => user.to_param}, valid_session
+          delete :destroy, {:id => user.to_param}
         }.to change(User, :count).by(-1)
       end
 
       it "redirects to the users list" do
         user = User.create! valid_attributes
-        delete :destroy, {:id => user.to_param}, valid_session
+        delete :destroy, {:id => user.to_param}
         expect(response).to redirect_to(users_url)
       end
     end
@@ -318,10 +314,12 @@ RSpec.describe UsersController, type: :controller do
         user = User.create! valid_attributes
 
         expect {
-          delete :destroy, {:id => user.to_param}, valid_session
+          delete :destroy, {:id => user.to_param}
         }.to change(User, :count).by(0)
 
-        delete :destroy, {:id => user.to_param}, valid_session
+        delete :destroy, {:id => user.to_param}
+        user.reload
+        expect(user).to be_persisted
         expect(response).to redirect_to(root_path)
       end
     end

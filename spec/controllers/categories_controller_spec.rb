@@ -319,6 +319,8 @@ RSpec.describe CategoriesController, type: :controller do
       it "can't destroy and must redirects to root" do
         category = create(:category, user: create(:user))
         delete :destroy, {id: category.to_param}
+        category.reload
+        expect(category).to be_persisted
         expect(response).to redirect_to(root_path)
       end
     end
@@ -337,6 +339,8 @@ RSpec.describe CategoriesController, type: :controller do
       it "can't destroy and must redirects to root" do
         category = create(:category, user: create(:user))
         delete :destroy, {id: category.to_param}
+        category.reload
+        expect(category).to be_persisted
         expect(response).to redirect_to(root_path)
       end
     end

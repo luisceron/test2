@@ -1,0 +1,35 @@
+<div class="wrapper border-bottom bg-white">
+  <h3><%= Transaction.model_name.human.pluralize %></h3>
+</div>
+
+<div class="row">
+  <div class="pack form-panel">
+    <div class="pack-caption">
+      <strong><%= @transaction.name %></strong>
+    </div>
+    <div class="pack-inside">
+      <dl class="dl-horizontal">
+
+        <%= show_for @transaction, :user %>
+
+        <%= show_for @transaction, :account %>
+
+        <%= show_for @transaction, :category %>
+
+        <%= show_for @transaction, :transaction_type %>
+
+        <%= show_for @transaction, :date %>
+
+        <%= show_for @transaction, :amount %>
+
+        <%= show_for @transaction, :description %>
+
+      </dl>
+
+      <div class="text-center">
+        <%= link_with_icon_to_back transactions_path %>
+        <%= link_with_icon_to_edit edit_transaction_path(@transaction) %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160623194551) do
+ActiveRecord::Schema.define(version: 20160628164300) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,6 +37,22 @@ ActiveRecord::Schema.define(version: 20160623194551) do
   end
 
   add_index "categories", ["user_id"], name: "index_categories_on_user_id", using: :btree
+
+  create_table "transactions", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "account_id"
+    t.integer  "category_id"
+    t.integer  "transaction_type"
+    t.datetime "date"
+    t.decimal  "amount"
+    t.string   "description"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
+  add_index "transactions", ["account_id"], name: "index_transactions_on_account_id", using: :btree
+  add_index "transactions", ["category_id"], name: "index_transactions_on_category_id", using: :btree
+  add_index "transactions", ["user_id"], name: "index_transactions_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false
@@ -69,4 +85,7 @@ ActiveRecord::Schema.define(version: 20160623194551) do
 
   add_foreign_key "accounts", "users"
   add_foreign_key "categories", "users"
+  add_foreign_key "transactions", "accounts"
+  add_foreign_key "transactions", "categories"
+  add_foreign_key "transactions", "users"
 end

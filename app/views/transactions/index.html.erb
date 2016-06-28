@@ -1,0 +1,86 @@
+<div class="wrapper border-bottom bg-white">
+  <h3><%= Transaction.model_name.human.pluralize %></h3>
+</div>
+
+<div class="row">
+  <div class="pack form-panel">
+    <div class="pack-caption"><strong><%= action_index Transaction %></strong></div>
+    <div class="pack-inside">
+      <div class="row">
+        <div class="col-md-12">
+          <%= search_form_for(@query) do |f|  %>
+            <div class="input-group btn-group" role="group">
+              <%= f.text_field :user_cont, class: "input-sm form-control" %>
+              <span class="input-group-btn">
+                <%= button_tag(type: 'submit', class: "btn btn-sm btn-primary", id: "search_button") do %>
+                  <i class="fa fa-search"></i>
+                <% end %>
+              </span>
+            </div>
+          <% end %>
+        </div>
+      </div><br>
+
+      <div class="table-responsive">
+        <table class="table table-hover table-striped table-condensed">
+          <thead>
+            <tr>
+
+              <th><%= Transaction.human_attribute_name(:user) %></th>
+
+              <th><%= Transaction.human_attribute_name(:account) %></th>
+
+              <th><%= Transaction.human_attribute_name(:category) %></th>
+
+              <th><%= Transaction.human_attribute_name(:transaction_type) %></th>
+
+              <th><%= Transaction.human_attribute_name(:date) %></th>
+
+              <th><%= Transaction.human_attribute_name(:amount) %></th>
+
+              <th><%= Transaction.human_attribute_name(:description) %></th>
+
+              <th></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% @transactions.each do |transaction| %>
+              <tr data-href="<%= transaction_path(transaction) %>">
+
+                <td><%= transaction.user %></td>
+
+                <td><%= transaction.account %></td>
+
+                <td><%= transaction.category %></td>
+
+                <td><%= transaction.transaction_type %></td>
+
+                <td><%= transaction.date %></td>
+
+                <td><%= transaction.amount %></td>
+
+                <td><%= transaction.description %></td>
+
+                <td>
+                  <div class="pull-right">
+                    <%= link_only_icon_to_edit edit_transaction_path(transaction) %>
+                    <%= link_only_icon_to_destroy transaction %>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="row">
+        <div class="pull-right">
+          <%= link_with_icon_to_new new_transaction_path %>
+        </div>
+      </div>
+
+      <%= index_footer @transactions %>
+    </div>
+  </div>
+</div>

@@ -1,9 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe AccountsController, type: :controller do
-
   let(:valid_attributes){ attributes_for(:account) }
-
   let(:invalid_attributes){ {name: ""} }
 
   # => I N D E X
@@ -328,6 +326,8 @@ RSpec.describe AccountsController, type: :controller do
       it "can't destroy and must redirects to the root" do
         account = create(:account, user: create(:user))
         delete :destroy, {id: account.to_param}
+        account.reload
+        expect(account).to be_persisted
         expect(response).to redirect_to(root_path)
       end
     end
@@ -346,6 +346,8 @@ RSpec.describe AccountsController, type: :controller do
       it "can't destroy and must redirects to the root" do
         account = create(:account, user: create(:user))
         delete :destroy, {id: account.to_param}
+        account.reload
+        expect(account).to be_persisted
         expect(response).to redirect_to(root_path)
       end
     end

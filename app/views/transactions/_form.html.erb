@@ -1,0 +1,19 @@
+<%= simple_form_for @transaction do |f| %>
+  <%= f.association :user %>
+  <%= f.association :account %>
+  <%= f.association :category %>
+  <%= f.input :transaction_type %>
+  <%= f.input :date %>
+  <%= f.input :amount %>
+  <%= f.input :description %>
+
+  <div class="text-center">
+    <% if @transaction.persisted? %>
+      <%= link_with_icon_to_back transaction_path(@transaction) %>
+    <% else %>
+      <%= link_with_icon_to_back transactions_path %>
+    <% end %>
+
+    <%= save_button %>
+  </div>
+<% end %>

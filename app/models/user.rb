@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
 
   has_many :accounts, dependent: :destroy
   has_many :categories, dependent: :destroy
+  has_many :transactions, dependent: :destroy
 
   before_validation :set_name_and_password, on: :create
   validates :name, presence: true
