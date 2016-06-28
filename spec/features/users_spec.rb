@@ -404,6 +404,7 @@ feature "users views for current user" do
 
   # => N E W    AND   C R E A T E
   scenario "creating a new user" do
+    visit new_user_path
     expect(page).to_not have_content( I18n.t('action.new', model: User.model_name.human) )
     expect(page).to have_content( I18n.t('controller.access_denied') )
   end
@@ -414,7 +415,7 @@ feature "users views for current user" do
     expect_show user, user
   end
 
-  # => U P D A T E
+  # => E D I T    A N D    U P D A T E
   context "updating user" do
     scenario "with valid params" do
       visit "/users/#{user.id}/edit"
@@ -529,7 +530,7 @@ feature "users views for normal user, trying to access another user profile" do
     expect(page).to have_content( I18n.t('controller.access_denied') )
   end
 
-  # => U P D A T E
+  # => E D I T    A N D   U P D A T E
   scenario "updating user" do
     visit "/users/#{user.id}/edit"
     expect(page).to have_content( I18n.t('controller.access_denied') )

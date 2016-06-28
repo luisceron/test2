@@ -25,13 +25,13 @@ module LinksHelper
     with_icon_base(path, t('link.edit'), 'btn-primary space-links', 'pencil-square-o')
   end
 
-  # def link_with_icon_to_new path
-  #   with_icon_base(path, t('link.new'), 'btn-primary space-links', 'plus')
+  # def link_with_icon_to_new path, model
+  #   with_icon_base(path, t('action.new', model: model.model_name.human), 'btn-primary space-links', 'plus')
   # end
 
-  # def link_with_icon_to_new_fem path
-  #   with_icon_base(path, t('link.new_fem'), 'btn-primary space-links', 'plus')
-  # end
+  def link_with_icon_to_new_fem path, model
+    with_icon_base(path, t('action.new_fem', model: model.model_name.human), 'btn-primary space-links', 'plus')
+  end
 
   private
     def only_icon_base path, icon, classe, options = {}

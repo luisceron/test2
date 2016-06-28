@@ -18,16 +18,16 @@ class CategoriesController < ApplicationController
 
   def create
     @category = @user.categories.new(category_params)
-    save_object @category
+    save_object @category, {fem: true}
   end
 
   def update
     @category.assign_attributes(category_params)
-    save_object @category
+    save_object @category, {fem: true}
   end
 
   def destroy
-    destroy_object @category, user_categories_url(@user)
+    destroy_object @category, user_categories_url(@user), {fem: true}
   end
 
   private

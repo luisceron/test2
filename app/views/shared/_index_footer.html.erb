@@ -1,8 +1,7 @@
 <div class="row">
   <div class="col-sm-4">
     <% if object.first %>
-      <!-- <b><s%= object.first.class.model_name.human(count: 2) %> <s%= t('action.per_page') %>&nbsp;</b> -->
-      <b><%= t('action.per_page', model: User.model_name.human.pluralize) %> &nbsp;</b>
+      <b><%= t('action.per_page', model: object.model_name.human(count: 2)) %> &nbsp;</b>
       <%= select_tag :per_page, options_for_select([10,25,50], params[:per_page] ? params[:per_page].to_i : 25), :onchange => "if(this.value){window.location='?per_page='+this.value;}" %>
     <% end %>
   </div>

@@ -1,0 +1,16 @@
+<%= simple_form_for @account, url: account_form_path(@account) do |f| %>
+  <%= f.input :account_type, collection: options_for_enum(Account, :account_types) %>
+  <%= f.input :name %>
+  <%= f.input :balance %>
+  <%= f.input :description, as: :text %>
+
+  <div class="text-center">
+    <% if @account.persisted? %>
+      <%= link_with_icon_to_back account_path(@account) %>
+    <% else %>
+      <%= link_with_icon_to_back user_accounts_path(@user) %>
+    <% end %>
+
+    <%= save_button %>
+  </div>
+<% end %>

@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   scope "(:locale)", locale: LOCALES do
     devise_for :users, :path => 'auth'
     resources :users do
+      resources :accounts, shallow: true
       resources :categories, shallow: true
       get :edit_password
       patch :remove_account
