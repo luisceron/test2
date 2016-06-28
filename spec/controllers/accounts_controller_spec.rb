@@ -272,8 +272,8 @@ RSpec.describe AccountsController, type: :controller do
         account = create(:account, user: user)
         put :update, {id: account.to_param, account: new_attributes}
         account.reload
-        expect(assigns(:account)).to be_nil
         expect(assigns(:account)).to_not eq(account)
+        expect(assigns(:account)).to be_nil
         expect(response).to redirect_to(root_path)
       end
     end
@@ -288,8 +288,8 @@ RSpec.describe AccountsController, type: :controller do
         account = create(:account, user: user)
         put :update, {id: account.to_param, account: new_attributes}
         account.reload
-        expect(assigns(:account)).to be_nil
         expect(assigns(:account)).to_not eq(account)
+        expect(assigns(:account)).to be_nil
         expect(response).to redirect_to(root_path)
       end
     end
