@@ -20,7 +20,7 @@
             <% @accounts.each do |account| %>
               <tr data-href="<%= account_path(account) %>">
                 <td><%= account.name %> <%= badge_for_account_type account.account_type %></td>
-                <td><%= account.balance %></td>
+                <td><%= number_to_currency account.balance %></td>
                 <td>
                   <div class="pull-right">
                     <%= link_only_icon_to_edit edit_account_path(account) %>

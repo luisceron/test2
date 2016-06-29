@@ -18,7 +18,7 @@
         </div>
         
         <%= show_for @account, :name %>
-        <%= show_for @account, :balance %>
+        <%= show_for @account, :balance, { text: number_to_currency(@account.balance) } %>
         <%= show_for @account, :description %>
       </dl>
 

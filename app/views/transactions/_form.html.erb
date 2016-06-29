@@ -2,8 +2,8 @@
   <%= f.association :account %>
   <%= f.association :category %>
   <%= f.input :transaction_type, collection: options_for_enum(Transaction, :transaction_types) %>
-  <%= f.input :date %>
-  <%= f.input :amount %>
+  <%= f.input :date, as: :date_picker %>
+  <%= f.input :amount, as: :mask_currency_value %>
   <%= f.input :description %>
 
   <div class="text-center">

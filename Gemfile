@@ -64,10 +64,11 @@ end
 gem 'bootstrap-sass', '~> 3.3.6'
 gem "font-awesome-rails", '4.3.0.0'
 
+gem 'bootstrap-datepicker-rails'
 gem 'devise'
 gem 'devise-i18n'
 gem 'rails-i18n'
-gem 'simple_form'
 gem 'ransack'
+gem 'simple_form'
 gem 'will_paginate'
 gem 'will_paginate-bootstrap'
