@@ -1,0 +1,45 @@
+<div style="display: none" id="transaction_advanced_search" class="row">
+  <div class="col-md-2">
+    <div class="form-group">
+      <%= f.label :account %>
+      <%= f.select :account_id_in, user_accounts_for_select(@user), {include_blank: true}, class: "form-control" %>
+    </div>                
+  </div>
+
+  <div class="col-md-2">
+    <div class="form-group">
+      <%= f.label :category %>
+      <%= f.select :category_id_eq, user_categories_for_select(@user), {include_blank: true}, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="col-md-2">
+    <div class="form-group">
+      <%= f.label :transaction_type %>
+      <%= f.select :transaction_type_eq, options_for_enum(Transaction, :transaction_types), {include_blank: true}, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="col-md-2">
+    <div class="form-group">
+      <%= f.label :date, "Inital Date", class: "control-label" %>
+      <%= f.text_field :date_cont, class: "form-control"  %>
+    </div>
+  </div>
+  
+  <div class="col-md-2">
+    <div class="form-group">
+      <%= f.label :date, "End Date", class: "control-label" %>
+      <%= f.text_field :date_cont, class: "form-control"  %>
+    </div>
+  </div>
+
+  <div class="col-md-2">
+    <label class="control-label"></label>
+    <span class="input-group-btn">
+      <%= button_tag(type: 'submit', class: "btn btn-defaul btn-block") do %>
+        <i class="fa fa-search"><%= t('action.search') %></i>
+      <% end %>
+    </span>
+  </div>
+</div>

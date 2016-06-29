@@ -6,4 +6,10 @@ module CategoriesHelper
       category_path category
     end
   end
+
+  def user_categories_for_select user
+    user.categories.collect do |category|
+      [category.name, category.id]
+    end
+  end
 end

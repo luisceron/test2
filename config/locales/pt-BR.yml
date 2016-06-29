@@ -60,6 +60,8 @@ pt-BR:
     sure: Você tem certeza?
     per_page: '%{model} por página'
     click_to_edit: Para editar clique em Editar
+    search: Pesquisar
+    advanced_search: Pesquisa Avançada
   controller:
     added: '%{model} adicionado com sucesso'
     added_fem: '%{model} adicionada com sucesso'
@@ -87,6 +89,7 @@ pt-BR:
       long: '%A, %d. %B %Y, %H:%M Uhr'
       short: '%d. %B, %H:%M Uhr'
       very_short: '%d.%m.%Y, %H:%M Uhr'
+      only_date: '%d/%m/%Y'
   will_paginate:
     previous_label: "&#8592; Anterior"
     next_label: "Pr&oacute;ximo &#8594;"

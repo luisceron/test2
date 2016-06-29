@@ -5,20 +5,20 @@
 <div class="row">
   <div class="pack form-panel">
     <div class="pack-caption">
-      <strong><%= @transaction.name %></strong>
+      <strong><%= @transaction %></strong>
     </div>
     <div class="pack-inside">
       <dl class="dl-horizontal">
         <%= show_for @transaction, :account %>
         <%= show_for @transaction, :category %>
         <%= show_for @transaction, :transaction_type %>
-        <%= show_for @transaction, :date %>
-        <%= show_for @transaction, :amount %>
+        <%= show_for @transaction, :date, { text: date_for(@transaction.date, :only_date) } %>
+        <%= show_for @transaction, :amount, { text: number_to_currency(@transaction.amount) } %>
         <%= show_for @transaction, :description %>
       </dl>
 
       <div class="text-center">
-        <%= link_with_icon_to_back transactions_path %>
+        <%= link_with_icon_to_back user_transactions_path(@user) %>
         <%= link_with_icon_to_edit edit_transaction_path(@transaction) %>
       </div>
     </div>

@@ -5,7 +5,7 @@
 <div class="row">
   <div class="pack form-panel">
     <div class="pack-caption">
-      <strong><%= @user.name %></strong>
+      <strong><%= @user %></strong>
       <% if current_user.admin %>
         <%= badge_for_admin if @user.admin %>
       <% end %>

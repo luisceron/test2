@@ -10,55 +10,24 @@
         <div class="col-md-12">
           <%= search_form_for(@query, url: user_transactions_path(@user)) do |f|  %>
             <div class="input-group btn-group" role="group">
-
-              <div class="row">
-                <div class="col-md-11">
-                  <%= f.text_field :date_or_amount_or_description_cont, class: "input-sm form-control" %>
-                </div>
-
-                <div class="col-md-1">
-                  <span class="input-group-btn">
-                    <%= button_tag(type: 'submit', class: "btn btn-sm btn-primary", id: "search_button") do %>
-                      <i class="fa fa-search"></i>
-                    <% end %>
-                  </span>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-2">
-                  <%= f.select :account_id_eq, @user.accounts %>
-                </div>
-
-                <div class="col-md-2">
-                  <%= f.select :category_id_eq, @user.categories %>
-                </div>
-
-                <div class="col-md-2">
-                  <%= f.select :transaction_type_eq, options_for_enum(Transaction, :transaction_types) %>
-                </div>
-
-                <div class="col-md-2">
-                  <%= f.text_field :date_cont %>
-                </div>
-              </div>
+              <%= f.text_field :date_or_amount_or_description_cont, class: "form-control" %>
+              <span class="input-group-btn">
+                <%= button_tag(type: 'submit', class: "btn btn-primary", id: "search_button") do %>
+                  <i class="fa fa-search"></i>
+                <% end %>
+              </span>
             </div>
+
+            <div class="text-center" id="expand_advanced_search_button">
+              <span>
+                <i class="fa fa-angle-double-down fa-2x" title='<%= t('action.advanced_search') %>' data-toggle='tooltip' data-placement= 'right'></i>
+              </span>
+            </div>
+
+            <%= render partial: "transactions_advanced_search", locals: {f: f} %>
           <% end %>
         </div>
       </div><br>
-
-
-
-
-
-
-<!-- input(6) accounts(2) category(2) types(2) date_ini(2) date_end(2) button(1) -->
-
-
-
-
-
-
 
       <div class="table-responsive">
         <table class="table table-hover table-striped table-condensed">
@@ -80,8 +49,8 @@
                 <td><%= transaction.account %></td>
                 <td><%= transaction.category %></td>
                 <td><%= transaction.transaction_type %></td>
-                <td><%= transaction.date %></td>
-                <td><%= transaction.amount %></td>
+                <td><%= date_for(transaction.date, :only_date) %></td>
+                <td><%= number_to_currency transaction.amount %></td>
                 <td><%= transaction.description %></td>
                 <td>
                   <div class="pull-right">

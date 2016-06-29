@@ -6,4 +6,10 @@ module AccountsHelper
       account_path(account)
     end
   end
+
+  def user_accounts_for_select user
+    user.accounts.collect do |account|
+      [account.name, account.id]
+    end
+  end
 end

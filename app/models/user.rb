@@ -15,6 +15,9 @@ class User < ActiveRecord::Base
   validates :name, presence: true
 
   # before_create :create_user
+  def to_s
+    self.name
+  end
 
   private
     def set_name_and_password
