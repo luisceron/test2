@@ -1,14 +1,18 @@
-<div style="display: none" id="transaction_advanced_search" class="row">
+<% if controller.advanced_search %>
+  <div id="transaction_advanced_search" class="row">
+<% else %>
+  <div style="display: none" id="transaction_advanced_search" class="row">
+<% end %>
   <div class="col-md-2">
     <div class="form-group">
-      <%= f.label :account %>
+      <%= f.label :account, Transaction.human_attribute_name(:account) %>
       <%= f.select :account_id_in, user_accounts_for_select(@user), {include_blank: true}, class: "form-control" %>
     </div>                
   </div>
 
   <div class="col-md-2">
     <div class="form-group">
-      <%= f.label :category %>
+      <%= f.label :category, Transaction.human_attribute_name(:category) %>
       <%= f.select :category_id_eq, user_categories_for_select(@user), {include_blank: true}, class: "form-control" %>
     </div>
   </div>
@@ -16,21 +20,21 @@
   <div class="col-md-2">
     <div class="form-group">
       <%= f.label :transaction_type %>
-      <%= f.select :transaction_type_eq, options_for_enum(Transaction, :transaction_types), {include_blank: true}, class: "form-control" %>
+      <%= f.select :transaction_type_eq, Transaction.transaction_types.to_a.map { |x| [t(x[0], scope: "activerecord.attributes.transaction.transaction_types"), x[1]]}, {include_blank: true}, class: "form-control" %>
     </div>
   </div>
 
   <div class="col-md-2">
     <div class="form-group">
-      <%= f.label :date, "Inital Date", class: "control-label" %>
-      <%= f.text_field :date_cont, class: "form-control", :'data-provide' => 'datepicker' %>
+      <%= f.label :date, Transaction.human_attribute_name(:start_date), class: "control-label" %>
+      <%= f.date_field :date_gteq, class: "form-control", placeholder: Transaction.human_attribute_name(:start_date) %>
     </div>
   </div>
   
   <div class="col-md-2">
     <div class="form-group">
-      <%= f.label :date, "End Date", class: "control-label" %>
-      <%= f.text_field :date_cont, class: "form-control", :'data-provide' => 'datepicker'  %>
+      <%= f.label :date, Transaction.human_attribute_name(:end_date), class: "control-label" %>
+      <%= f.date_field :date_lteq, class: "form-control" %>
     </div>
   </div>
 

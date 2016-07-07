@@ -36,9 +36,11 @@ en:
         date: Date
         amount: Amount
         description: Description
+        start_date: Start Date
+        end_date: End Date
         transaction_types:
-          credit: Credit
-          debit: Debit
+          in: In
+          out: Out
       user:
         name: Name
         email: Email

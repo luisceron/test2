@@ -59,3 +59,11 @@
   background: #ffffff;
   padding: 10px 15px;
 }
+
+.right-cell {
+  text-align: right;
+}
+
+.left-cell {
+  text-align: left;
+}

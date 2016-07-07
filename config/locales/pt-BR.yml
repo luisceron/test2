@@ -36,9 +36,11 @@ pt-BR:
         date: Data
         amount: Valor
         description: Descrição
+        start_date: Data Inicial
+        end_date: Data Final
         transaction_types:
-          credit: Crédito
-          debit: Débito
+          in: Entrada
+          out: Saída
       user:
         name: Nome
         email: E-mail

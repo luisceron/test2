@@ -1,5 +1,5 @@
 class Transaction < ActiveRecord::Base
-  enum transaction_type: [:credit, :debit]
+  enum transaction_type: [:in, :out]
 
   belongs_to :user
   belongs_to :account

@@ -2,8 +2,11 @@ class TransactionsController < ApplicationController
   before_action :set_transaction, only: [:show, :edit, :update, :destroy]
   before_action :set_user, only: [:index, :new, :create]
 
+  attr_accessor :advanced_search
+
   def index
     @transactions = index_object @user.transactions, params
+    check_advanced_search
   end
 
   def show
@@ -42,5 +45,16 @@ class TransactionsController < ApplicationController
 
     def transaction_params
       params.require(:transaction).permit(:account_id, :category_id, :transaction_type, :date, :amount, :description)
+    end
+
+    def check_advanced_search
+      if params[:q]
+        params[:q].each do |key, value|
+          if key.to_sym != :description_cont
+            return self.advanced_search = true if value != ""
+          end
+        end
+        self.advanced_search = false
+      end
     end
 end
