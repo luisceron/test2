@@ -3,8 +3,8 @@ FactoryGirl.define do
     association :user
     association :account
     association :category
-    transaction_type :debit
-    date "2016-06-28 16:43:00"
+    transaction_type :out
+    date "28/06/2016"
     amount "9.99"
     description "Corner Shop"
   end

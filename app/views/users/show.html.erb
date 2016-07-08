@@ -14,8 +14,8 @@
       <dl class="dl-horizontal">
         <%= show_for @user, :email, {disabled: true} %>
         <%= show_for @user, :name, { tool_tip: {place: "bottom", title: t('action.click_to_edit')} } %>
-        <%= show_for @user, :created_at, {disabled: true, text: date_for(@user.created_at, :long) } %>
-        <%= show_for @user, :updated_at, {disabled: true, text: date_for(@user.updated_at, :long) } %>
+        <%= show_for @user, :created_at, {disabled: true, text: date_time_for(@user.created_at, :long) } %>
+        <%= show_for @user, :updated_at, {disabled: true, text: date_time_for(@user.updated_at, :long) } %>
       </dl>
 
       <div class="text-center">

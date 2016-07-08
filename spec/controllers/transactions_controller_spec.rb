@@ -49,23 +49,63 @@ RSpec.describe TransactionsController, type: :controller do
     end
   end
 
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
-# SEARCH FOR:                                                                                                         #
-# >>> attributes                                                                                                      #
-# >>> types                                                                                                           #
-# >>> etc                                                                                                             #
-#                                                                                                                     #
-#                                                                                                                     #
-#                                                                                                                     #
-#                                                                                                                     #
-#                                                                                                                     #
-#                                                                                                                     #
-#                                                                                                                     #
-#                                                                                                                     #
-#                                                                                                                     #
-#                                                                                                                     #
-#                                                                                                                     #
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+  # => I N D E X    B Y   S E A R C H
+  describe "GET #index" do
+    context "searching by" do
+      let(:user) { create(:user, :normal, email: "user_transactions_test@ceron.com") }
+
+      let(:a1) { create(:account, user: user, name: "Account1") }
+      let(:a2) { create(:account, user: user, name: "Account2") }
+
+      let(:c1) { create(:category, user: user, name: "Category1") }
+      let(:c2) { create(:category, user: user, name: "Category2") }
+
+      let(:t1) { create(:transaction, user: user, description: "T1", account: a1, category: c2, transaction_type: :out, date: "01/01/2016") }
+      let(:t2) { create(:transaction, user: user, description: "T2", account: a2, category: c1, transaction_type: :in,  date: "02/02/2016") }
+      let(:t3) { create(:transaction, user: user, description: "T3", account: a1, category: c1, transaction_type: :out, date: "03/03/2016") }
+      let(:t4) { create(:transaction, user: user, description: "T4", account: a2, category: c2, transaction_type: :out, date: "04/04/2016") }
+      let(:t5) { create(:transaction, user: user, description: "T5", account: a1, category: c1, transaction_type: :in,  date: "05/05/2016") }
+      
+      before do
+        sign_in user
+      end
+
+      it "description" do
+        get :index, {user_id: user, q: {description_cont: t1.description}}
+        expect(assigns(:transactions).to_a).to     include(t1)
+        expect(assigns(:transactions).to_a).to_not include(t2, t3, t4, t5)
+        expect(response).to render_template(:index)
+      end
+
+      it "account" do
+        get :index, {user_id: user, q: {account_eq: t2.account.id}}
+        expect(assigns(:transactions)).to     include(t2, t4)
+        expect(assigns(:transactions)).to_not include(t1, t3, t5)
+        expect(response).to render_template(:index)
+      end
+
+      it "category" do
+        get :index, {user_id: user, q: {category_eq: t3.category.id}}
+        expect(assigns(:transactions)).to     include(t2, t3, t5)
+        expect(assigns(:transactions)).to_not include(t1, t4)
+        expect(response).to render_template(:index)
+      end
+
+      it "transaction type" do
+        get :index, {user_id: user, q: {transaction_type_eq: Transaction.transaction_types[t4.transaction_type]}}
+        expect(assigns(:transactions)).to     include(t1, t3, t4)
+        expect(assigns(:transactions)).to_not include(t2, t5)
+        expect(response).to render_template(:index)
+      end
+
+      it "date" do
+        get :index, {user_id: user, q: {date_gteq: t3.date, date_lteq: t5.date}}
+        expect(assigns(:transactions)).to     include(t3, t4, t5)
+        expect(assigns(:transactions)).to_not include(t1, t2)
+        expect(response).to render_template(:index)
+      end
+    end
+  end
 
   # => S H O W
   describe "GET #show" do
