@@ -1,6 +1,6 @@
 <%= simple_form_for @transaction, url: transaction_form_path(@transaction) do |f| %>
-  <%= f.association :account %>
-  <%= f.association :category %>
+  <%= f.association :account, collection: @user.accounts %>
+  <%= f.association :category, collection: @user.categories %>
   <%= f.input :transaction_type, collection: options_for_enum(Transaction, :transaction_types) %>
   <%= f.input :date, as: :date_picker %>
   <%= f.input :amount, as: :mask_currency_value %>

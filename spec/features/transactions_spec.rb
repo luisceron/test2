@@ -2,15 +2,22 @@ require 'rails_helper'
 
 # => V I E W S    C O N T E N T
 def expect_transaction_index current_user
-  expect(page).to have_content( Transaction.model_name.human(count: 2) )
+  expect(page).to have_selector(:link_or_button, Transaction.model_name.human(count: 2) )
   expect(page).to have_content( I18n.t('action.index', model: Transaction.model_name.human(count: 2)) )
 
-  expect(page).to have_selector('input#description_cont')
-  # expect page to search for Account
-  # expect page to search for Category
-  # expect page to search for Date
-  # expect page to search for Transaction Type
-  expect(page).to have_css('button.btn.btn-sm.btn-primary .fa.fa-search')
+  expect(page).to have_selector('input#q_description_cont')
+  expect(page).to have_css('button.btn.btn-primary .fa.fa-search')
+  
+  expect(page).to_not have_selector('label#q_account')
+  expect(page).to_not have_selector('select#q_account_eq')
+  expect(page).to_not have_selector('label#q_category')
+  expect(page).to_not have_selector('select#q_category_eq')
+  expect(page).to_not have_selector('label#q_transaction_type')
+  expect(page).to_not have_selector('select#q_transaction_type_eq')
+  expect(page).to_not have_selector('label#q_date')
+  expect(page).to_not have_selector('input#q_date_gteq')
+  expect(page).to_not have_selector('input#q_date_lteq')
+  expect(page).to_not have_selector(:link_or_button, I18n.t('action.search') )
 
   expect(page).to have_content( Transaction.human_attribute_name(:account) )
   expect(page).to have_content( Transaction.human_attribute_name(:category) )
@@ -18,12 +25,17 @@ def expect_transaction_index current_user
   expect(page).to have_content( Transaction.human_attribute_name(:amount) )
   expect(page).to have_content( Transaction.human_attribute_name(:description) )
 
-  if current_user.transactions.size > 0
+  if current_user.transactions.size == 1
+    if current_user.transactions.first.transaction_type.to_sym == :in
+      expect(page).to have_css("div.label.label-success i.fa.fa-arrow-up")
+    else
+      expect(page).to have_css("div.label.label-danger i.fa.fa-arrow-down")
+    end
+
     expect(page).to have_content( current_user.transactions.first.account )
-    # expect page to have badge for type (C: credit / D: Debit)
     expect(page).to have_content( current_user.transactions.first.category )
-    expect(page).to have_content( current_user.transactions.first.date )
-    expect(page).to have_content( current_user.transactions.first.amount )
+    expect(page).to have_content( current_user.transactions.first.date.strftime("%d/%m/%Y") )
+    expect(page).to have_content( number_to_currency current_user.transactions.first.amount )
     expect(page).to have_content( current_user.transactions.first.description )
 
     expect(page).to have_css("a.btn.btn-xs.btn-primary .fa.fa-pencil-square-o")
@@ -44,26 +56,47 @@ def expect_transaction_index current_user
   expect(page).to have_selector(:link_or_button, I18n.t('action.new_fem', model: Transaction.model_name.human) )
 end
 
+def expect_transaction_index_advanced_search
+  expect(page).to have_selector('input#q_description_cont')
+  expect(page).to have_css('button.btn.btn-sm.btn-primary .fa.fa-search')
+  expect(page).to have_selector('label#q_account')
+  expect(page).to have_selector('select#q_account_eq')
+  expect(page).to have_selector('label#q_category')
+  expect(page).to have_selector('select#q_category_eq')
+  expect(page).to have_selector('label#q_transaction_type')
+  expect(page).to have_selector('select#q_transaction_type_eq')
+  expect(page).to have_selector('label#q_date')
+  expect(page).to have_selector('input#q_date_gteq')
+  expect(page).to have_selector('input#q_date_lteq')
+  expect(page).to have_selector(:link_or_button, I18n.t('action.search') )
+end
+
 def expect_transaction_new
-  expect(page).to have_content( Transaction.model_name.human(count: 2) )
-  expect(page).to have_content( I18n.t('action.new_fem', model: Transaction.model_name.human) )
+  expect(page).to have_selector(:link_or_button, Transaction.model_name.human(count: 2) )
+  expect(page).to have_selector(:link_or_button, I18n.t('action.new_fem', model: Transaction.model_name.human) )
   
   expect(page).to have_content( Transaction.human_attribute_name(:account) )
-  expect(page).to have_selector("select#transaction_account")
-  expect(find("option[value=current_account]").text).to eq( I18n.t(:current_account, scope: "activerecord.attributes.account.account_types") )
-  expect(find("option[value=saving_account]").text).to  eq( I18n.t(:saving_account,  scope: "activerecord.attributes.account.account_types") )
-  expect(find("option[value=cash_account]").text).to    eq( I18n.t(:cash_account,    scope: "activerecord.attributes.account.account_types") )
+  expect(page).to have_selector("select#transaction_account_id")
+  ########## Would be test the options ########################################################
+  #                                                                                           #
+  #############################################################################################
 
   expect(page).to have_content( Transaction.human_attribute_name(:category) )
-  expect(page).to have_selector("select#transaction_category")
-  # Do a loop get all the categories and check options
+  expect(page).to have_selector("select#transaction_category_id")
+  ########## Do a loop get all the categories and check options################################
+  #                                                                                           #
+  #############################################################################################
+
+  expect(page).to have_content( Transaction.human_attribute_name(:transaction_type) )
+  expect(page).to have_selector("select#transaction_transaction_type")
+  ########## Transaction types options ########################################################
+  #                                                                                           #
+  #############################################################################################
 
   expect(page).to have_content( Transaction.human_attribute_name(:date) )
   expect(page).to have_selector("input#transaction_date")
-
   expect(page).to have_content( Transaction.human_attribute_name(:amount) )
   expect(page).to have_selector("input#transaction_amount")
-
   expect(page).to have_content( Transaction.human_attribute_name(:description) )
   expect(page).to have_selector("input#transaction_description")
 
@@ -73,22 +106,19 @@ def expect_transaction_new
 end
 
 def expect_transaction_edit transaction
-  expect(page).to have_content( Transaction.model_name.human(count: 2) )
-  expect(page).to have_content( I18n.t('action.edit', model: Transaction.model_name.human) )
+  expect(page).to have_selector(:link_or_button, Transaction.model_name.human(count: 2) )
+  expect(page).to have_selector(:link_or_button, I18n.t('action.edit', model: Transaction.model_name.human) )
 
   expect(page).to have_content( Transaction.human_attribute_name(:account) )
-  expect(page).to have_selector("select#transaction_account")
+  expect(page).to have_select( Transaction.human_attribute_name(:account), selected: transaction.account.name )
   expect(page).to have_content( Transaction.human_attribute_name(:category) )
-  expect(page).to have_selector("select#transaction_category")
+  expect(page).to have_select( Transaction.human_attribute_name(:category), selected: transaction.category.name )
+  expect(page).to have_content( Transaction.human_attribute_name(:transaction_type) )
+  expect(page).to have_select( Transaction.human_attribute_name(:transaction_type), selected: I18n.t(transaction.transaction_type.to_sym, scope: "activerecord.attributes.transaction.transaction_types") )
   expect(page).to have_content( Transaction.human_attribute_name(:date) )
-  expect(page).to have_selector("input#transaction_date")
+  expect(page).to have_field( Transaction.human_attribute_name(:date), with: transaction.date )
   expect(page).to have_content( Transaction.human_attribute_name(:amount) )
-  expect(page).to have_selector("input#transaction_amount")
-  expect(page).to have_content( Transaction.human_attribute_name(:description) )
-  expect(page).to have_selector("input#transaction_description")
-
-  expect(page).to have_content( Transaction.human_attribute_name(:name) )
-  expect(page).to have_field( Transaction.human_attribute_name(:name), with: transaction.name )
+  expect(page).to have_field( Transaction.human_attribute_name(:amount), with: transaction.amount.to_s )
   expect(page).to have_content( Transaction.human_attribute_name(:description) )
   expect(page).to have_field( Transaction.human_attribute_name(:description), with: transaction.description )
 
@@ -98,217 +128,295 @@ def expect_transaction_edit transaction
 end
 
 def expect_transaction_show transaction
-  expect(page).to have_content( Transaction.model_name.human(count: 2) )
-  expect(page).to have_content( Transaction.human_attribute_name(:name) )
-  expect(page).to have_content( transaction.name )
+  expect(page).to have_selector(:link_or_button, Transaction.model_name.human(count: 2) )
+  expect(page).to have_selector(:link_or_button, transaction )
+
+  expect(page).to have_content( Transaction.human_attribute_name(:account) )
+  expect(page).to have_content( transaction.account )
+  expect(page).to have_content( Transaction.human_attribute_name(:category) )
+  expect(page).to have_content( transaction.category )
+  expect(page).to have_content( Transaction.human_attribute_name(:transaction_type) )
+  expect(page).to have_content( I18n.t(transaction.transaction_type.to_sym, scope: "activerecord.attributes.transaction.transaction_types") )
+  expect(page).to have_content( Transaction.human_attribute_name(:date) )
+  expect(page).to have_content( transaction.date.strftime("%d/%m/%Y") )
+  expect(page).to have_content( Transaction.human_attribute_name(:amount) )
+  expect(page).to have_content( number_to_currency transaction.amount )
   expect(page).to have_content( Transaction.human_attribute_name(:description) )
   expect(page).to have_content( transaction.description )
+
   expect(page).to have_selector(:link_or_button, I18n.t('link.back') )
   expect(page).to have_selector(:link_or_button, I18n.t('link.edit') )
+  save_page
 end
 
 
 
 # => O W N E R    U S E R
 feature "transactions views for owner user", type: :feature do
-  given!(:current_user){ create(:user) }
-  given!(:transaction){ create(:transaction, user: current_user) }
+  given!(:current_user){ create(:user)                            }
+  given!(:transaction) { create(:transaction, user: current_user) }
+  given!(:account)     { create(:account,     user: current_user, name: "Bank of Ireland") }
+  given!(:category)    { create(:category,    user: current_user, name: "Car") }
 
   background :each do
     login current_user
   end
 
-#   # => I N D E X
-#   scenario "listing user transactions", js: true do
-#     visit user_transactions_path(current_user)
-#     expect_transaction_index current_user
-#   end
+  # => I N D E X
+  scenario "listing user transactions" do
+    visit user_transactions_path(current_user)
+    expect_transaction_index current_user
+  end
 
-#   # => N E W    A N D    C R E A T E
-#   context "creating a new transaction" do
-#     scenario "with valid params" do
-#       visit new_user_transaction_path(current_user)
+  # => N E W    A N D    C R E A T E
+  context "creating a new transaction" do
+    scenario "with valid params" do
+      visit new_user_transaction_path(current_user)
+      expect_transaction_new
 
-#       expect_transaction_new
-#       fill_in :transaction_name, with: "Entertainment"
-#       click_on I18n.t('link.save')
+      select account.name,                          from: :transaction_account_id
+      select category.name,                         from: :transaction_category_id
+      select I18n.t(:in, scope: "activerecord.attributes.transaction.transaction_types"), from: Transaction.human_attribute_name(:transaction_type)
+      fill_in :transaction_date,                    with: Date.today
+      fill_in :transaction_amount,                  with: 200.00
+      fill_in :transaction_description,             with: "Car Wash"
+      click_on I18n.t('link.save')
 
-#       expect(page).to have_content( I18n.t('controller.created_fem', model: Transaction.model_name.human) )
-#       expect_transaction_show Transaction.find_by(name: "Entertainment")
-#     end
+      expect(page).to have_content( I18n.t('controller.created_fem', model: Transaction.model_name.human) )
+      expect_transaction_show Transaction.find_by(description: "Car Wash")
+    end
 
-#     scenario "with invalid params" do
-#       visit new_user_transaction_path(current_user)
+    scenario "with invalid params" do
+      visit new_user_transaction_path(current_user)
 
-#       fill_in :transaction_name, with: ""
-#       click_on I18n.t('link.save')
+      fill_in :transaction_date, with: ""
+      click_on I18n.t('link.save')
 
-#       expect(page).to have_content( I18n.t('errors.messages.blank') )
-#       expect_transaction_new
-#     end
-#   end
+      expect(page).to have_content( I18n.t('errors.messages.blank') )
+      expect_transaction_new
+    end
+  end
   
-#   # => S H O W
-#   scenario "showing transaction" do
-#     visit transaction_path(transaction)
-#     expect_transaction_show transaction
-#   end
+  # => S H O W
+  scenario "showing transaction" do
+    visit transaction_path(transaction)
+    expect_transaction_show transaction
+  end
 
-#   # => E D I T    A N D   U P D A T E
-#   context "updating transaction" do
-#     scenario "with valid params" do
-#       visit edit_transaction_path(transaction)
+  # => E D I T    A N D   U P D A T E
+  context "updating transaction" do
+    scenario "with valid params" do
+      visit edit_transaction_path(transaction)
 
-#       expect_transaction_edit transaction
-#       fill_in :transaction_name, with: "Car"
-#       click_on I18n.t('link.save')
+      expect_transaction_edit transaction
 
-#       expect(page).to have_content( I18n.t('controller.updated_fem', model: Transaction.model_name.human) )
-#       transaction.name = "Car"
-#       transaction.save
-#       expect_transaction_show transaction
-#     end
+      fill_in :transaction_amount, with: 250.00
+      click_on I18n.t('link.save')
 
-#     scenario "with invalid params" do
-#       visit edit_transaction_path(transaction)
+      expect(page).to have_content( I18n.t('controller.updated_fem', model: Transaction.model_name.human) )
+      transaction.amount = 250.00
+      transaction.save
+      expect_transaction_show transaction
+    end
 
-#       fill_in :transaction_name, with: ""
-#       click_on I18n.t('link.save')
+    scenario "with invalid params" do
+      visit edit_transaction_path(transaction)
 
-#       expect(page).to have_content( I18n.t('errors.messages.blank') )
-#       transaction.name = ""
-#       transaction.save
-#       expect_transaction_edit transaction
-#     end
-#   end
+      fill_in :transaction_amount, with: ""
+      click_on I18n.t('link.save')
 
-#   # => D E S T R O Y
-#   scenario "removing transaction" do
-#     visit user_transactions_path(current_user)
+      expect(page).to have_content( I18n.t('errors.messages.blank') )
+      transaction.amount = ""
+      transaction.save
+      expect_transaction_edit transaction
+    end
+  end
 
-#     expect_transaction_index current_user
-#     first('.btn-danger').click
+  # => D E S T R O Y
+  scenario "removing transaction" do
+    visit user_transactions_path(current_user)
 
-#     expect(page).to have_content( I18n.t('controller.destroyed_fem', model: Transaction.model_name.human) )
-#     expect_transaction_index current_user
-#   end
+    expect_transaction_index current_user
+    first('.btn-danger').click
 
-#   # => P A G I N A T I O N 
-#   context "pagination" do
-#     let!(:current_user) { create(:user) }
+    expect(page).to have_content( I18n.t('controller.destroyed_fem', model: Transaction.model_name.human) )
+    expect_transaction_index current_user
+  end
 
-#     def create_records
-#       for var in 0..30
-#         create(:transaction, name: "name#{var}", user: current_user)
-#       end
-#     end
+  # => S E A R C H    A N D   P A G I N A T I O N 
+  context "searching and pagination" do      
+    let!(:account2) { create(:account,  user: current_user, name: "Bank of England") }
+    let!(:account3) { create(:account,  user: current_user, name: "Bank of America") }
+    let!(:category2){ create(:category, user: current_user, name: "Shopping") }
+    let!(:category3){ create(:category, user: current_user, name: "Home") }
 
-#     background :each do
-#       login current_user
-#       visit user_transactions_path(current_user)
-#     end
+    def create_records
+      for var in 0..10
+        create(:transaction, description: "Description#{var}", user: current_user, account: account, category: category, transaction_type: :out, date: "01/01/2016")
+      end
 
-#     scenario "if there is more than 25 records, must have a button to second page" do
-#       expect_transaction_index current_user
-#       expect(page).to_not have_css('ul.pagination')
+      for var in 11..20
+        create(:transaction, description: "Description#{var}", user: current_user, account: account2, category: category2, transaction_type: :in, date: "02/02/2016")
+      end
 
-#       create_records
-#       visit user_transactions_path(current_user)
-#       expect_transaction_index current_user
-#       expect(page).to have_selector(:link_or_button, '2')
-#       expect(page).to have_css('ul.pagination')
-#       click_on '2'
+      for var in 21..30
+        create(:transaction, description: "Description#{var}", user: current_user, account: account3, category: category3, transaction_type: :out, date: "03/03/2016")
+      end
+    end
 
-#       expect(page).to have_content( I18n.t('will_paginate.page_entries_info.multi_page', from: "26", to: current_user.transactions.count, count: current_user.transactions.count) )
-#     end
-#   end
+    background :each do
+      login current_user
+      visit user_transactions_path(current_user)
+    end
 
-# # => S E A R C H    A N D   P A G I N A T I O N 
-#   context "searching and pagination" do
-#     let!(:current_user) { create(:user) }
+    scenario "if there is more than 25 records, must have a button to second page" do
+      expect_transaction_index current_user
+      expect(page).to_not have_css('ul.pagination')
 
-#     def reset_database current_user
-#       current_user.accounts.destroy_all
-#     end
+      create_records
+      visit user_transactions_path(current_user)
+      expect_transaction_index current_user
+      expect(page).to have_selector(:link_or_button, '2')
+      expect(page).to have_css('ul.pagination')
+      click_on '2'
 
-#     def create_records
-#       for var in 0..10
-#         create(:account, account_type: 0, user: current_user) # Current Accounts
-#       end
+      expect(page).to have_content( I18n.t('will_paginate.page_entries_info.multi_page', from: "26", to: current_user.transactions.count.to_s, count: current_user.transactions.count) )
+    end
 
-#       for var in 0..10
-#         create(:account, account_type: 1, user: current_user) # Saving Accounts
-#       end
+    scenario "searching for specific transaction description must return only it" do
+      expect_transaction_index current_user
 
-#       for var in 0..10
-#         create(:account, account_type: 2, user: current_user) # Cash Accounts
-#       end
-#     end
+      fill_in :q_description_cont, with: "Description28"
+      page.find('#search_button').click
+      expect(page).to_not have_content("Account28")
+      expect(page).to have_content( I18n.t('will_paginate.page_entries_info.single_page_html.zero') )
 
-#     background :each do
-#       reset_database current_user
-#       login current_user
-#       visit user_accounts_path(current_user)
-#     end
+      create_records
+      visit user_transactions_path(current_user)
+      expect_transaction_index current_user
+      fill_in :q_description_cont, with: "Description28"
+      page.find('#search_button').click
+      expect(page).to have_content("Description28")
+      expect(page).to have_content( I18n.t('will_paginate.page_entries_info.single_page_html.one') )
+    end
 
-#     scenario "if there is more than 25 records, must have a button to second page" do
-#       expect_index current_user
-#       expect(page).to_not have_css('ul.pagination')
+    scenario "when searching by an account must return only them", js: true do
+      expect_transaction_index current_user
 
-#       create_records
-#       visit user_accounts_path(current_user)
-#       expect_index current_user
-#       expect(page).to have_selector(:link_or_button, '2')
-#       expect(page).to have_css('ul.pagination')
-#       click_on '2'
+      create_records
+      visit user_transactions_path(current_user)
+      expect_transaction_index current_user
+      find('#expand_advanced_search_button').click
 
-#       expect(page).to have_content( I18n.t('will_paginate.page_entries_info.multi_page', from: "26", to: current_user.accounts.count.to_s, count: current_user.accounts.count) )
-#     end
+      select account.name, from: :q_account_id_eq
+      click_on I18n.t('action.search')
+      expect(page).to_not have_content(account2.name)
+      expect(page).to_not have_content(account3.name)
+      expect(page).to have_content(I18n.t('will_paginate.page_entries_info.single_page_html.other', count: account.transactions.count))
 
-#     scenario "searching for specific record name and all types must return only it" do
-#       expect_index current_user
+      select account2.name, from: :q_account_id_eq
+      click_on I18n.t('action.search')
+      expect(page).to_not have_content(account.name)
+      expect(page).to_not have_content(account3.name)
+      expect(page).to have_content(I18n.t('will_paginate.page_entries_info.single_page_html.other', count: account2.transactions.count))
 
-#       fill_in :q_name_cont, with: "Account28"
-#       page.find('#search_button').click
-#       expect(page).to_not have_content("Account28")
-#       expect(page).to have_content( I18n.t('will_paginate.page_entries_info.single_page_html.zero') )
+      select account3.name, from: :q_account_id_eq
+      click_on I18n.t('action.search')
+      expect(page).to_not have_content(account.name)
+      expect(page).to_not have_content(account2.name)
+      expect(page).to have_content(I18n.t('will_paginate.page_entries_info.single_page_html.other', count: account3.transactions.count))
+    end
 
-#       create_records
-#       visit user_accounts_path( current_user )
-#       expect_index current_user
-#       fill_in :q_name_cont, with: "Account28"
-#       page.find('#search_button').click
-#       expect(page).to have_content("Account28")
-#       expect(page).to have_content( I18n.t('will_paginate.page_entries_info.single_page_html.one') )
-#     end
+    scenario "when searching by an category must return only them", js: true do
+      expect_transaction_index current_user
 
-#     scenario "searching for current accounts must return only them" do
-#       expect_index current_user
-#       create_records
+      create_records
+      visit user_transactions_path(current_user)
+      expect_transaction_index current_user
+      find('#expand_advanced_search_button').click
 
-#       # mark current accounts checkboxes
-#       # can't appear badge for saving account
-#       # can't appear badge for cash account
-#     end
+      select category.name, from: :q_category_id_eq
+      click_on I18n.t('action.search')
+      expect(page).to_not have_content(category2.name)
+      expect(page).to_not have_content(category3.name)
+      expect(page).to have_content(I18n.t('will_paginate.page_entries_info.single_page_html.other', count: category.transactions.count))
 
-#     scenario "searching for saving accounts must return only them" do
-#       expect_index current_user
-#       create_records
+      select category2.name, from: :q_category_id_eq
+      click_on I18n.t('action.search')
+      expect(page).to_not have_content(category.name)
+      expect(page).to_not have_content(category3.name)
+      expect(page).to have_content(I18n.t('will_paginate.page_entries_info.single_page_html.other', count: category2.transactions.count))
 
-#       # mark saving accounts checkboxes
-#       # can't appear badge for current account
-#       # can't appear badge for cash account
-#     end
+      select category3.name, from: :q_category_id_eq
+      click_on I18n.t('action.search')
+      expect(page).to_not have_content(category.name)
+      expect(page).to_not have_content(category2.name)
+      expect(page).to have_content(I18n.t('will_paginate.page_entries_info.single_page_html.other', count: category3.transactions.count))
+    end
 
-#     scenario "searching for cash accounts must return only them" do
-#       expect_index current_user
-#       create_records
+    scenario "when searching by an transaction type must return only them", js: true do
+      expect_transaction_index current_user
 
-#       # mark cash accounts checkboxes
-#       # can't appear badge for current account
-#       # can't appear badge for saving account
-#     end
-#   end
+      create_records
+      visit user_transactions_path(current_user)
+      expect_transaction_index current_user
+      find('#expand_advanced_search_button').click
+
+      select I18n.t(:in, scope: "activerecord.attributes.transaction.transaction_types"), from: :q_transaction_type_eq
+      click_on I18n.t('action.search')
+      expect(page).to     have_css("div.label.label-success i.fa.fa-arrow-up")
+      expect(page).to_not have_css("div.label.label-danger i.fa.fa-arrow-down")
+
+      select I18n.t(:out, scope: "activerecord.attributes.transaction.transaction_types"), from: :q_transaction_type_eq
+      click_on I18n.t('action.search')
+      expect(page).to_not have_css("div.label.label-success i.fa.fa-arrow-up")
+      expect(page).to     have_css("div.label.label-danger i.fa.fa-arrow-down")
+    end
+
+    scenario "when searching by dates must return only them", js: true do
+      expect_transaction_index current_user
+
+      create_records
+      visit user_transactions_path(current_user)
+      expect_transaction_index current_user
+      find('#expand_advanced_search_button').click
+
+      fill_in :q_date_gteq, with: "01/01/2016"
+      fill_in :q_date_lteq, with: "01/01/2016"
+      click_on I18n.t('action.search')
+      expect(page).to     have_content("01/01/2016")
+      expect(page).to_not have_content("02/02/2016")
+      expect(page).to_not have_content("03/03/2016")
+
+      fill_in :q_date_gteq, with: "02/02/2016"
+      fill_in :q_date_lteq, with: "02/02/2016"
+      click_on I18n.t('action.search')
+      expect(page).to_not have_content("01/01/2016")
+      expect(page).to     have_content("02/02/2016")
+      expect(page).to_not have_content("03/03/2016")
+
+      fill_in :q_date_gteq, with: "03/03/2016"
+      fill_in :q_date_lteq, with: "03/03/2016"
+      click_on I18n.t('action.search')
+      expect(page).to_not have_content("01/01/2016")
+      expect(page).to_not have_content("02/02/2016")
+      expect(page).to     have_content("03/03/2016")
+
+      create(:transaction, user: current_user, account: account, category: category, transaction_type: :out, date: "22/02/2016")
+      create(:transaction, user: current_user, account: account, category: category, transaction_type: :out, date: "23/02/2016")
+      create(:transaction, user: current_user, account: account, category: category, transaction_type: :out, date: "24/02/2016")
+
+      fill_in :q_date_gteq, with: "21/02/2016"
+      fill_in :q_date_lteq, with: "25/02/2016"
+      click_on I18n.t('action.search')
+      expect(page).to_not have_content("01/01/2016")
+      expect(page).to_not have_content("02/02/2016")
+      expect(page).to_not have_content("03/03/2016")
+      expect(page).to     have_content("22/02/2016")
+      expect(page).to     have_content("23/02/2016")
+      expect(page).to     have_content("24/02/2016")
+    end
+  end
 end
 
 

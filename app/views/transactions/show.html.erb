@@ -1,18 +1,25 @@
 <div class="wrapper border-bottom bg-white">
-  <h3><%= Transaction.model_name.human(count: 2) %></h3>
+  <h3><%= link_to Transaction.model_name.human(count: 2), user_transactions_path(@user) %></h3>
 </div>
 
 <div class="row">
   <div class="pack form-panel">
     <div class="pack-caption">
-      <strong><%= @transaction %></strong>
+      <strong><%= link_to @transaction, transaction_path(@transaction) %></strong>
     </div>
     <div class="pack-inside">
       <dl class="dl-horizontal">
         <%= show_for @transaction, :account %>
         <%= show_for @transaction, :category %>
-        <%= show_for @transaction, :transaction_type %>
-        <%= show_for @transaction, :date, { text: date_for(@transaction.date, :only_date) } %>
+
+        <div class="form-group">
+          <label><%= Transaction.human_attribute_name(:transaction_type) %></label> <br>
+          <div class="form-control">
+            <%= enum_translation Transaction, :transaction_types, @transaction.transaction_type %>
+          </div>
+        </div>
+
+        <%= show_for @transaction, :date, { text: date_for(@transaction.date) } %>
         <%= show_for @transaction, :amount, { text: number_to_currency(@transaction.amount) } %>
         <%= show_for @transaction, :description %>
       </dl>

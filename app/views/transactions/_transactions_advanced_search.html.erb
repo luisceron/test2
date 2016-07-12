@@ -6,7 +6,7 @@
   <div class="col-md-2">
     <div class="form-group">
       <%= f.label :account, Transaction.human_attribute_name(:account) %>
-      <%= f.select :account_id_in, user_accounts_for_select(@user), {include_blank: true}, class: "form-control" %>
+      <%= f.select :account_id_eq, user_accounts_for_select(@user), {include_blank: true}, class: "form-control" %>
     </div>                
   </div>
 
