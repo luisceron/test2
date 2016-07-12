@@ -27,7 +27,11 @@ module Vagrant
     config.active_record.raise_in_transactional_callbacks = true
 
     config.to_prepare do
-      Devise::SessionsController.skip_before_action :check_if_user_is_owner
+      Devise::SessionsController.skip_before_action      :check_if_user_is_owner
+      Devise::RegistrationsController.skip_before_action :check_if_user_is_owner
+      Devise::PasswordsController.skip_before_action     :check_if_user_is_owner
+      Devise::ConfirmationsController.skip_before_action :check_if_user_is_owner
+      Devise::UnlocksController.skip_before_action       :check_if_user_is_owner
     end
   end
 end
