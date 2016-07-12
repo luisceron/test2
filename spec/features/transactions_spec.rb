@@ -3,7 +3,7 @@ require 'rails_helper'
 # => V I E W S    C O N T E N T
 def expect_transaction_index current_user
   expect(page).to have_selector(:link_or_button, Transaction.model_name.human(count: 2) )
-  expect(page).to have_content( I18n.t('action.index', model: Transaction.model_name.human(count: 2)) )
+  expect(page).to have_selector(:link_or_button, I18n.t('action.index', model: Transaction.model_name.human(count: 2)) )
 
   expect(page).to have_selector('input#q_description_cont')
   expect(page).to have_css('button.btn.btn-primary .fa.fa-search')

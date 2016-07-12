@@ -6,6 +6,7 @@ end
 
 # => V I E W S    C O N T E N T
 def expect_index
+  expect(page).to have_selector(:link_or_button, User.model_name.human(count: 2) )
   expect(page).to have_content( I18n.t('action.index', model: User.model_name.human.pluralize) )
 
   expect(page).to have_selector('input#q_email_or_name_cont')

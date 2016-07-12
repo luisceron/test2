@@ -54,6 +54,7 @@ en:
         invalid_email: Invalid Email
         destroyed_successfully: Account destroyed successfully
         admin_update_password_error: Password doesn't match
+        perfil: Perfil
   action:
     index: List of %{model}
     new: New %{model}

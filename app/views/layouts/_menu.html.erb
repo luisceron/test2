@@ -7,9 +7,14 @@
       <li class="mt">
         <% if current_user.admin %>
           <%= link_to users_path, class: "menu menu-link" do %>
-            <i class="fa fa-user"></i>
+            <i class="fa fa-users"></i>
             <strong><%= User.model_name.human.pluralize %></strong>
           <% end %>
+        <% end %>
+
+        <%= link_to user_path(current_user), class: "menu menu-link" do %>
+          <i class="fa fa-user"></i>
+          <strong><%= User.human_attribute_name(:perfil) %></strong>
         <% end %>
 
         <%= link_to user_accounts_path(current_user), class: "menu menu-link" do %>
