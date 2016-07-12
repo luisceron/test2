@@ -264,8 +264,8 @@ RSpec.describe CategoriesController, type: :controller do
         category = create(:category, user: create(:user))
         put :update, {id: category.to_param, category: new_attributes}
         category.reload
-        expect(assigns(:category)).to be_nil
         expect(assigns(:category)).to_not eq(category)
+        expect(assigns(:category)).to be_nil
         expect(response).to redirect_to(root_path)
       end
     end
@@ -279,8 +279,8 @@ RSpec.describe CategoriesController, type: :controller do
         category = create(:category, user: create(:user))
         put :update, {id: category.to_param, category: new_attributes}
         category.reload
-        expect(assigns(:category)).to be_nil
         expect(assigns(:category)).to_not eq(category)
+        expect(assigns(:category)).to be_nil
         expect(response).to redirect_to(root_path)
       end
     end
@@ -319,6 +319,8 @@ RSpec.describe CategoriesController, type: :controller do
       it "can't destroy and must redirects to root" do
         category = create(:category, user: create(:user))
         delete :destroy, {id: category.to_param}
+        category.reload
+        expect(category).to be_persisted
         expect(response).to redirect_to(root_path)
       end
     end
@@ -337,6 +339,8 @@ RSpec.describe CategoriesController, type: :controller do
       it "can't destroy and must redirects to root" do
         category = create(:category, user: create(:user))
         delete :destroy, {id: category.to_param}
+        category.reload
+        expect(category).to be_persisted
         expect(response).to redirect_to(root_path)
       end
     end

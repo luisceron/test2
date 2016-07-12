@@ -1,0 +1,18 @@
+<%= simple_form_for @transaction, url: transaction_form_path(@transaction) do |f| %>
+  <%= f.association :account, collection: @user.accounts %>
+  <%= f.association :category, collection: @user.categories %>
+  <%= f.input :transaction_type, collection: options_for_enum(Transaction, :transaction_types) %>
+  <%= f.input :date, as: :date_picker %>
+  <%= f.input :amount, as: :mask_currency_value %>
+  <%= f.input :description %>
+
+  <div class="text-center">
+    <% if @transaction.persisted? %>
+      <%= link_with_icon_to_back transaction_path(@transaction) %>
+    <% else %>
+      <%= link_with_icon_to_back user_transactions_path(@user) %>
+    <% end %>
+
+    <%= save_button %>
+  </div>
+<% end %>

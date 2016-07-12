@@ -8,6 +8,7 @@ Rails.application.routes.draw do
       resources :categories, shallow: true
       get :edit_password
       patch :remove_account
+      resources :transactions, shallow: true
       patch :update_password
     end
   end

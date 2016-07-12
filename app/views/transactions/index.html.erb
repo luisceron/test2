@@ -1,0 +1,78 @@
+<div class="wrapper border-bottom bg-white">
+  <h3><%= link_to Transaction.model_name.human(count: 2), user_transactions_path(@user) %></h3>
+</div>
+
+<div class="row">
+  <div class="pack form-panel">
+    <div class="pack-caption"><strong><%= action_index Transaction %></strong></div>
+    <div class="pack-inside">
+      <div class="row">
+        <div class="col-md-12">
+          <%= search_form_for(@query, url: user_transactions_path(@user)) do |f|  %>
+            <div class="input-group btn-group" role="group">
+              <%= f.text_field :description_cont, class: "form-control" %>
+              <span class="input-group-btn">
+                <%= button_tag(type: 'submit', class: "btn btn-primary", id: "search_button") do %>
+                  <i class="fa fa-search"></i>
+                <% end %>
+              </span>
+            </div>
+
+            <div class="text-center" id="expand_advanced_search_button">
+              <span>
+                <i class="fa fa-angle-double-down fa-2x" title='<%= t('action.advanced_search') %>' data-toggle='tooltip' data-placement= 'right'></i>
+              </span>
+            </div>
+
+            <%= render partial: "transactions_advanced_search", locals: {f: f} %>
+          <% end %>
+        </div>
+      </div><br>
+
+      <div class="table-responsive">
+        <table class="table table-hover table-striped table-condensed">
+          <thead>
+            <tr>
+              <th></th>
+              <th><%= Transaction.human_attribute_name(:account) %></th>
+              <th><%= Transaction.human_attribute_name(:category) %></th>
+              <th><%= Transaction.human_attribute_name(:date) %></th>
+              <th class="right-cell"><%= Transaction.human_attribute_name(:amount) %></th>
+              <th><%= Transaction.human_attribute_name(:description) %></th>
+              <th></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% @transactions.each do |transaction| %>
+              <tr data-href="<%= transaction_path(transaction) %>">
+                <td><%= badge_for_transaction_type transaction.transaction_type %></td>
+                <td><%= transaction.account %></td>
+                <td><%= transaction.category %></td>
+                <td><%= date_for transaction.date %></td>
+                <td class="right-cell"><%= number_to_currency transaction.amount %></td>
+                <td><%= transaction.description %></td>
+                <td>
+                  <div class="pull-right">
+                    <%= link_only_icon_to_edit edit_transaction_path(transaction) %>
+                    <%= link_only_icon_to_destroy transaction %>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="pull-right">
+            <%= link_with_icon_to_new_fem new_user_transaction_path(@user), Transaction %>
+          </div>
+        </div>
+      </div>
+
+      <%= index_footer @transactions %>
+    </div>
+  </div>
+</div>

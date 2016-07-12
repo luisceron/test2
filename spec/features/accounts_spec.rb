@@ -21,7 +21,7 @@ def expect_account_index current_user
       expect(page.find("div.label.label-default" ).text).to eq( Account.human_attribute_name(:cash_letter) )
     end
 
-    expect(page).to have_content( current_user.accounts.first.balance )
+    expect(page).to have_content( number_to_currency current_user.accounts.first.balance )
     expect(page).to have_css("a.btn.btn-xs.btn-primary .fa.fa-pencil-square-o")
     expect(page).to have_css("a.btn.btn-xs.btn-danger .fa.fa-trash")
 
@@ -91,7 +91,7 @@ def expect_account_show account
   expect(page).to have_content( Account.human_attribute_name(:name) )
   expect(page).to have_content( account.name )
   expect(page).to have_content( Account.human_attribute_name(:balance) )
-  expect(page).to have_content( account.balance )
+  expect(page).to have_content( number_to_currency account.balance )
   expect(page).to have_content( Account.human_attribute_name(:description) )
   expect(page).to have_content( account.description )
   expect(page).to have_selector(:link_or_button, I18n.t('link.back') )

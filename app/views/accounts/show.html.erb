@@ -5,7 +5,7 @@
 <div class="row">
   <div class="pack form-panel">
     <div class="pack-caption">
-      <strong><%= @account.name %></strong>
+      <strong><%= @account %></strong>
     </div>
     <div class="pack-inside">
       <dl class="dl-horizontal">
@@ -18,7 +18,7 @@
         </div>
         
         <%= show_for @account, :name %>
-        <%= show_for @account, :balance %>
+        <%= show_for @account, :balance, { text: number_to_currency(@account.balance) } %>
         <%= show_for @account, :description %>
       </dl>
 

@@ -1,0 +1,13 @@
+<div class="wrapper border-bottom bg-white">
+  <h3><%= link_to Transaction.model_name.human(count: 2), user_transactions_path(@user) %></h3>
+</div>
+
+<div class="row">
+  <div class="pack form-panel">
+    <div class="pack-caption"><strong><%= link_to action_new_fem(Transaction), new_user_transaction_path(@user) %></strong></div>
+
+    <div class="pack-inside">
+      <%= render 'form' %>
+    </div>
+  </div>
+</div>
