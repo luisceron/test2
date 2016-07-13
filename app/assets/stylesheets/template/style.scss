@@ -372,16 +372,18 @@ ul.sidebar-menu li a{
     transition: all 0.3s ease;
 }
 
-ul.sidebar-menu li a.active, ul.sidebar-menu li a:hover, ul.sidebar-menu li a:focus {
-    background: #68dff0;
-    color: #fff;
-    display: block;
+ul.sidebar-menu li a.active {
+  display: block;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
 
-    -webkit-transition: all 0.3s ease;
-    -moz-transition: all 0.3s ease;
-    -o-transition: all 0.3s ease;
-    -ms-transition: all 0.3s ease;
-    transition: all 0.3s ease;
+ul.sidebar-menu li a:hover, ul.sidebar-menu li a:focus {
+  background: #68dff0;
+  color: #fff;
 }
 
 
@@ -391,11 +393,11 @@ ul.sidebar-menu li a i {
 }
 
 ul.sidebar-menu li a:hover i, ul.sidebar-menu li a:focus i {
-    color: #fff;
+  color: #fff;
 }
 
 ul.sidebar-menu li a.active i {
-    color: #fff;
+  /*color: #fff; EDITED */
 }
 
 
@@ -428,7 +430,7 @@ ul.sidebar-menu li a.active i {
 
 .wrapper {
     display: inline-block;
-    //margin-top: 60px; EDITED
+    /*margin-top: 60px; EDITED*/
     padding-left: 15px;
     padding-right: 15px;
     padding-bottom: 15px;
