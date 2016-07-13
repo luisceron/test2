@@ -110,17 +110,17 @@ def expect_transaction_edit transaction
   expect(page).to have_selector(:link_or_button, I18n.t('action.edit', model: Transaction.model_name.human) )
 
   expect(page).to have_content( Transaction.human_attribute_name(:account) )
-  expect(page).to have_select( Transaction.human_attribute_name(:account), selected: transaction.account.name )
+  expect(page).to have_select(  Transaction.human_attribute_name(:account), selected: transaction.account.name )
   expect(page).to have_content( Transaction.human_attribute_name(:category) )
-  expect(page).to have_select( Transaction.human_attribute_name(:category), selected: transaction.category.name )
+  expect(page).to have_select(  Transaction.human_attribute_name(:category), selected: transaction.category.name )
   expect(page).to have_content( Transaction.human_attribute_name(:transaction_type) )
-  expect(page).to have_select( Transaction.human_attribute_name(:transaction_type), selected: I18n.t(transaction.transaction_type.to_sym, scope: "activerecord.attributes.transaction.transaction_types") )
+  expect(page).to have_select(  Transaction.human_attribute_name(:transaction_type), selected: I18n.t(transaction.transaction_type.to_sym, scope: "activerecord.attributes.transaction.transaction_types") )
   expect(page).to have_content( Transaction.human_attribute_name(:date) )
-  expect(page).to have_field( Transaction.human_attribute_name(:date), with: transaction.date )
+  expect(page).to have_field(   Transaction.human_attribute_name(:date), with: transaction.date )
   expect(page).to have_content( Transaction.human_attribute_name(:amount) )
-  expect(page).to have_field( Transaction.human_attribute_name(:amount), with: transaction.amount.to_s )
+  expect(page).to have_field(   Transaction.human_attribute_name(:amount), with: transaction.amount.to_s )
   expect(page).to have_content( Transaction.human_attribute_name(:description) )
-  expect(page).to have_field( Transaction.human_attribute_name(:description), with: transaction.description )
+  expect(page).to have_field(   Transaction.human_attribute_name(:description), with: transaction.description )
 
   expect(page).to have_selector(:link_or_button, I18n.t('link.back') )
   expect(page).to have_selector(:link_or_button, I18n.t('link.save') )
@@ -146,7 +146,6 @@ def expect_transaction_show transaction
 
   expect(page).to have_selector(:link_or_button, I18n.t('link.back') )
   expect(page).to have_selector(:link_or_button, I18n.t('link.edit') )
-  save_page
 end
 
 

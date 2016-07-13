@@ -48,7 +48,9 @@ def expect_index
 end
 
 def expect_new
-  expect(page).to have_content( I18n.t('action.new', model: User.model_name.human) )
+  expect(page).to have_selector(:link_or_button, User.model_name.human(count: 2) )
+  expect(page).to have_selector(:link_or_button, I18n.t('action.new', model: User.model_name.human) )
+
   expect(page).to have_content( User.human_attribute_name(:email) )
   expect(page).to have_css("input#user_email")
   expect(page).to have_content( User.human_attribute_name(:admin) )
@@ -60,7 +62,9 @@ def expect_new
 end
 
 def expect_edit current_user, user
-  expect(page).to have_content( I18n.t('action.edit', model: User.model_name.human) )
+  expect(page).to have_selector(:link_or_button, User.model_name.human(count: 2) )
+  expect(page).to have_selector(:link_or_button, I18n.t('action.edit', model: User.model_name.human) )
+
   expect(page).to have_content(user.email)
   expect(page).to_not have_css("input#user_email")
   expect(page).to have_field( User.human_attribute_name(:name), with: user.name )
@@ -85,7 +89,9 @@ def expect_edit current_user, user
 end
 
 def expect_show current_user, user
-  expect(page).to have_content( User.model_name.human.pluralize )
+  expect(page).to have_selector(:link_or_button, User.model_name.human(count: 2) )
+  expect(page).to have_selector(:link_or_button, user.name )
+
   expect(page).to have_content(user.name)
   expect(page).to have_content(user.email)
 
@@ -205,6 +211,8 @@ feature "users views for admin user" do
       click_on I18n.t('link.save')
 
       expect(page).to have_content( I18n.t('controller.updated', model: User.model_name.human) )
+      user.name = "Marco"
+      user.save
       expect_show current_user, user
     end
 
@@ -425,6 +433,8 @@ feature "users views for current user" do
       click_on I18n.t('link.save')
 
       expect(page).to have_content( I18n.t('controller.updated', model: User.model_name.human) )
+      user.name = "Marco"
+      user.save
       expect_show user, user
     end
 
