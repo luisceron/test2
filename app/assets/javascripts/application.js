@@ -19,5 +19,6 @@
 //= require jquery.inputmask/inputmask.numeric.extensions
 //= require jquery.inputmask/inputmask.date.extensions
 //= require jquery.inputmask/jquery.inputmask
+//= require bootstrap-datepicker
 //= require bootstrap-datepicker/locales/bootstrap-datepicker.pt-BR.js
 //= require_tree .
