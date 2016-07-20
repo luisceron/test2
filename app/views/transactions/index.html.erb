@@ -35,9 +35,9 @@
             <tr>
               <th><%= Transaction.human_attribute_name(:account) %></th>
               <th><%= Transaction.human_attribute_name(:category) %></th>
-              <th><%= Transaction.human_attribute_name(:date) %></th>
-              <th class="right-cell"><%= enum_translation(Transaction, :transaction_types, :in) %></th>
-              <th class="right-cell"><%= enum_translation(Transaction, :transaction_types, :out) %></th>
+              <th class="text-center"><%= Transaction.human_attribute_name(:date) %></th>
+              <th class="text-center"><%= enum_translation(Transaction, :transaction_types, :in) %></th>
+              <th class="text-center"><%= enum_translation(Transaction, :transaction_types, :out) %></th>
               <th><%= Transaction.human_attribute_name(:description) %></th>
               <th></th>
             </tr>
@@ -48,12 +48,12 @@
               <tr data-href="<%= transaction_path(transaction) %>">
                 <td><%= transaction.account %></td>
                 <td><%= transaction.category %></td>
-                <td><%= date_for transaction.date %></td>
+                <td class="text-center"><%= date_for transaction.date %></td>
 
                 <% if transaction.transaction_type.to_sym == :in %>
-                  <td class="right-cell in-color"><%= number_to_currency(transaction.amount) %></td><td></td>
+                  <td class="text-center in-color"><%= number_to_currency(transaction.amount) %></td><td></td>
                 <% elsif transaction.transaction_type.to_sym == :out %>
-                  <td></td><td class="right-cell out-color"><%= number_to_currency(transaction.amount) %></td>
+                  <td></td><td class="text-center out-color"><%= number_to_currency(transaction.amount) %></td>
                 <% end %>
                 
                 <td><%= transaction.description %></td>
@@ -67,9 +67,9 @@
             <% end %>
 
             <tr>
-              <td class="right-cell" colspan="3"></td>
-              <td class="right-cell in-background"><%= number_to_currency(@totalizer_transactions_service.totalize_transactions_in) %></td>
-              <td class="right-cell out-background"><%= number_to_currency(@totalizer_transactions_service.totalize_transactions_out) %></td>
+              <td colspan="3"></td>
+              <td class="text-center in-background"><%= number_to_currency(@totalizer_transactions_service.totalize_transactions_in) %></td>
+              <td class="text-center out-background"><%= number_to_currency(@totalizer_transactions_service.totalize_transactions_out) %></td>
               <td class="right-cell"><strong><%= Transaction.human_attribute_name(:total) %>: </strong></td>
               <td class="right-cell <%= @totalizer_transactions_service.calculate_total < 0 ? 'out-background' : 'in-background' %>">
                 <%= number_to_currency(@totalizer_transactions_service.calculate_total) %>

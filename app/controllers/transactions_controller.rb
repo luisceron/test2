@@ -22,12 +22,12 @@ class TransactionsController < ApplicationController
 
   def create
     @transaction = @user.transactions.new(transaction_params)
-    save_object @transaction, {fem: true}
+    save_object @transaction, {path: user_transactions_url(@user), fem: true}
   end
 
   def update
     @transaction.assign_attributes(transaction_params)
-    save_object @transaction, {fem: true}
+    save_object @transaction, {path: user_transactions_url(@user), fem: true}
   end
 
   def destroy

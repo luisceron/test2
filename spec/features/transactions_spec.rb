@@ -50,8 +50,8 @@ def expect_transaction_index current_user
     end
   end
 
-  expect(page).to have_css("td.right-cell.in-background",  text: number_to_currency(current_user.transactions.scope_in.sum(:amount)))
-  expect(page).to have_css("td.right-cell.out-background", text: number_to_currency(current_user.transactions.scope_out.sum(:amount)))
+  expect(page).to have_css("td.text-center.in-background",  text: number_to_currency(current_user.transactions.scope_in.sum(:amount)))
+  expect(page).to have_css("td.text-center.out-background", text: number_to_currency(current_user.transactions.scope_out.sum(:amount)))
   expect(page).to have_css("td.right-cell", text: Transaction.human_attribute_name(:total))
   total_transactions = current_user.transactions.scope_in.sum(:amount) - current_user.transactions.scope_out.sum(:amount)
   if total_transactions < 0
@@ -188,7 +188,7 @@ feature "transactions views for owner user", type: :feature do
       click_on I18n.t('link.save')
 
       expect(page).to have_content( I18n.t('controller.created_fem', model: Transaction.model_name.human) )
-      expect_transaction_show Transaction.find_by(description: "Car Wash")
+      expect_transaction_index current_user
     end
 
     scenario "with invalid params" do
@@ -219,9 +219,7 @@ feature "transactions views for owner user", type: :feature do
       click_on I18n.t('link.save')
 
       expect(page).to have_content( I18n.t('controller.updated_fem', model: Transaction.model_name.human) )
-      transaction.amount = 250.00
-      transaction.save
-      expect_transaction_show transaction
+      expect_transaction_index current_user
     end
 
     scenario "with invalid params" do
