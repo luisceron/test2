@@ -67,10 +67,13 @@
             <% end %>
 
             <tr>
-              <td class="right-cell" colspan="3"><%= Transaction.human_attribute_name(:total) %>:</td>
+              <td class="right-cell" colspan="3"></td>
               <td class="right-cell in-background"><%= number_to_currency(@totalizer_transactions_service.totalize_transactions_in) %></td>
               <td class="right-cell out-background"><%= number_to_currency(@totalizer_transactions_service.totalize_transactions_out) %></td>
-              <td colspan="2"></td>
+              <td class="right-cell"><strong><%= Transaction.human_attribute_name(:total) %>: </strong></td>
+              <td class="right-cell <%= @totalizer_transactions_service.calculate_total < 0 ? 'out-background' : 'in-background' %>">
+                <%= number_to_currency(@totalizer_transactions_service.calculate_total) %>
+              </td>
             </tr>
 
           </tbody>

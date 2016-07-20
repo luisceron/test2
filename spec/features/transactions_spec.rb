@@ -50,9 +50,15 @@ def expect_transaction_index current_user
     end
   end
 
-  expect(page).to have_css("td.right-cell", text: Transaction.human_attribute_name(:total))
   expect(page).to have_css("td.right-cell.in-background",  text: number_to_currency(current_user.transactions.scope_in.sum(:amount)))
   expect(page).to have_css("td.right-cell.out-background", text: number_to_currency(current_user.transactions.scope_out.sum(:amount)))
+  expect(page).to have_css("td.right-cell", text: Transaction.human_attribute_name(:total))
+  total_transactions = current_user.transactions.scope_in.sum(:amount) - current_user.transactions.scope_out.sum(:amount)
+  if total_transactions < 0
+    expect(page).to have_css("td.right-cell.out-background", text: number_to_currency(total_transactions))
+  else
+    expect(page).to have_css("td.right-cell.in-background", text: number_to_currency(total_transactions))
+  end
   expect(page).to have_selector(:link_or_button, I18n.t('action.new_fem', model: Transaction.model_name.human) )
 end
 

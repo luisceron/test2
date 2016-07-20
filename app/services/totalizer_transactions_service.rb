@@ -15,4 +15,8 @@ class TotalizerTransactionsService
   def totalize_transactions_out
     transactions_out.sum(:amount)
   end
+
+  def calculate_total
+    totalize_transactions_in - totalize_transactions_out
+  end
 end

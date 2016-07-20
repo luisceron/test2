@@ -33,5 +33,9 @@ RSpec.describe TotalizerTransactionsService, type: :service do
     it "must totalize OUT transactions" do
       expect(totalizer_transactions_service.totalize_transactions_out).to eq(763.59)
     end
+
+    it "must return transactions total" do
+      expect(totalizer_transactions_service.calculate_total).to eq(541.91)
+    end
   end
 end
