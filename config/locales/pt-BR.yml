@@ -41,6 +41,7 @@ pt-BR:
         transaction_types:
           in: Entrada
           out: Saída
+        total: Total
       user:
         name: Nome
         email: E-mail

@@ -6,6 +6,7 @@ class TransactionsController < ApplicationController
 
   def index
     @transactions = index_object @user.transactions, params
+    @totalizer_transactions_service = TotalizerTransactionsService.new(@transactions)
     check_advanced_search
   end
 

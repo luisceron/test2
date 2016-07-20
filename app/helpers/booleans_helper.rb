@@ -14,11 +14,4 @@ module BooleansHelper
       when :cash_account    then return content_tag(:div, Account.human_attribute_name(:cash_letter),    class: "label label-default")
     end
   end
-
-  def badge_for_transaction_type transaction_type
-    case transaction_type.to_sym
-      when :in  then return content_tag(:div, class:"label label-success") do concat(content_tag(:i, "", class: "fa fa-arrow-up"))   end
-      when :out then return content_tag(:div, class:"label label-danger")  do concat(content_tag(:i, "", class: "fa fa-arrow-down")) end
-    end
-  end
 end

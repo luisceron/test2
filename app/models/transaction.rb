@@ -11,12 +11,10 @@ class Transaction < ActiveRecord::Base
   validates :date, presence: true
   validates :amount, presence: true, numericality: { greater_than_or_equal_to: 0 }
 
-  def to_s
-    # self.account.try(:name)    + " - " +
-    # self.transaction_type.to_s + " - " +
-    # self.category.try(:name)   + " - " +
-    # self.try(:description)
+  scope :scope_in, -> {where(transaction_type: 0)}
+  scope :scope_out, -> {where(transaction_type: 1)}
 
+  def to_s
     I18n.t(self.transaction_type.to_sym, scope: "activerecord.attributes.transaction.transaction_types") 
   end
 end

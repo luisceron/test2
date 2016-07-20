@@ -41,6 +41,7 @@ en:
         transaction_types:
           in: In
           out: Out
+        total: Total
       user:
         name: Name
         email: Email

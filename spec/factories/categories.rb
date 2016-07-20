@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :category do
     association :user
-    name "Market"
-    description "Market Shopping"
+    sequence(:name) {|n| "Category#{n}"}
+    description "Category Description"
   end
 end

@@ -22,28 +22,25 @@ def expect_transaction_index current_user
   expect(page).to have_content( Transaction.human_attribute_name(:account) )
   expect(page).to have_content( Transaction.human_attribute_name(:category) )
   expect(page).to have_content( Transaction.human_attribute_name(:date) )
-  expect(page).to have_content( Transaction.human_attribute_name(:amount) )
+  expect(page).to have_content( I18n.t(:in, scope: "activerecord.attributes.transaction.transaction_types") )
+  expect(page).to have_content( I18n.t(:out, scope: "activerecord.attributes.transaction.transaction_types") )
   expect(page).to have_content( Transaction.human_attribute_name(:description) )
 
   if current_user.transactions.size == 1
-    if current_user.transactions.first.transaction_type.to_sym == :in
-      expect(page).to have_css("div.label.label-success i.fa.fa-arrow-up")
-    else
-      expect(page).to have_css("div.label.label-danger i.fa.fa-arrow-down")
+    first_transaction = current_user.transactions.first
+    expect(page).to have_content( first_transaction.account )
+    expect(page).to have_content( first_transaction.category )
+    expect(page).to have_content( first_transaction.date.strftime("%d/%m/%Y") )
+    if first_transaction.transaction_type.to_sym == :in
+      expect(page).to have_css("td.in-color", text: number_to_currency(first_transaction.amount))
+    elsif first_transaction.transaction_type.to_sym == :out
+      expect(page).to have_css("td.out-color", text: number_to_currency(first_transaction.amount))
     end
-
-    expect(page).to have_content( current_user.transactions.first.account )
-    expect(page).to have_content( current_user.transactions.first.category )
-    expect(page).to have_content( current_user.transactions.first.date.strftime("%d/%m/%Y") )
-    expect(page).to have_content( number_to_currency current_user.transactions.first.amount )
-    expect(page).to have_content( current_user.transactions.first.description )
-
+    expect(page).to have_content( first_transaction.description )
     expect(page).to have_css("a.btn.btn-xs.btn-primary .fa.fa-pencil-square-o")
     expect(page).to have_css("a.btn.btn-xs.btn-danger .fa.fa-trash")
-
     expect(page).to have_content( I18n.t('action.per_page', model: Transaction.model_name.human(count: 2)) )
     expect(page).to have_selector('select#per_page')
-  
     if current_user.transactions.count == 1
       expect(page).to have_content( I18n.t('will_paginate.page_entries_info.single_page_html.one') )
     elsif current_user.transactions.count > 25
@@ -53,6 +50,9 @@ def expect_transaction_index current_user
     end
   end
 
+  expect(page).to have_css("td.right-cell", text: Transaction.human_attribute_name(:total))
+  expect(page).to have_css("td.right-cell.in-background",  text: number_to_currency(current_user.transactions.scope_in.sum(:amount)))
+  expect(page).to have_css("td.right-cell.out-background", text: number_to_currency(current_user.transactions.scope_out.sum(:amount)))
   expect(page).to have_selector(:link_or_button, I18n.t('action.new_fem', model: Transaction.model_name.human) )
 end
 
@@ -363,13 +363,13 @@ feature "transactions views for owner user", type: :feature do
 
       select I18n.t(:in, scope: "activerecord.attributes.transaction.transaction_types"), from: :q_transaction_type_eq
       click_on I18n.t('action.search')
-      expect(page).to     have_css("div.label.label-success i.fa.fa-arrow-up")
-      expect(page).to_not have_css("div.label.label-danger i.fa.fa-arrow-down")
+      expect(page).to     have_css("td.in-color")
+      expect(page).to_not have_css("td.out-color")
 
       select I18n.t(:out, scope: "activerecord.attributes.transaction.transaction_types"), from: :q_transaction_type_eq
       click_on I18n.t('action.search')
-      expect(page).to_not have_css("div.label.label-success i.fa.fa-arrow-up")
-      expect(page).to     have_css("div.label.label-danger i.fa.fa-arrow-down")
+      expect(page).to_not have_css("td.in-color")
+      expect(page).to     have_css("td.out-color")
     end
 
     scenario "when searching by dates must return only them", js: true do

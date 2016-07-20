@@ -33,11 +33,11 @@
         <table class="table table-hover table-striped table-condensed">
           <thead>
             <tr>
-              <th></th>
               <th><%= Transaction.human_attribute_name(:account) %></th>
               <th><%= Transaction.human_attribute_name(:category) %></th>
               <th><%= Transaction.human_attribute_name(:date) %></th>
-              <th class="right-cell"><%= Transaction.human_attribute_name(:amount) %></th>
+              <th class="right-cell"><%= enum_translation(Transaction, :transaction_types, :in) %></th>
+              <th class="right-cell"><%= enum_translation(Transaction, :transaction_types, :out) %></th>
               <th><%= Transaction.human_attribute_name(:description) %></th>
               <th></th>
             </tr>
@@ -46,11 +46,16 @@
           <tbody>
             <% @transactions.each do |transaction| %>
               <tr data-href="<%= transaction_path(transaction) %>">
-                <td><%= badge_for_transaction_type transaction.transaction_type %></td>
                 <td><%= transaction.account %></td>
                 <td><%= transaction.category %></td>
                 <td><%= date_for transaction.date %></td>
-                <td class="right-cell"><%= number_to_currency transaction.amount %></td>
+
+                <% if transaction.transaction_type.to_sym == :in %>
+                  <td class="right-cell in-color"><%= number_to_currency(transaction.amount) %></td><td></td>
+                <% elsif transaction.transaction_type.to_sym == :out %>
+                  <td></td><td class="right-cell out-color"><%= number_to_currency(transaction.amount) %></td>
+                <% end %>
+                
                 <td><%= transaction.description %></td>
                 <td>
                   <div class="pull-right">
@@ -60,6 +65,14 @@
                 </td>
               </tr>
             <% end %>
+
+            <tr>
+              <td class="right-cell" colspan="3"><%= Transaction.human_attribute_name(:total) %>:</td>
+              <td class="right-cell in-background"><%= number_to_currency(@totalizer_transactions_service.totalize_transactions_in) %></td>
+              <td class="right-cell out-background"><%= number_to_currency(@totalizer_transactions_service.totalize_transactions_out) %></td>
+              <td colspan="2"></td>
+            </tr>
+
           </tbody>
         </table>
       </div>

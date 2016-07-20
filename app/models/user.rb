@@ -7,8 +7,8 @@ class User < ActiveRecord::Base
 
   attr_accessor :typed_email
 
-  has_many :accounts, dependent: :destroy
-  has_many :categories, dependent: :destroy
+  has_many :accounts,     dependent: :destroy
+  has_many :categories,   dependent: :destroy
   has_many :transactions, dependent: :destroy
 
   before_validation :set_name_and_password, on: :create

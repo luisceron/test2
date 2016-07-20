@@ -5,7 +5,7 @@ FactoryGirl.define do
     category { create :category, user: user }
     transaction_type :out
     date "28/06/2016"
-    amount "9.99"
+    amount 9.99
     description "Corner Shop"
   end
 end
