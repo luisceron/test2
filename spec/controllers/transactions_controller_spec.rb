@@ -243,7 +243,7 @@ RSpec.describe TransactionsController, type: :controller do
 
       it "redirects to the created transaction" do
         post :create, {user_id: controller.current_user, transaction: valid_attributes}
-        expect(response).to redirect_to(Transaction.last)
+        expect(response).to redirect_to(user_transactions_url(controller.current_user))
       end
     end
 
@@ -320,7 +320,7 @@ RSpec.describe TransactionsController, type: :controller do
       it "redirects to the transaction" do
         transaction = create(:transaction, user: controller.current_user)
         put :update, {id: transaction.to_param, transaction: valid_attributes}
-        expect(response).to redirect_to(transaction)
+        expect(response).to redirect_to(user_transactions_url(controller.current_user))
       end
     end
 

@@ -1,15 +1,16 @@
 <div class="wrapper border-bottom bg-white">
-  <h3><%= User.model_name.human.pluralize %></h3>
+  <h3><%= link_to User.model_name.human(count: 2), users_path %></h3>
 </div>
 
 <div class="row">
   <div class="pack form-panel">
     <div class="pack-caption">
-      <strong><%= @user %></strong>
+      <strong><%= link_to @user, user_path(@user) %></strong>
       <% if current_user.admin %>
         <%= badge_for_admin if @user.admin %>
       <% end %>
     </div>
+
     <div class="pack-inside">
       <dl class="dl-horizontal">
         <%= show_for @user, :email, {disabled: true} %>

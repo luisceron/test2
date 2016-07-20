@@ -41,6 +41,7 @@ pt-BR:
         transaction_types:
           in: Entrada
           out: Saída
+        total: Total
       user:
         name: Nome
         email: E-mail
@@ -54,6 +55,7 @@ pt-BR:
         invalid_email: E-mail Inválido
         destroyed_successfully: Conta excluída com sucesso
         admin_update_password_error: Senha não confere
+        perfil: Meu Perfil
   action:
     index: Lista de %{model}
     new: Novo %{model}

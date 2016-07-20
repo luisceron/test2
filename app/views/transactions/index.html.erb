@@ -4,7 +4,7 @@
 
 <div class="row">
   <div class="pack form-panel">
-    <div class="pack-caption"><strong><%= action_index Transaction %></strong></div>
+    <div class="pack-caption"><strong><%= link_to action_index(Transaction), user_transactions_path(@user) %></strong></div>
     <div class="pack-inside">
       <div class="row">
         <div class="col-md-12">
@@ -33,11 +33,11 @@
         <table class="table table-hover table-striped table-condensed">
           <thead>
             <tr>
-              <th></th>
               <th><%= Transaction.human_attribute_name(:account) %></th>
               <th><%= Transaction.human_attribute_name(:category) %></th>
-              <th><%= Transaction.human_attribute_name(:date) %></th>
-              <th class="right-cell"><%= Transaction.human_attribute_name(:amount) %></th>
+              <th class="text-center"><%= Transaction.human_attribute_name(:date) %></th>
+              <th class="text-center"><%= enum_translation(Transaction, :transaction_types, :in) %></th>
+              <th class="text-center"><%= enum_translation(Transaction, :transaction_types, :out) %></th>
               <th><%= Transaction.human_attribute_name(:description) %></th>
               <th></th>
             </tr>
@@ -46,11 +46,16 @@
           <tbody>
             <% @transactions.each do |transaction| %>
               <tr data-href="<%= transaction_path(transaction) %>">
-                <td><%= badge_for_transaction_type transaction.transaction_type %></td>
                 <td><%= transaction.account %></td>
                 <td><%= transaction.category %></td>
-                <td><%= date_for transaction.date %></td>
-                <td class="right-cell"><%= number_to_currency transaction.amount %></td>
+                <td class="text-center"><%= date_for transaction.date %></td>
+
+                <% if transaction.transaction_type.to_sym == :in %>
+                  <td class="text-center in-color"><%= number_to_currency(transaction.amount) %></td><td></td>
+                <% elsif transaction.transaction_type.to_sym == :out %>
+                  <td></td><td class="text-center out-color"><%= number_to_currency(transaction.amount) %></td>
+                <% end %>
+                
                 <td><%= transaction.description %></td>
                 <td>
                   <div class="pull-right">
@@ -60,6 +65,17 @@
                 </td>
               </tr>
             <% end %>
+
+            <tr>
+              <td colspan="3"></td>
+              <td class="text-center in-background"><%= number_to_currency(@totalizer_transactions_service.totalize_transactions_in) %></td>
+              <td class="text-center out-background"><%= number_to_currency(@totalizer_transactions_service.totalize_transactions_out) %></td>
+              <td class="right-cell"><strong><%= Transaction.human_attribute_name(:total) %>: </strong></td>
+              <td class="right-cell <%= @totalizer_transactions_service.calculate_total < 0 ? 'out-background' : 'in-background' %>">
+                <%= number_to_currency(@totalizer_transactions_service.calculate_total) %>
+              </td>
+            </tr>
+
           </tbody>
         </table>
       </div>

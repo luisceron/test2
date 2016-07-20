@@ -6,23 +6,28 @@
       
       <li class="mt">
         <% if current_user.admin %>
-          <%= link_to users_path, class: "menu menu-link" do %>
-            <i class="fa fa-user"></i>
+          <%= link_to users_path do %>
+            <i class="fa fa-users"></i>
             <strong><%= User.model_name.human.pluralize %></strong>
           <% end %>
         <% end %>
 
-        <%= link_to user_accounts_path(current_user), class: "menu menu-link" do %>
+        <%= link_to user_path(current_user) do %>
+          <i class="fa fa-user"></i>
+          <strong><%= User.human_attribute_name(:perfil) %></strong>
+        <% end %>
+
+        <%= link_to user_accounts_path(current_user) do %>
           <i class="fa fa-bank"></i>
           <strong><%= Account.model_name.human(count: 2) %></strong>
         <% end %>
 
-        <%= link_to user_categories_path(current_user), class: "menu menu-link" do %>
+        <%= link_to user_categories_path(current_user) do %>
           <i class="fa fa-folder-open"></i>
           <strong><%= Category.model_name.human(count: 2) %></strong>
         <% end %>
 
-        <%= link_to user_transactions_path(current_user), class: "menu menu-link" do %>
+        <%= link_to user_transactions_path(current_user) do %>
           <i class="fa fa-dollar"></i>
           <strong><%= Transaction.model_name.human(count: 2) %></strong>
         <% end %>

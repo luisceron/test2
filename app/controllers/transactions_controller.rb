@@ -6,6 +6,7 @@ class TransactionsController < ApplicationController
 
   def index
     @transactions = index_object @user.transactions, params
+    @totalizer_transactions_service = TotalizerTransactionsService.new(@transactions)
     check_advanced_search
   end
 
@@ -21,12 +22,12 @@ class TransactionsController < ApplicationController
 
   def create
     @transaction = @user.transactions.new(transaction_params)
-    save_object @transaction, {fem: true}
+    save_object @transaction, {path: user_transactions_url(@user), fem: true}
   end
 
   def update
     @transaction.assign_attributes(transaction_params)
-    save_object @transaction, {fem: true}
+    save_object @transaction, {path: user_transactions_url(@user), fem: true}
   end
 
   def destroy

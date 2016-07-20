@@ -4,7 +4,9 @@
 
 <div class="row">
   <div class="pack form-panel">
-    <div class="pack-caption"><strong><%= link_to action_new_fem(Transaction), new_user_transaction_path(@user) %></strong></div>
+    <div class="pack-caption">
+      <strong><%= link_to action_new_fem(Transaction), new_user_transaction_path(@user) %></strong>
+    </div>
 
     <div class="pack-inside">
       <%= render 'form' %>

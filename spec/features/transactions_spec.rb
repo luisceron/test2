@@ -3,7 +3,7 @@ require 'rails_helper'
 # => V I E W S    C O N T E N T
 def expect_transaction_index current_user
   expect(page).to have_selector(:link_or_button, Transaction.model_name.human(count: 2) )
-  expect(page).to have_content( I18n.t('action.index', model: Transaction.model_name.human(count: 2)) )
+  expect(page).to have_selector(:link_or_button, I18n.t('action.index', model: Transaction.model_name.human(count: 2)) )
 
   expect(page).to have_selector('input#q_description_cont')
   expect(page).to have_css('button.btn.btn-primary .fa.fa-search')
@@ -22,28 +22,25 @@ def expect_transaction_index current_user
   expect(page).to have_content( Transaction.human_attribute_name(:account) )
   expect(page).to have_content( Transaction.human_attribute_name(:category) )
   expect(page).to have_content( Transaction.human_attribute_name(:date) )
-  expect(page).to have_content( Transaction.human_attribute_name(:amount) )
+  expect(page).to have_content( I18n.t(:in, scope: "activerecord.attributes.transaction.transaction_types") )
+  expect(page).to have_content( I18n.t(:out, scope: "activerecord.attributes.transaction.transaction_types") )
   expect(page).to have_content( Transaction.human_attribute_name(:description) )
 
   if current_user.transactions.size == 1
-    if current_user.transactions.first.transaction_type.to_sym == :in
-      expect(page).to have_css("div.label.label-success i.fa.fa-arrow-up")
-    else
-      expect(page).to have_css("div.label.label-danger i.fa.fa-arrow-down")
+    first_transaction = current_user.transactions.first
+    expect(page).to have_content( first_transaction.account )
+    expect(page).to have_content( first_transaction.category )
+    expect(page).to have_content( first_transaction.date.strftime("%d/%m/%Y") )
+    if first_transaction.transaction_type.to_sym == :in
+      expect(page).to have_css("td.in-color", text: number_to_currency(first_transaction.amount))
+    elsif first_transaction.transaction_type.to_sym == :out
+      expect(page).to have_css("td.out-color", text: number_to_currency(first_transaction.amount))
     end
-
-    expect(page).to have_content( current_user.transactions.first.account )
-    expect(page).to have_content( current_user.transactions.first.category )
-    expect(page).to have_content( current_user.transactions.first.date.strftime("%d/%m/%Y") )
-    expect(page).to have_content( number_to_currency current_user.transactions.first.amount )
-    expect(page).to have_content( current_user.transactions.first.description )
-
+    expect(page).to have_content( first_transaction.description )
     expect(page).to have_css("a.btn.btn-xs.btn-primary .fa.fa-pencil-square-o")
     expect(page).to have_css("a.btn.btn-xs.btn-danger .fa.fa-trash")
-
     expect(page).to have_content( I18n.t('action.per_page', model: Transaction.model_name.human(count: 2)) )
     expect(page).to have_selector('select#per_page')
-  
     if current_user.transactions.count == 1
       expect(page).to have_content( I18n.t('will_paginate.page_entries_info.single_page_html.one') )
     elsif current_user.transactions.count > 25
@@ -53,6 +50,15 @@ def expect_transaction_index current_user
     end
   end
 
+  expect(page).to have_css("td.text-center.in-background",  text: number_to_currency(current_user.transactions.scope_in.sum(:amount)))
+  expect(page).to have_css("td.text-center.out-background", text: number_to_currency(current_user.transactions.scope_out.sum(:amount)))
+  expect(page).to have_css("td.right-cell", text: Transaction.human_attribute_name(:total))
+  total_transactions = current_user.transactions.scope_in.sum(:amount) - current_user.transactions.scope_out.sum(:amount)
+  if total_transactions < 0
+    expect(page).to have_css("td.right-cell.out-background", text: number_to_currency(total_transactions))
+  else
+    expect(page).to have_css("td.right-cell.in-background", text: number_to_currency(total_transactions))
+  end
   expect(page).to have_selector(:link_or_button, I18n.t('action.new_fem', model: Transaction.model_name.human) )
 end
 
@@ -110,17 +116,17 @@ def expect_transaction_edit transaction
   expect(page).to have_selector(:link_or_button, I18n.t('action.edit', model: Transaction.model_name.human) )
 
   expect(page).to have_content( Transaction.human_attribute_name(:account) )
-  expect(page).to have_select( Transaction.human_attribute_name(:account), selected: transaction.account.name )
+  expect(page).to have_select(  Transaction.human_attribute_name(:account), selected: transaction.account.name )
   expect(page).to have_content( Transaction.human_attribute_name(:category) )
-  expect(page).to have_select( Transaction.human_attribute_name(:category), selected: transaction.category.name )
+  expect(page).to have_select(  Transaction.human_attribute_name(:category), selected: transaction.category.name )
   expect(page).to have_content( Transaction.human_attribute_name(:transaction_type) )
-  expect(page).to have_select( Transaction.human_attribute_name(:transaction_type), selected: I18n.t(transaction.transaction_type.to_sym, scope: "activerecord.attributes.transaction.transaction_types") )
+  expect(page).to have_select(  Transaction.human_attribute_name(:transaction_type), selected: I18n.t(transaction.transaction_type.to_sym, scope: "activerecord.attributes.transaction.transaction_types") )
   expect(page).to have_content( Transaction.human_attribute_name(:date) )
-  expect(page).to have_field( Transaction.human_attribute_name(:date), with: transaction.date )
+  expect(page).to have_field(   Transaction.human_attribute_name(:date), with: transaction.date )
   expect(page).to have_content( Transaction.human_attribute_name(:amount) )
-  expect(page).to have_field( Transaction.human_attribute_name(:amount), with: transaction.amount.to_s )
+  expect(page).to have_field(   Transaction.human_attribute_name(:amount), with: transaction.amount.to_s )
   expect(page).to have_content( Transaction.human_attribute_name(:description) )
-  expect(page).to have_field( Transaction.human_attribute_name(:description), with: transaction.description )
+  expect(page).to have_field(   Transaction.human_attribute_name(:description), with: transaction.description )
 
   expect(page).to have_selector(:link_or_button, I18n.t('link.back') )
   expect(page).to have_selector(:link_or_button, I18n.t('link.save') )
@@ -146,7 +152,6 @@ def expect_transaction_show transaction
 
   expect(page).to have_selector(:link_or_button, I18n.t('link.back') )
   expect(page).to have_selector(:link_or_button, I18n.t('link.edit') )
-  save_page
 end
 
 
@@ -183,7 +188,7 @@ feature "transactions views for owner user", type: :feature do
       click_on I18n.t('link.save')
 
       expect(page).to have_content( I18n.t('controller.created_fem', model: Transaction.model_name.human) )
-      expect_transaction_show Transaction.find_by(description: "Car Wash")
+      expect_transaction_index current_user
     end
 
     scenario "with invalid params" do
@@ -214,9 +219,7 @@ feature "transactions views for owner user", type: :feature do
       click_on I18n.t('link.save')
 
       expect(page).to have_content( I18n.t('controller.updated_fem', model: Transaction.model_name.human) )
-      transaction.amount = 250.00
-      transaction.save
-      expect_transaction_show transaction
+      expect_transaction_index current_user
     end
 
     scenario "with invalid params" do
@@ -364,13 +367,13 @@ feature "transactions views for owner user", type: :feature do
 
       select I18n.t(:in, scope: "activerecord.attributes.transaction.transaction_types"), from: :q_transaction_type_eq
       click_on I18n.t('action.search')
-      expect(page).to     have_css("div.label.label-success i.fa.fa-arrow-up")
-      expect(page).to_not have_css("div.label.label-danger i.fa.fa-arrow-down")
+      expect(page).to     have_css("td.in-color")
+      expect(page).to_not have_css("td.out-color")
 
       select I18n.t(:out, scope: "activerecord.attributes.transaction.transaction_types"), from: :q_transaction_type_eq
       click_on I18n.t('action.search')
-      expect(page).to_not have_css("div.label.label-success i.fa.fa-arrow-up")
-      expect(page).to     have_css("div.label.label-danger i.fa.fa-arrow-down")
+      expect(page).to_not have_css("td.in-color")
+      expect(page).to     have_css("td.out-color")
     end
 
     scenario "when searching by dates must return only them", js: true do
