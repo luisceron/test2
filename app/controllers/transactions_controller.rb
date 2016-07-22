@@ -5,9 +5,13 @@ class TransactionsController < ApplicationController
   attr_accessor :advanced_search
 
   def index
-    @transactions = index_object @user.transactions, params
+    if params
+      @transactions = index_object @user.transactions, params
+    else
+      @transactions = index_object @user.transactions.current_month_scope, params
+    end
     @totalizer_transactions_service = TotalizerTransactionsService.new(@transactions)
-    check_advanced_search
+    # check_advanced_search
   end
 
   def show
@@ -48,14 +52,14 @@ class TransactionsController < ApplicationController
       params.require(:transaction).permit(:account_id, :category_id, :transaction_type, :date, :amount, :description)
     end
 
-    def check_advanced_search
-      if params[:q]
-        params[:q].each do |key, value|
-          if key.to_sym != :description_cont
-            return self.advanced_search = true if value != ""
-          end
-        end
-        self.advanced_search = false
-      end
-    end
+    # def check_advanced_search
+    #   if params[:q]
+    #     params[:q].each do |key, value|
+    #       if key.to_sym != :description_cont
+    #         return self.advanced_search = true if value != ""
+    #       end
+    #     end
+    #     self.advanced_search = false
+    #   end
+    # end
 end

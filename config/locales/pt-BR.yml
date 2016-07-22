@@ -42,6 +42,8 @@ pt-BR:
           in: Entrada
           out: Saída
         total: Total
+        month: Mês
+        year: Ano
       user:
         name: Nome
         email: E-mail
@@ -87,6 +89,9 @@ pt-BR:
     change_password: Editar Senha
     remove_account: Excluir Conta
     logout: Sair
+  text:
+    all: Todos
+    all_fem: Todas
   time:
     formats: 
       default: '%A, %d. %B %Y, %H:%M Uhr'
