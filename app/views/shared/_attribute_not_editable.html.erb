@@ -2,7 +2,11 @@
   <div class="form-group">
     <%= f.label attribute %> <br>
     <div class="form-control" disabled>
-      <%= object.try attribute %>
+      <% if options[:is_currency] %>
+        <span class="mask currency_value"><%= object.try attribute %></span>
+      <% else %>
+        <%= object.try attribute %>
+      <% end %>
     </div>
   </div>
 <%  else  %>
