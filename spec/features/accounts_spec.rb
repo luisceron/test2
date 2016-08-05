@@ -75,7 +75,7 @@ def expect_account_edit account
   expect(page).to have_content( Account.human_attribute_name(:name) )
   expect(page).to have_field(   Account.human_attribute_name(:name), with: account.name )
   expect(page).to have_content( Account.human_attribute_name(:balance) )
-  expect(page).to have_field(   Account.human_attribute_name(:balance), with: account.balance )
+  expect(page).to have_content( account.balance )
   expect(page).to have_content( Account.human_attribute_name(:description) )
   expect(page).to have_field(   Account.human_attribute_name(:description), with: account.description )
 

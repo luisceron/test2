@@ -9,22 +9,35 @@
       <div class="row">
         <div class="col-md-12">
           <%= search_form_for(@query, url: user_transactions_path(@user)) do |f|  %>
-            <div class="input-group btn-group" role="group">
-              <%= f.text_field :description_cont, class: "form-control" %>
+            <div class="col-md-3">
+              <div class="form-group">
+                <%= f.label :by_year, Transaction.human_attribute_name(:year) %>
+                <%= f.select :by_year, years_for_select, {}, class: "form-control" %>
+              </div>                
+            </div>
+
+            <div class="col-md-3">
+              <div class="form-group">
+                <%= f.label :by_month, Transaction.human_attribute_name(:month) %>
+                <%= f.select :by_month, months_for_select, {selected: @month}, class: "form-control" %>
+              </div>                
+            </div>
+
+            <div class="col-md-4">
+              <div class="form-group">
+                <%= f.label :account, Transaction.human_attribute_name(:account) %>
+                <%= f.select :account_id_eq, user_accounts_for_select(@user), {include_blank: t('text.all_fem')}, class: "form-control" %>
+              </div>                
+            </div>
+
+            <div class="col-md-2">
+              <label class="control-label"></label>
               <span class="input-group-btn">
-                <%= button_tag(type: 'submit', class: "btn btn-primary", id: "search_button") do %>
-                  <i class="fa fa-search"></i>
+                <%= button_tag(type: 'submit', class: "btn btn-primary btn-block", id: "search_button") do %>
+                  <i class="fa fa-search"> <%= t('action.search') %></i>
                 <% end %>
               </span>
             </div>
-
-            <div class="text-center" id="expand_advanced_search_button">
-              <span>
-                <i class="fa fa-angle-double-down fa-2x" title='<%= t('action.advanced_search') %>' data-toggle='tooltip' data-placement= 'right'></i>
-              </span>
-            </div>
-
-            <%= render partial: "transactions_advanced_search", locals: {f: f} %>
           <% end %>
         </div>
       </div><br>
@@ -88,7 +101,6 @@
         </div>
       </div>
 
-      <%= index_footer @transactions %>
     </div>
   </div>
 </div>

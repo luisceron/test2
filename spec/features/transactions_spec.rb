@@ -1,24 +1,15 @@
 require 'rails_helper'
 
 # => V I E W S    C O N T E N T
-def expect_transaction_index current_user
+def expect_transaction_index transactions
   expect(page).to have_selector(:link_or_button, Transaction.model_name.human(count: 2) )
   expect(page).to have_selector(:link_or_button, I18n.t('action.index', model: Transaction.model_name.human(count: 2)) )
 
-  expect(page).to have_selector('input#q_description_cont')
+  expect(page).to have_selector('select#q_by_year')
+  expect(page).to have_selector('select#q_by_month')
+  expect(page).to have_selector('select#q_account_id_eq')
   expect(page).to have_css('button.btn.btn-primary .fa.fa-search')
   
-  expect(page).to_not have_selector('label#q_account')
-  expect(page).to_not have_selector('select#q_account_eq')
-  expect(page).to_not have_selector('label#q_category')
-  expect(page).to_not have_selector('select#q_category_eq')
-  expect(page).to_not have_selector('label#q_transaction_type')
-  expect(page).to_not have_selector('select#q_transaction_type_eq')
-  expect(page).to_not have_selector('label#q_date')
-  expect(page).to_not have_selector('input#q_date_gteq')
-  expect(page).to_not have_selector('input#q_date_lteq')
-  expect(page).to_not have_selector(:link_or_button, I18n.t('action.search') )
-
   expect(page).to have_content( Transaction.human_attribute_name(:account) )
   expect(page).to have_content( Transaction.human_attribute_name(:category) )
   expect(page).to have_content( Transaction.human_attribute_name(:date) )
@@ -26,8 +17,8 @@ def expect_transaction_index current_user
   expect(page).to have_content( I18n.t(:out, scope: "activerecord.attributes.transaction.transaction_types") )
   expect(page).to have_content( Transaction.human_attribute_name(:description) )
 
-  if current_user.transactions.size == 1
-    first_transaction = current_user.transactions.first
+  if transactions.size == 1
+    first_transaction = transactions.first
     expect(page).to have_content( first_transaction.account )
     expect(page).to have_content( first_transaction.category )
     expect(page).to have_content( first_transaction.date.strftime("%d/%m/%Y") )
@@ -39,42 +30,18 @@ def expect_transaction_index current_user
     expect(page).to have_content( first_transaction.description )
     expect(page).to have_css("a.btn.btn-xs.btn-primary .fa.fa-pencil-square-o")
     expect(page).to have_css("a.btn.btn-xs.btn-danger .fa.fa-trash")
-    expect(page).to have_content( I18n.t('action.per_page', model: Transaction.model_name.human(count: 2)) )
-    expect(page).to have_selector('select#per_page')
-    if current_user.transactions.count == 1
-      expect(page).to have_content( I18n.t('will_paginate.page_entries_info.single_page_html.one') )
-    elsif current_user.transactions.count > 25
-      expect(page).to have_content( I18n.t('will_paginate.page_entries_info.multi_page', from: "1", to: "25", count: current_user.transactions.count) )
-    else    
-      expect(page).to have_content( I18n.t('will_paginate.page_entries_info.single_page_html.other', count: current_user.transactions.count) )
-    end
   end
 
-  expect(page).to have_css("td.text-center.in-background",  text: number_to_currency(current_user.transactions.scope_in.sum(:amount)))
-  expect(page).to have_css("td.text-center.out-background", text: number_to_currency(current_user.transactions.scope_out.sum(:amount)))
+  expect(page).to have_css("td.text-center.in-background",  text: number_to_currency(transactions.scope_in.sum(:amount)))
+  expect(page).to have_css("td.text-center.out-background", text: number_to_currency(transactions.scope_out.sum(:amount)))
   expect(page).to have_css("td.right-cell", text: Transaction.human_attribute_name(:total))
-  total_transactions = current_user.transactions.scope_in.sum(:amount) - current_user.transactions.scope_out.sum(:amount)
+  total_transactions = transactions.scope_in.sum(:amount) - transactions.scope_out.sum(:amount)
   if total_transactions < 0
     expect(page).to have_css("td.right-cell.out-background", text: number_to_currency(total_transactions))
   else
     expect(page).to have_css("td.right-cell.in-background", text: number_to_currency(total_transactions))
   end
   expect(page).to have_selector(:link_or_button, I18n.t('action.new_fem', model: Transaction.model_name.human) )
-end
-
-def expect_transaction_index_advanced_search
-  expect(page).to have_selector('input#q_description_cont')
-  expect(page).to have_css('button.btn.btn-sm.btn-primary .fa.fa-search')
-  expect(page).to have_selector('label#q_account')
-  expect(page).to have_selector('select#q_account_eq')
-  expect(page).to have_selector('label#q_category')
-  expect(page).to have_selector('select#q_category_eq')
-  expect(page).to have_selector('label#q_transaction_type')
-  expect(page).to have_selector('select#q_transaction_type_eq')
-  expect(page).to have_selector('label#q_date')
-  expect(page).to have_selector('input#q_date_gteq')
-  expect(page).to have_selector('input#q_date_lteq')
-  expect(page).to have_selector(:link_or_button, I18n.t('action.search') )
 end
 
 def expect_transaction_new
@@ -170,7 +137,7 @@ feature "transactions views for owner user", type: :feature do
   # => I N D E X
   scenario "listing user transactions" do
     visit user_transactions_path(current_user)
-    expect_transaction_index current_user
+    expect_transaction_index current_user.transactions
   end
 
   # => N E W    A N D    C R E A T E
@@ -188,7 +155,7 @@ feature "transactions views for owner user", type: :feature do
       click_on I18n.t('link.save')
 
       expect(page).to have_content( I18n.t('controller.created_fem', model: Transaction.model_name.human) )
-      expect_transaction_index current_user
+      expect_transaction_index current_user.transactions
     end
 
     scenario "with invalid params" do
@@ -219,7 +186,7 @@ feature "transactions views for owner user", type: :feature do
       click_on I18n.t('link.save')
 
       expect(page).to have_content( I18n.t('controller.updated_fem', model: Transaction.model_name.human) )
-      expect_transaction_index current_user
+      expect_transaction_index current_user.transactions
     end
 
     scenario "with invalid params" do
@@ -239,11 +206,11 @@ feature "transactions views for owner user", type: :feature do
   scenario "removing transaction" do
     visit user_transactions_path(current_user)
 
-    expect_transaction_index current_user
+    expect_transaction_index current_user.transactions
     first('.btn-danger').click
 
     expect(page).to have_content( I18n.t('controller.destroyed_fem', model: Transaction.model_name.human) )
-    expect_transaction_index current_user
+    expect_transaction_index current_user.transactions
   end
 
   # => S E A R C H    A N D   P A G I N A T I O N 
@@ -254,16 +221,28 @@ feature "transactions views for owner user", type: :feature do
     let!(:category3){ create(:category, user: current_user, name: "Home") }
 
     def create_records
-      for var in 0..10
-        create(:transaction, description: "Description#{var}", user: current_user, account: account, category: category, transaction_type: :out, date: "01/01/2016")
+      for var in 0..5
+        create(:transaction, description: "Description#{var}", user: current_user, account: account, category: category, transaction_type: :out, date: "01/01/2015")
       end
 
-      for var in 11..20
+      for var in 6..10
+        create(:transaction, description: "Description#{var}", user: current_user, account: account, category: category, transaction_type: :out, date: Date.today)
+      end
+
+      for var in 11..15
         create(:transaction, description: "Description#{var}", user: current_user, account: account2, category: category2, transaction_type: :in, date: "02/02/2016")
       end
 
-      for var in 21..30
-        create(:transaction, description: "Description#{var}", user: current_user, account: account3, category: category3, transaction_type: :out, date: "03/03/2016")
+      for var in 16..20
+        create(:transaction, description: "Description#{var}", user: current_user, account: account2, category: category2, transaction_type: :in, date: Date.today)
+      end
+
+      for var in 21..25
+        create(:transaction, description: "Description#{var}", user: current_user, account: account3, category: category3, transaction_type: :out, date: "03/02/2016")
+      end
+
+      for var in 26..30
+        create(:transaction, description: "Description#{var}", user: current_user, account: account3, category: category3, transaction_type: :out, date: Date.today)
       end
     end
 
@@ -272,152 +251,66 @@ feature "transactions views for owner user", type: :feature do
       visit user_transactions_path(current_user)
     end
 
-    scenario "if there is more than 25 records, must have a button to second page" do
-      expect_transaction_index current_user
-      expect(page).to_not have_css('ul.pagination')
+    scenario "when searching by an account must return only them" do
+      expect_transaction_index current_user.transactions
 
       create_records
       visit user_transactions_path(current_user)
-      expect_transaction_index current_user
-      expect(page).to have_selector(:link_or_button, '2')
-      expect(page).to have_css('ul.pagination')
-      click_on '2'
-
-      expect(page).to have_content( I18n.t('will_paginate.page_entries_info.multi_page', from: "26", to: current_user.transactions.count.to_s, count: current_user.transactions.count) )
-    end
-
-    scenario "searching for specific transaction description must return only it" do
-      expect_transaction_index current_user
-
-      fill_in :q_description_cont, with: "Description28"
-      page.find('#search_button').click
-      expect(page).to_not have_content("Account28")
-      expect(page).to have_content( I18n.t('will_paginate.page_entries_info.single_page_html.zero') )
-
-      create_records
-      visit user_transactions_path(current_user)
-      expect_transaction_index current_user
-      fill_in :q_description_cont, with: "Description28"
-      page.find('#search_button').click
-      expect(page).to have_content("Description28")
-      expect(page).to have_content( I18n.t('will_paginate.page_entries_info.single_page_html.one') )
-    end
-
-    scenario "when searching by an account must return only them", js: true do
-      expect_transaction_index current_user
-
-      create_records
-      visit user_transactions_path(current_user)
-      expect_transaction_index current_user
-      find('#expand_advanced_search_button').click
+      expect_transaction_index current_user.transactions.current_month_scope
 
       select account.name, from: :q_account_id_eq
       click_on I18n.t('action.search')
-      expect(page).to_not have_content(account2.name)
-      expect(page).to_not have_content(account3.name)
-      expect(page).to have_content(I18n.t('will_paginate.page_entries_info.single_page_html.other', count: account.transactions.count))
+      expect(page).to_not have_content("Description5")
+      expect(page).to     have_content("Description6")
+      expect(page).to_not have_content("Description11")
+      expect(page).to_not have_content("Description16")
+      expect(page).to_not have_content("Description21")
+      expect(page).to_not have_content("Description26")
 
       select account2.name, from: :q_account_id_eq
       click_on I18n.t('action.search')
-      expect(page).to_not have_content(account.name)
-      expect(page).to_not have_content(account3.name)
-      expect(page).to have_content(I18n.t('will_paginate.page_entries_info.single_page_html.other', count: account2.transactions.count))
+      expect(page).to_not have_content("Description5")
+      expect(page).to_not have_content("Description6")
+      expect(page).to_not have_content("Description11")
+      expect(page).to     have_content("Description16")
+      expect(page).to_not have_content("Description21")
+      expect(page).to_not have_content("Description26")
 
       select account3.name, from: :q_account_id_eq
       click_on I18n.t('action.search')
-      expect(page).to_not have_content(account.name)
-      expect(page).to_not have_content(account2.name)
-      expect(page).to have_content(I18n.t('will_paginate.page_entries_info.single_page_html.other', count: account3.transactions.count))
+      expect(page).to_not have_content("Description5")
+      expect(page).to_not have_content("Description6")
+      expect(page).to_not have_content("Description11")
+      expect(page).to_not have_content("Description16")
+      expect(page).to_not have_content("Description21")
+      expect(page).to     have_content("Description26")
     end
 
-    scenario "when searching by an category must return only them", js: true do
-      expect_transaction_index current_user
+    scenario "when searching by an year and month must return only them" do
+      expect_transaction_index current_user.transactions
 
       create_records
       visit user_transactions_path(current_user)
-      expect_transaction_index current_user
-      find('#expand_advanced_search_button').click
+      expect_transaction_index current_user.transactions.current_month_scope
 
-      select category.name, from: :q_category_id_eq
+      select 2016, from: :q_by_year
       click_on I18n.t('action.search')
-      expect(page).to_not have_content(category2.name)
-      expect(page).to_not have_content(category3.name)
-      expect(page).to have_content(I18n.t('will_paginate.page_entries_info.single_page_html.other', count: category.transactions.count))
+      expect(page).to_not have_content("Description5")
+      expect(page).to     have_content("Description6")
+      expect(page).to_not have_content("Description11")
+      expect(page).to     have_content("Description16")
+      expect(page).to_not have_content("Description21")
+      expect(page).to     have_content("Description26")
 
-      select category2.name, from: :q_category_id_eq
+      select I18n.t('date.month_names').third, from: :q_by_month
+
       click_on I18n.t('action.search')
-      expect(page).to_not have_content(category.name)
-      expect(page).to_not have_content(category3.name)
-      expect(page).to have_content(I18n.t('will_paginate.page_entries_info.single_page_html.other', count: category2.transactions.count))
-
-      select category3.name, from: :q_category_id_eq
-      click_on I18n.t('action.search')
-      expect(page).to_not have_content(category.name)
-      expect(page).to_not have_content(category2.name)
-      expect(page).to have_content(I18n.t('will_paginate.page_entries_info.single_page_html.other', count: category3.transactions.count))
-    end
-
-    scenario "when searching by an transaction type must return only them", js: true do
-      expect_transaction_index current_user
-
-      create_records
-      visit user_transactions_path(current_user)
-      expect_transaction_index current_user
-      find('#expand_advanced_search_button').click
-
-      select I18n.t(:in, scope: "activerecord.attributes.transaction.transaction_types"), from: :q_transaction_type_eq
-      click_on I18n.t('action.search')
-      expect(page).to     have_css("td.in-color")
-      expect(page).to_not have_css("td.out-color")
-
-      select I18n.t(:out, scope: "activerecord.attributes.transaction.transaction_types"), from: :q_transaction_type_eq
-      click_on I18n.t('action.search')
-      expect(page).to_not have_css("td.in-color")
-      expect(page).to     have_css("td.out-color")
-    end
-
-    scenario "when searching by dates must return only them", js: true do
-      expect_transaction_index current_user
-
-      create_records
-      visit user_transactions_path(current_user)
-      expect_transaction_index current_user
-      find('#expand_advanced_search_button').click
-
-      fill_in :q_date_gteq, with: "01/01/2016"
-      fill_in :q_date_lteq, with: "01/01/2016"
-      click_on I18n.t('action.search')
-      expect(page).to     have_content("01/01/2016")
-      expect(page).to_not have_content("02/02/2016")
-      expect(page).to_not have_content("03/03/2016")
-
-      fill_in :q_date_gteq, with: "02/02/2016"
-      fill_in :q_date_lteq, with: "02/02/2016"
-      click_on I18n.t('action.search')
-      expect(page).to_not have_content("01/01/2016")
-      expect(page).to     have_content("02/02/2016")
-      expect(page).to_not have_content("03/03/2016")
-
-      fill_in :q_date_gteq, with: "03/03/2016"
-      fill_in :q_date_lteq, with: "03/03/2016"
-      click_on I18n.t('action.search')
-      expect(page).to_not have_content("01/01/2016")
-      expect(page).to_not have_content("02/02/2016")
-      expect(page).to     have_content("03/03/2016")
-
-      create(:transaction, user: current_user, account: account, category: category, transaction_type: :out, date: "22/02/2016")
-      create(:transaction, user: current_user, account: account, category: category, transaction_type: :out, date: "23/02/2016")
-      create(:transaction, user: current_user, account: account, category: category, transaction_type: :out, date: "24/02/2016")
-
-      fill_in :q_date_gteq, with: "21/02/2016"
-      fill_in :q_date_lteq, with: "25/02/2016"
-      click_on I18n.t('action.search')
-      expect(page).to_not have_content("01/01/2016")
-      expect(page).to_not have_content("02/02/2016")
-      expect(page).to_not have_content("03/03/2016")
-      expect(page).to     have_content("22/02/2016")
-      expect(page).to     have_content("23/02/2016")
-      expect(page).to     have_content("24/02/2016")
+      expect(page).to_not have_content("Description5")
+      expect(page).to_not have_content("Description6")
+      expect(page).to     have_content("Description11")
+      expect(page).to_not have_content("Description16")
+      expect(page).to     have_content("Description21")
+      expect(page).to_not have_content("Description26")
     end
   end
 end

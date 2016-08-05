@@ -42,6 +42,8 @@ en:
           in: In
           out: Out
         total: Total
+        month: Month
+        year: Year
       user:
         name: Name
         email: Email
@@ -87,6 +89,9 @@ en:
     change_password: Edit Password
     remove_account: Remove Account
     logout: Logout
+  text:
+    all: All
+    all_fem: All
   time:
     formats: 
       default: '%A, %d. %B %Y, %H:%M Uhr'

@@ -1,7 +1,7 @@
 <%= simple_form_for @account, url: account_form_path(@account) do |f| %>
   <%= f.input :account_type, collection: options_for_enum(Account, :account_types) %>
   <%= f.input :name %>
-  <%= f.input :balance, as: :mask_currency_value %>
+  <%= not_editable_for @account, :balance, f, {is_currency: true} %>
   <%= f.input :description, as: :text %>
 
   <div class="text-center">
