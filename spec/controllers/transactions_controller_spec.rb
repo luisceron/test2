@@ -16,8 +16,10 @@ RSpec.describe TransactionsController, type: :controller do
 
       it "assigns all transactions as @transactions" do
         transaction = create(:transaction, user: controller.current_user)
+        transaction_out_of_date = create(:transaction, user: controller.current_user, date: "25/05/2016")
         get :index, {user_id: controller.current_user}
         expect(assigns(:transactions)).to eq([transaction])
+        expect(assigns(:transactions)).to_not include(transaction_out_of_date)
         expect(response).to render_template(:index)
       end
     end
@@ -60,48 +62,34 @@ RSpec.describe TransactionsController, type: :controller do
       let(:c1) { create(:category, user: user, name: "Category1") }
       let(:c2) { create(:category, user: user, name: "Category2") }
 
-      let(:t1) { create(:transaction, user: user, description: "T1", account: a1, category: c2, transaction_type: :out, date: "01/01/2016") }
-      let(:t2) { create(:transaction, user: user, description: "T2", account: a2, category: c1, transaction_type: :in,  date: "02/02/2016") }
+      let(:t1) { create(:transaction, user: user, description: "T1", account: a1, category: c2, transaction_type: :out, date: "01/01/2014") }
+      let(:t2) { create(:transaction, user: user, description: "T2", account: a2, category: c1, transaction_type: :in,  date: "02/02/2015") }
       let(:t3) { create(:transaction, user: user, description: "T3", account: a1, category: c1, transaction_type: :out, date: "03/03/2016") }
-      let(:t4) { create(:transaction, user: user, description: "T4", account: a2, category: c2, transaction_type: :out, date: "04/04/2016") }
-      let(:t5) { create(:transaction, user: user, description: "T5", account: a1, category: c1, transaction_type: :in,  date: "05/05/2016") }
+      let(:t4) { create(:transaction, user: user, description: "T4", account: a2, category: c2, transaction_type: :out, date: "04/03/2016") }
+      let(:t5) { create(:transaction, user: user, description: "T5", account: a1, category: c1, transaction_type: :in,  date: "05/05/2017") }
       
       before do
         sign_in user
       end
 
-      it "description" do
-        get :index, {user_id: user, q: {description_cont: t1.description}}
-        expect(assigns(:transactions).to_a).to     include(t1)
-        expect(assigns(:transactions).to_a).to_not include(t2, t3, t4, t5)
+      it "year" do
+        get :index, {user_id: user, q: {by_year: 2015, by_month: 2}}
+        expect(assigns(:transactions)).to     include(t2)
+        expect(assigns(:transactions)).to_not include(t1, t3, t4, t5)
+        expect(response).to render_template(:index)
+      end
+
+      it "month" do
+        get :index, {user_id: user, q: {by_month: 3}}
+        expect(assigns(:transactions)).to     include(t3, t4)
+        expect(assigns(:transactions)).to_not include(t1, t2, t5)
         expect(response).to render_template(:index)
       end
 
       it "account" do
         get :index, {user_id: user, q: {account_eq: t2.account.id}}
-        expect(assigns(:transactions)).to     include(t2, t4)
-        expect(assigns(:transactions)).to_not include(t1, t3, t5)
-        expect(response).to render_template(:index)
-      end
-
-      it "category" do
-        get :index, {user_id: user, q: {category_eq: t3.category.id}}
-        expect(assigns(:transactions)).to     include(t2, t3, t5)
-        expect(assigns(:transactions)).to_not include(t1, t4)
-        expect(response).to render_template(:index)
-      end
-
-      it "transaction type" do
-        get :index, {user_id: user, q: {transaction_type_eq: Transaction.transaction_types[t4.transaction_type]}}
-        expect(assigns(:transactions)).to     include(t1, t3, t4)
-        expect(assigns(:transactions)).to_not include(t2, t5)
-        expect(response).to render_template(:index)
-      end
-
-      it "date" do
-        get :index, {user_id: user, q: {date_gteq: t3.date, date_lteq: t5.date}}
-        expect(assigns(:transactions)).to     include(t3, t4, t5)
-        expect(assigns(:transactions)).to_not include(t1, t2)
+        expect(assigns(:transactions)).to     eq([])
+        expect(assigns(:transactions)).to_not include(t1, t2, t3, t4, t5)
         expect(response).to render_template(:index)
       end
     end

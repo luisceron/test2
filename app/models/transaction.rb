@@ -15,7 +15,7 @@ class Transaction < ActiveRecord::Base
   scope :scope_out, -> {where(transaction_type: 1)}
   scope :current_month_scope, -> {where('extract(year from date) = ? AND extract(month from date) = ?', Date.today.year, Date.today.month)}
   scope :by_year,  -> (year) {where('extract(year from date) = ?', year)}
-  scope :by_month, -> (month){where('extract(month from date) = ?', month)}
+  scope :by_month, -> (month){where('extract(month from date) = ?', month && month.length >= 2 ? JSON.parse(month) : month)}
 
   after_initialize :set_date
   after_create     :add_to_account_balance

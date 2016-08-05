@@ -4,6 +4,11 @@ module BaseController
     @query.result.paginate(page: params[:page], per_page: params[:per_page] || 25)
   end
 
+  def index_object_without_pagination(classe, params)
+    @query = classe.search(params[:q])
+    @query.result
+  end
+
   def save_object(object, options = {})
     respond_to do |format|
       if object.persisted?
