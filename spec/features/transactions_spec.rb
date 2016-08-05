@@ -3,12 +3,27 @@ require 'rails_helper'
 # => V I E W S    C O N T E N T
 def expect_transaction_index transactions
   expect(page).to have_selector(:link_or_button, Transaction.model_name.human(count: 2) )
-  expect(page).to have_selector(:link_or_button, I18n.t('action.index', model: Transaction.model_name.human(count: 2)) )
+  expect(page).to have_selector(:link_or_button, I18n.t('action.new_fem', model: Transaction.model_name.human) )
+
+# MONTHLY
+  # expect(page).to have_css("td.text-center.in-background",  text: number_to_currency(transactions.scope_in.sum(:amount)))
+  # expect(page).to have_css("td.text-center.out-background", text: number_to_currency(transactions.scope_out.sum(:amount)))
+  # expect(page).to have_css("td.tex-center", text: Transaction.human_attribute_name(:total))
+  # total_transactions = transactions.scope_in.sum(:amount) - transactions.scope_out.sum(:amount)
+  # if total_transactions < 0
+  #   expect(page).to have_css("td.right-cell.out-background", text: number_to_currency(total_transactions))
+  # else
+  #   expect(page).to have_css("td.right-cell.in-background", text: number_to_currency(total_transactions))
+  # end
+
+# TOTAL
+
+
 
   expect(page).to have_selector('select#q_by_year')
   expect(page).to have_selector('select#q_by_month')
   expect(page).to have_selector('select#q_account_id_eq')
-  expect(page).to have_css('button.btn.btn-primary .fa.fa-search')
+  expect(page).to have_css('button.btn.btn-default .fa.fa-search')
   
   expect(page).to have_content( Transaction.human_attribute_name(:account) )
   expect(page).to have_content( Transaction.human_attribute_name(:category) )
@@ -31,17 +46,6 @@ def expect_transaction_index transactions
     expect(page).to have_css("a.btn.btn-xs.btn-primary .fa.fa-pencil-square-o")
     expect(page).to have_css("a.btn.btn-xs.btn-danger .fa.fa-trash")
   end
-
-  expect(page).to have_css("td.text-center.in-background",  text: number_to_currency(transactions.scope_in.sum(:amount)))
-  expect(page).to have_css("td.text-center.out-background", text: number_to_currency(transactions.scope_out.sum(:amount)))
-  expect(page).to have_css("td.right-cell", text: Transaction.human_attribute_name(:total))
-  total_transactions = transactions.scope_in.sum(:amount) - transactions.scope_out.sum(:amount)
-  if total_transactions < 0
-    expect(page).to have_css("td.right-cell.out-background", text: number_to_currency(total_transactions))
-  else
-    expect(page).to have_css("td.right-cell.in-background", text: number_to_currency(total_transactions))
-  end
-  expect(page).to have_selector(:link_or_button, I18n.t('action.new_fem', model: Transaction.model_name.human) )
 end
 
 def expect_transaction_new

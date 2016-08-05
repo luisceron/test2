@@ -17,6 +17,10 @@ class ApplicationController < ActionController::Base
     {locale: I18n.locale}
   end
 
+  def after_sign_in_path_for(resource)
+    CheckPeriodsService.check(current_user)
+  end
+
   private
     # Overwriting the sign_out redirect path method
     def after_sign_out_path_for(resource_or_scope)
