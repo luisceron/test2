@@ -1,9 +1,8 @@
 FactoryGirl.define do
   factory :period do
-    year 1
+    year 2016
     month 1
-    start_balance "9.99"
-    end_balance "9.99"
-    references ""
+    start_balance "50.00"
+    end_balance nil
   end
 end

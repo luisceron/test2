@@ -5,38 +5,44 @@ class CheckPeriodsService
       last_period = account.periods.last
       
       last_year     = last_period.year
-      last_month    = last_periord.month
+      last_month    = last_period.month
       current_year  = Date.today.year
       current_month = Date.today.month
 
-      if last_year != current_year && last_month != current_month
 
-        # If month changes, calculate last_balance and save!
-        last_balance = TotalizerTransactionsService.new(account.transactions).calculate_total
-        last_period.end_balance = last_balance
-        last_period.save
+      if (last_year >= current_year) &&  (last_year > current_year || last_month > current_month)
+        return nil
+      end
 
-        if last_year < current_year
+      save_last_period(last_year, last_month, current_year, current_month, last_period, account)
 
-          
-          # CONTINUE HERE
-          until last_year == current_year do
-            until last_month == current_month do
+      if last_year < current_year
+        until last_year == current_year+1  do
+          if last_year == current_year
+            until last_month == current_month
               last_month +=1
-              Period.create(account: account, year: last_year, month: last_month, start_balance: last_period.end_balance)
+              if last_month == current_month
+                create_period(account, last_year, last_month, account.balance, nil)
+              else
+                create_period(account, last_year, last_month, account.balance, account.balance)
+              end
             end
-            last_year +=1
+          else
+            until last_month >= 12
+              last_month +=1
+              create_period(account, last_year, last_month, account.balance, account.balance)
+            end
+            last_month = 0
           end
-
-
-        else
-          until last_month == current_month do
-            last_month +=1
-            if last_month == current_month
-              Period.create(account: account, year: last_year, month: last_month, start_balance: last_period.end_balance)
-            else
-              Period.create(account: account, year: last_year, month: last_month, start_balance: last_period.end_balance, end_balance: last_period.end_balance)
-            end
+          last_year +=1
+        end
+      else
+        until last_month == current_month do
+          last_month +=1
+          if last_month == current_month
+            create_period(account, last_year, last_month, account.balance, nil)
+          else
+            create_period(account, last_year, last_month, account.balance, account.balance)
           end
         end
       end
@@ -44,25 +50,16 @@ class CheckPeriodsService
     end
   end
 
+  private
+    def self.save_last_period(last_year, last_month, current_year, current_month, last_period, account)
+      if (last_year == current_year && last_month < current_month) || (last_year < current_year)
+        last_period.end_balance = account.balance
+        last_period.save!
+      end
+    end
+
+    def self.create_period(account, last_year, last_month, start_balance, end_balance)
+      Period.create!(account: account, year: last_year, month: last_month, start_balance: start_balance, end_balance: end_balance)
+    end
+
 end
-
-
-# Simple Test (Include only one single month)
-# last_year = 2016 / last_month =  7 / current_year = 2016 / current_month = 8
-
-
-# Tests
-# last_year = 2016 / last_month =  4 / current_year = 2016 / current_month = 7
-# 
-# last_year = 2016 / last_month =  7 / current_year = 2016 / current_month = 7
-# 
-# last_year = 2016 / last_month = 10 / current_year = 2016 / current_month = 7
-# 
-# 
-# 
-# last_year = 2015 / last_month =  4 / current_year = 2016 / current_month = 7
-# 
-# last_year = 2015 / last_month =  7 / current_year = 2016 / current_month = 7
-# 
-# last_year = 2015 / last_month = 10 / current_year = 2016 / current_month = 7
-# 

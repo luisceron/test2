@@ -3,7 +3,7 @@ FactoryGirl.define do
     association :user
     account_type :cash_account
     sequence(:name) {|n| "Account#{n}"}
-    balance "9.99"
+    balance 100.00
     description "MyString"
   end
 end

@@ -1,6 +1,7 @@
 class Period < ActiveRecord::Base
   belongs_to :account
 
-  validates :year,  presence: true, uniqueness: {scope: :account}
-  validates :month, presence: true, uniqueness: {scope: :account}
+  validates :year,  presence: true
+  validates :month, presence: true
+  validates :account_id, uniqueness: {scope: [:year, :month]}
 end
