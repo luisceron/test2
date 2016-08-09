@@ -41,9 +41,15 @@
                 <td class="text-center"><strong>Total</strong></td>
               </tr>
               <tr>
-                <td class="text-center in-background">5.000,00</td>
-                <td class="text-center in-background">6.500,00</td>
-                <td class="text-center in-background">1.5%</td>
+                <td class="text-center"><%= get_previous_start_balance(@periods) %></td>
+                <td class="text-center">
+                  <% if @period_for_current_date %>
+                    <%= get_current_balance(current_user) %>
+                  <% else %>
+                    <%= get_previous_end_balance(@periods) %>
+                  <% end %>
+                </td>
+                <td class="text-center in-background">XX.XX%</td>
               </tr>
             </table>
           </div>

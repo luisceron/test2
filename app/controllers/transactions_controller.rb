@@ -2,15 +2,24 @@ class TransactionsController < ApplicationController
   before_action :set_transaction, only: [:show, :edit, :update, :destroy]
   before_action :set_user, only: [:index, :new, :create]
 
+  attr_accessor :period_for_current_date
+
   def index
     if params[:q]
       @month = params[:q][:by_month]
       params[:q][:by_month] = Array(params[:q][:by_month].to_i).to_s
       @transactions = index_object_without_pagination @user.transactions, params
+      if params[:q][:account_id_eq]
+        @periods = Period.where(year: params[:q][:by_year], month: params[:q][:by_year], account_id: params[:q][:account_id_eq])
+      else
+        @periods = Period.where(year: params[:q][:by_year], month: params[:q][:by_year])
+      end
     else
       @month = Date.today.month
       params.merge!(q: {by_year: Date.today.year.to_s, by_month: Date.today.month.to_s })
       @transactions = index_object_without_pagination @user.transactions.current_month_scope, params
+      @periods = Period.where(year: Date.today.year, month: Date.today.month)
+      @period_for_current_date = true
     end
     @totalizer_transactions_service = TotalizerTransactionsService.new(@transactions)
   end
